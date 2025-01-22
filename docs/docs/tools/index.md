@@ -16,6 +16,9 @@ A collection of tools for modding DOKAPON! Sword of Fury.
 ### [Voice Pack Extractor](voice-extractor)
 Extract and convert voice files from the game's `.pck` format to standard WAV files.
 
+### [Font Pack Extractor](font-extractor)
+Extract and repack PNG font files from the game's `.fnt` format.
+
 ## Coming Soon
 
 We're working on additional tools for:
