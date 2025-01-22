@@ -56,4 +56,4 @@ Check out our [contribution guidelines](contributing) for more information.
 
 ## License
 
-All tools and documentation are free to use and modify. Please credit the original authors when sharing modifications.
+All tools and documentation are free to use and modify. Please credit the original authors when sharing modifications. 
