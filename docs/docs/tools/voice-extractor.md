@@ -8,7 +8,7 @@ parent: Tools
 # Voice Pack Extractor
 {: .no_toc }
 
-A tool for extracting and converting voice files from DOKAPON! Sword of Fury's `.pck` format to WAV format.
+A tool for extracting voice files from DOKAPON! Sword of Fury's `.pck` format to Opus audio format.
 {: .fs-6 .fw-300 }
 
 ## Table of contents
@@ -21,7 +21,7 @@ A tool for extracting and converting voice files from DOKAPON! Sword of Fury's `
 
 The Voice Pack Extractor is a Python script that allows you to:
 - Extract voice files from the game's proprietary `.pck` format
-- Convert the extracted audio data to standard WAV format
+- Extract the original Opus audio streams
 - Analyze the voice data structure for modding purposes
 
 ## Requirements
@@ -29,6 +29,7 @@ The Voice Pack Extractor is a Python script that allows you to:
 - Python 3.6 or higher
 - DOKAPON! Sword of Fury (PC Version) installed
 - Basic knowledge of using command line tools
+- VLC, Firefox, or FFmpeg for playing/converting Opus files
 
 ## Installation
 
@@ -47,18 +48,18 @@ The Voice Pack Extractor is a Python script that allows you to:
 The script will:
 1. Analyze the PCK file structure
 2. Create an `extracted_voices` directory
-3. Extract and convert all voice files to WAV format
+3. Extract all voice files in their original Opus format
 
 ## Output Format
 
 The extracted files will be saved with the following specifications:
-- Format: WAV (uncompressed)
-- Sample Rate: 22050 Hz
-- Bit Depth: 16-bit
-- Channels: Mono (1)
+- Format: Opus audio (.opus)
+- Container: Ogg
+- Original quality preserved
+- Original audio parameters maintained
 
 {: .note }
-If the extracted audio doesn't sound correct, you can modify the sample rate and bit depth in the script. Common alternatives are listed in the script's output.
+The extracted .opus files can be played with VLC media player, Firefox browser, or converted to other formats using FFmpeg.
 
 ## Troubleshooting
 
@@ -78,12 +79,17 @@ If the extracted audio doesn't sound correct, you can modify the sample rate and
    - Ensure you're using the correct PCK file from the game
    - Verify the file isn't corrupted
 
-### Audio Quality Issues
+### Playing Opus Files
 
-If the extracted audio doesn't sound right, try these settings in `raw_to_wav()`:
-- Sample rates: 11025, 22050, or 44100 Hz
-- Sample width: 1 (8-bit) or 2 (16-bit)
-- Channels: Keep at 1 (mono) as the game uses mono audio
+If you need to convert the Opus files to another format:
+1. Using FFmpeg:
+   ```bash
+   ffmpeg -i input.opus output.mp3
+   ```
+2. Using VLC:
+   - Open VLC
+   - Media -> Convert/Save
+   - Select Opus file and desired output format
 
 ## Technical Details
 
@@ -102,32 +108,22 @@ Filename            X
 - Series of 4-byte little-endian integers
 - Each integer represents the absolute offset to a voice file
 - First offset typically starts at 0x5B0
-- Example:
-  ```
-  B0 05 00 00 = 0x5B0 (first voice file)
-  BD 05 00 00 = 0x5BD (second voice file)
-  ...
-  ```
 
 #### Filename Table (varies - 0x5AF)
 - Null-terminated ASCII strings
 - Format: "V_XXXX.voice\0" where XXXX is a zero-padded number
 - Special cases include split files like "V_0044_1.voice"
-- Example:
-  ```
-  56 5F 30 30 30 31 2E 76 6F 69 63 65 00 = "V_0001.voice\0"
-  ```
 
 #### Pack Marker
-- ASCII string "Pack" followed by 4 spaces
+- ASCII string "Pack"
 - Located just before voice data starts
 - Used as a separator between headers and data
 
 #### Voice Data Section (0x5B0 - EOF)
-- Raw voice data blocks
+- Opus audio streams in Ogg containers
+- Each stream starts with "OggS" marker
 - Each block starts at its corresponding offset
-- No size headers - size is calculated from offset differences
-- Data format: Raw PCM audio (details below)
+- Size determined by next file's offset or EOF
 
 ### Extraction Process
 
@@ -138,91 +134,42 @@ Filename            X
        raise ValueError("Invalid file format")
    ```
 
-2. **Offset Table Reading**
+2. **Filename Reading**
    ```python
-   offsets = []
-   while current_pos < 0x5B0:
-       offset = struct.unpack('<I', file.read(4))[0]
-       offsets.append(offset)
+   filenames = []
+   while True:
+       char = file.read(1).decode('ascii', errors='ignore')
+       # Process filename characters
    ```
 
-3. **Voice Data Extraction**
+3. **Opus Stream Extraction**
    ```python
-   for i in range(len(offsets) - 1):
-       size = offsets[i + 1] - offsets[i]
-       file.seek(offsets[i])
-       voice_data = file.read(size)
+   opus_start = find_opus_header(voice_data)
+   if opus_start >= 0:
+       # Extract Opus stream until next "OggS" marker
    ```
 
-### PCM Audio Specifications
+### Opus Audio Format
 
-The voice data is stored as raw PCM with these characteristics:
-- Sample Rate: 22050 Hz (confirmed through analysis)
-- Bit Depth: 16-bit signed integer
-- Channels: 1 (mono)
-- Byte Order: Little-endian
-- No headers or metadata
-
-### Repacking Process
-
-When creating a new PCK file:
-
-1. **Calculate File Offsets**
-   ```python
-   current_offset = 0x5B0
-   for voice_file in voice_files:
-       offsets.append(current_offset)
-       current_offset += os.path.getsize(voice_file)
-   ```
-
-2. **Write Header Structure**
-   - Write "Filename" + padding + "X"
-   - Write offset table
-   - Write filenames with null terminators
-   - Add padding to reach 0x5B0
-   - Write "Pack" marker
-
-3. **Write Voice Data**
-   - Seek to 0x5B0
-   - Write each voice file sequentially
+The voice data is stored as Opus audio with these characteristics:
+- Container: Ogg
+- Codec: Opus
+- Headers: Standard Opus headers present
+- Quality: Original game quality preserved
 
 ### Memory Considerations
 
-- Files are processed in chunks to handle large PCK files
-- Voice data is read and written directly without loading entire file into memory
-- Offset table is kept in memory for random access during extraction
-
-### File Size Verification
-The tool verifies file integrity by:
-- Checking offset table consistency
-- Validating file size matches last offset
-- Comparing packed file size with original
+- Files are processed in chunks (32KB for initial read, 4KB for streaming)
+- Opus streams are extracted directly without transcoding
+- Efficient handling of large files through streaming
 
 ### Error Handling
 
 The tool includes comprehensive error checking for:
 - Invalid file formats
-- Corrupted offset tables
-- Missing or inaccessible files
-- Incorrect file permissions
+- Missing Opus streams
+- File access issues
 - Memory constraints
-
-## Advanced Usage
-
-### Custom Audio Parameters
-```python
-def raw_to_wav(raw_data, wav_path, 
-               sample_rate=22050,
-               channels=1,
-               sample_width=2):
-    # Convert raw PCM to WAV
-```
-
-### Batch Processing
-The tool can handle multiple PCK files:
-```bash
-python voice_pck_extractor.py --batch path/to/pck/files
-```
 
 ## Contributing
 
