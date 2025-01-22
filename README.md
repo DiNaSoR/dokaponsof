@@ -3,7 +3,7 @@
 
 A collection of tools and utilities for modding DOKAPON! Sword of Fury (PC Version).
 
-## Tools Available
+## Tools Available :)
 
 ### Voice Pack Extractor
 - Extracts voice files from the game's `.pck` format
