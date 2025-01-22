@@ -12,8 +12,6 @@ permalink: /
 A comprehensive collection of tools, guides, and documentation for modding DOKAPON! Sword of Fury (PC Version).
 {: .fs-6 .fw-300 }
 
-[Get Started](#getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-
 ---
 
 ## About the Game

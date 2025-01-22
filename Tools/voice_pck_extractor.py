@@ -15,47 +15,15 @@
 # Usage: Place this script in the same directory as 'Voice-en.pck'
 
 import os
-import wave
 
 # Get the directory where the script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Construct the full path to the .pck file
 pck_file_path = os.path.join(script_dir, 'Voice-en.pck')
 
-def raw_to_wav(raw_data, wav_path, sample_rate=22050, channels=1, sample_width=2):
-    """Convert raw PCM data to WAV format"""
-    with wave.open(wav_path, 'wb') as wav_file:
-        wav_file.setnchannels(channels)
-        wav_file.setsampwidth(sample_width)
-        wav_file.setframerate(sample_rate)
-        wav_file.writeframes(raw_data)
-
-def analyze_voice_data(pck_path):
-    with open(pck_path, 'rb') as file:
-        # Skip header
-        header = file.read(16)
-        if not header.startswith(b'Filename'):
-            raise ValueError("Invalid file format - missing 'Filename' header")
-        
-        # Skip to voice data start
-        file.seek(0x5B0)
-        
-        # Read first voice file header/data
-        voice_data = file.read(64)  # Read first 64 bytes to analyze format
-        
-        print("First 64 bytes of voice data:")
-        print("Hex:", ' '.join(f'{b:02X}' for b in voice_data))
-        print("\nPossible format indicators:")
-        print("First 4 bytes:", ' '.join(f'{b:02X}' for b in voice_data[:4]))
-        print("Magic number/ID:", ''.join(chr(b) if 32 <= b <= 126 else '.' for b in voice_data[:4]))
-        
-        # Try to detect potential audio format markers
-        if voice_data.startswith(b'RIFF'):
-            print("Appears to be WAV format")
-        elif voice_data.startswith(b'OggS'):
-            print("Appears to be OGG format")
-        else:
-            print("Custom or proprietary format")
+def find_opus_header(data):
+    """Find the start of an Opus stream by looking for 'OggS' marker"""
+    return data.find(b'OggS')
 
 def extract_voices(pck_path):
     with open(pck_path, 'rb') as file:
@@ -67,12 +35,6 @@ def extract_voices(pck_path):
         # Create output directory
         output_dir = os.path.join(script_dir, 'extracted_voices')
         os.makedirs(output_dir, exist_ok=True)
-        
-        # Read until we find the first .voice filename
-        while True:
-            if file.read(1).decode('ascii', errors='ignore') == 'V':
-                file.seek(file.tell() - 1)
-                break
         
         # Read filenames
         filenames = []
@@ -98,26 +60,47 @@ def extract_voices(pck_path):
         file.seek(0x5B0)  # Start of voice data
         for i, filename in enumerate(filenames):
             try:
-                voice_data = file.read(32768)  # Read a reasonable chunk
+                # Read a chunk of data
+                voice_data = file.read(32768)  # 32KB chunk
+                opus_start = find_opus_header(voice_data)
                 
-                # Save as WAV
-                wav_name = filename.replace('.voice', '.wav')
-                wav_path = os.path.join(output_dir, wav_name)
-                raw_to_wav(voice_data, wav_path)
-                
-                print(f"Extracted {filename} as WAV")
+                if opus_start >= 0:
+                    # Found Opus data, seek back to start of Opus stream
+                    file.seek(file.tell() - len(voice_data) + opus_start)
+                    
+                    # Read until next file's Opus header or end of file
+                    opus_data = bytearray()
+                    while True:
+                        chunk = file.read(4096)
+                        if not chunk:
+                            break
+                        
+                        next_opus = find_opus_header(chunk)
+                        if next_opus > 0 and len(opus_data) > 0:
+                            # Found next Opus stream, keep only up to this point
+                            opus_data.extend(chunk[:next_opus])
+                            file.seek(file.tell() - len(chunk) + next_opus)
+                            break
+                        
+                        opus_data.extend(chunk)
+                    
+                    # Save as .opus file
+                    opus_name = filename.replace('.voice', '.opus')
+                    opus_path = os.path.join(output_dir, opus_name)
+                    with open(opus_path, 'wb') as out_file:
+                        out_file.write(opus_data)
+                    
+                    print(f"Extracted {opus_name}")
+                else:
+                    print(f"Warning: No Opus data found in {filename}")
                 
             except Exception as e:
                 print(f"Error extracting {filename}: {str(e)}")
 
 try:
-    analyze_voice_data(pck_file_path)
     extract_voices(pck_file_path)
     print("\nExtraction complete!")
-    print("\nNote: If the WAV files don't sound correct, try modifying these settings in raw_to_wav():")
-    print("- Current sample_rate: 22050 Hz (try 11025 or 44100)")
-    print("- Current sample_width: 2 (16-bit) (try 1 for 8-bit)")
-    print("- Current channels: 1 (mono)")
+    print("\nNote: The extracted .opus files can be played with VLC, Firefox, or converted using FFmpeg")
 except FileNotFoundError:
     print(f"Error: Could not find file at {pck_file_path}")
 except Exception as e:
