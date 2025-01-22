@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: Dokapon SoF Documentation
 description: Documentation for Dokapon SoF project
-theme: just-the-docs
+remote_theme: just-the-docs/just-the-docs
 
 url: https://dinasor.github.io
 baseurl: /dokaponsof
@@ -68,6 +68,7 @@ plugins:
   - jekyll-github-metadata
   - jekyll-include-cache
   - jekyll-sitemap
+  - jekyll-remote-theme
 
 kramdown:
   syntax_highlighter_opts:
