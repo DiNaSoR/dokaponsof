@@ -27,13 +27,14 @@ DOKAPON! Sword of Fury (ドカポン！怒りの鉄剣) is an RPG board game whe
 
 ## Getting Started
 
-1. Purchase DOKAPON! Sword of Fury on Steam
-2. Choose your modding tools from our collection
-3. Follow the specific guides for each modification type
+This project provides community-made tools for modding DOKAPON! Sword of Fury. Before using any modding tools, please support the developers by purchasing the game on Steam. The modding community is dedicated to enhancing the game experience while respecting the original creators.
+
+Currently available tools include a Voice Pack Extractor for working with the game's audio files. More tools are being developed by the community to expand modding possibilities.
+
+{: .note }
+All tools are created by the community, for the community. If you'd like to contribute or have ideas for new tools, join our Discord!
 
 ## Available Tools
-
-Our toolkit currently includes:
 
 ### Voice Pack Extractor
 - Extract voice files from the game's `.pck` format
