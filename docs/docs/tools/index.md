@@ -19,11 +19,13 @@ Extract and convert voice files from the game's `.pck` format to standard WAV fi
 ### [Font Pack Extractor](font-extractor)
 Extract and repack PNG font files from the game's `.fnt` format.
 
+### [Text Extractor](text-extractor)
+Extract and repack text strings from game executable files with UTF-8 support.
+
 ## Coming Soon
 
 We're working on additional tools for:
 - Character model modification
-- Text translation
 - Music replacement
 - Save game editing
 
