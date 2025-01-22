@@ -1,56 +1,135 @@
 @import "{{ site.theme }}";
 
+// Layout improvements
+.side-bar {
+  width: 264px;
+  z-index: 100;
+  background: #161b22;
+  border-right: 1px solid #30363d;
+}
+
+.main {
+  margin-left: 264px;
+  max-width: none;
+  padding: 2rem;
+}
+
+.main-content {
+  max-width: none;
+}
+
+.main-header {
+  border-bottom: 1px solid #30363d;
+  background-color: #0d1117;
+}
+
+// Navigation improvements
+.nav-list {
+  .nav-list-item {
+    .nav-list-link {
+      color: #c9d1d9;
+      &:hover {
+        background: #1f2937;
+      }
+      &.active {
+        background: #1f2937;
+        color: #58a6ff;
+      }
+    }
+  }
+}
+
 // Custom styles
 .hero-section {
   text-align: center;
-  padding: 4rem 0;
+  padding: 4rem 2rem;
   background: linear-gradient(160deg, #1a1a1a 0%, #0d1117 100%);
   border-radius: 8px;
-  margin-bottom: 2rem;
+  margin: -2rem -2rem 2rem -2rem;
+  border-bottom: 1px solid #30363d;
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(120deg, #58a6ff, #2ea44f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  p {
+    font-size: 1.25rem;
+    color: #8b949e;
+    max-width: 800px;
+    margin: 0 auto;
+  }
 }
 
 .btn-primary {
   background-color: #2ea44f;
-  color: white;
-  padding: 0.5rem 1rem;
+  color: white !important;
+  padding: 0.75rem 1.5rem;
   border-radius: 6px;
   text-decoration: none;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  display: inline-block;
+  font-weight: 600;
   
   &:hover {
     background-color: #2c974b;
-    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(46, 164, 79, 0.2);
   }
 }
 
 .cta-section {
   background-color: #161b22;
-  padding: 2rem;
+  padding: 3rem 2rem;
   border-radius: 8px;
-  margin: 2rem 0;
+  margin: 3rem -2rem -2rem -2rem;
   text-align: center;
+  border-top: 1px solid #30363d;
+  
+  h3 {
+    margin-top: 0;
+    color: #58a6ff;
+  }
 }
 
 // Tool cards
 .tool-card {
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   background-color: #0d1117;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: #58a6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.1);
+  }
   
   h3 {
     margin-top: 0;
+    color: #58a6ff;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    color: #8b949e;
+    margin-bottom: 1rem;
   }
 }
 
 // Status badges
 .status {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 1rem;
   border-radius: 2rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
+  margin: 0.5rem 0;
   
   &.stable {
     background-color: #238636;
@@ -63,14 +142,79 @@
   }
 }
 
-// Emoji icons
-.emoji-icon {
-  margin-right: 0.5rem;
-  font-size: 1.2em;
-}
-
 // Code blocks
 pre {
   background-color: #161b22 !important;
   border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  
+  code {
+    background-color: transparent;
+  }
+}
+
+// Tables
+table {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  margin: 1rem 0;
+  
+  th, td {
+    border: 1px solid #30363d;
+    padding: 0.75rem 1rem;
+  }
+  
+  th {
+    background-color: #161b22;
+  }
+}
+
+// Search
+.search {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  
+  &:focus {
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+  }
+}
+
+// Callouts
+.callout {
+  background: #161b22;
+  border-left: 4px solid;
+  border-radius: 0 6px 6px 0;
+  padding: 1rem;
+  margin: 1rem 0;
+  
+  &.warning { border-color: #f85149; }
+  &.note { border-color: #58a6ff; }
+  &.tip { border-color: #2ea44f; }
+}
+
+// Responsive improvements
+@media (max-width: 800px) {
+  .side-bar {
+    width: 100%;
+    position: relative;
+  }
+  
+  .main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .hero-section {
+    padding: 2rem 1rem;
+    margin: -1rem -1rem 1rem -1rem;
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }
 } 
