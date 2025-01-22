@@ -1,0 +1,40 @@
+title: DOKAPON! Sword of Fury Modding Tools
+description: Documentation and tools for modding DOKAPON! Sword of Fury
+remote_theme: just-the-docs/just-the-docs
+
+# Theme settings
+color_scheme: dark
+search_enabled: true
+heading_anchors: true
+
+# Aux links for the upper right navigation
+aux_links:
+  "Join Discord":
+    - "https://discord.gg/wXhAEvhTuR"
+  "GitHub":
+    - "https://github.com/DiNaSoR/dokapon"
+
+# Makes Aux links open in a new tab
+aux_links_new_tab: true
+
+# Footer content
+footer_content: "Copyright &copy; 2024 DOKAPON! Modding Community. Distributed under an MIT license."
+
+# Enable or disable the site search
+search_enabled: true
+
+# Heading anchor links appear on hover over h1-h6 tags
+heading_anchors: true
+
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Collections for technical documentation
+collections:
+  tools:
+    permalink: "/:collection/:path/"
+    output: true
+  guides:
+    permalink: "/:collection/:path/"
+    output: true 
