@@ -1,5 +1,5 @@
 # DOKAPON! Sword of Fury - Modding Tools
-[About](about.html)
+[Website](https://dinasor.github.io/dokaponsof/)
 
 A collection of tools and utilities for modding DOKAPON! Sword of Fury (PC Version).
 
