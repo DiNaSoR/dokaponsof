@@ -24,4 +24,4 @@ We're working on additional tools for:
 - Music replacement
 - Save game editing
 
-Want to contribute a tool? Check out our [contribution guidelines](../contributing) or join our [Discord](https://discord.gg/wXhAEvhTuR)! 
+Want to contribute a tool? Check out our [contribution guidelines](../contributing) or join our [Discord](https://discord.gg/HCrYwScDg5)! 

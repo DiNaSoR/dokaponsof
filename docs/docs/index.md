@@ -13,7 +13,7 @@ A comprehensive collection of tools, guides, and documentation for modding DOKAP
 {: .fs-6 .fw-300 }
 
 [Get Started](#getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Join Discord](https://discord.gg/wXhAEvhTuR){: .btn .fs-5 .mb-4 .mb-md-0 }
+[Join Discord](https://discord.gg/HCrYwScDg5){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -41,7 +41,7 @@ These tools are for modding purposes only. Please support the developers by purc
 
 ## Community Links
 
-- Discord: [Join our community](https://discord.gg/wXhAEvhTuR)
+- Discord: [Join our community](https://discord.gg/HCrYwScDg5)
 - Reddit: [r/dokaponofficial](https://reddit.com/r/dokaponofficial/)
 
 ## Contributing
@@ -56,4 +56,13 @@ Check out our [contribution guidelines](contributing) for more information.
 
 ## License
 
-All tools and documentation are free to use and modify. Please credit the original authors when sharing modifications. 
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). This means:
+
+- You can freely use, modify, and distribute this software
+- If you distribute modified versions, you must:
+  - Make the source code available
+  - License it under GPL-3.0
+  - Document your changes
+- No warranty is provided
+
+For more details, see the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file in our repository. 

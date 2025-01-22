@@ -22,7 +22,7 @@ A collection of tools and utilities for modding DOKAPON! Sword of Fury (PC Versi
 - Do not use these tools for piracy
 
 ## Community
-- Join our Discord: [discord.gg/wXhAEvhTuR](https://discord.gg/wXhAEvhTuR)
+- Join our Discord: [discord.gg/HCrYwScDg5](https://discord.gg/wXhAEvhTuR)
 - Reddit: [r/dokaponofficial](https://reddit.com/r/dokaponofficial/)
 
 ## Contributing

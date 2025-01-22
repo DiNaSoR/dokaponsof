@@ -98,10 +98,16 @@ The script performs the following operations:
 Found a bug or want to improve the tool? 
 - Report issues on our GitHub repository
 - Submit pull requests with improvements
-- Share your findings on our Discord
+- Share your findings on our [Discord](https://discord.gg/HCrYwScDg5)
 
 ## License
 
-This tool is free to use and modify. Please credit the original authors when sharing modifications.
+This tool is licensed under the GNU General Public License v3.0 (GPL-3.0). You can:
+- Use the tool for any purpose
+- Modify and distribute the code
+- Must keep the source code open source
+- Must license modifications under GPL-3.0
+
+See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.
 
 Author: DiNaSoR [Kunio Discord] 
