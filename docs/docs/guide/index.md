@@ -25,11 +25,14 @@ Overview of key gameplay mechanics and multiplayer features.
 ### [Game Manual](game-manual)
 Complete official game manual with all original pages.
 
+### [Items & Equipment](items)
+Comprehensive guide to items, equipment, and the shop system.
+
+### [Magic System](magic)
+Complete guide to magic shops, spells, and magical effects.
+
 ### Coming Soon
 - Character Stats Guide
-- Item & Equipment Guide
-- Board Game Mechanics
-- Story Mode Guide
 - Multiplayer Guide
 
 Want to contribute a guide? Check out our [contribution guidelines](../contributing) or join our [Discord](https://discord.gg/HCrYwScDg5)! 

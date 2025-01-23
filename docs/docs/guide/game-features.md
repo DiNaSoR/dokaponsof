@@ -23,8 +23,6 @@ A comprehensive overview of DOKAPON! Sword of Fury's key features and gameplay m
 MULTIPLAYER
 {: .label .label-purple }
 
-![Multiplayer Battle Screen](https://placehold.co/600x400?text=Battle+Screen)
-
 While taking on the game's diverse cast of characters by your lonesome is fun enough, it's nothing compared to duking it out with your friends in a four-player free-for-all! Only got one controller? No problem. Friends not around? Play with 'em online! (They can't escape that easily!)
 
 {: .note }
@@ -37,8 +35,6 @@ Point is, pulse-pounding player-vs-player battles where you snatch away the priz
 
 GAMEPLAY
 {: .label .label-green }
-
-![Game Board](https://placehold.co/600x400?text=Game+Board)
 
 The rules are simple! Take turns flicking the spinner to see how far you can go, like rolling dice in a board game. Level up your character along the way by traversing the massive boards and winning battles! With enough experience points, defeating monsters will be a breeze.
 
@@ -53,7 +49,6 @@ And before you know it, no one else will be able to stand in your way! If you wa
 ECONOMY
 {: .label .label-yellow }
 
-![Net Worth Diagram](https://placehold.co/600x400?text=Net+Worth+Diagram)
 
 Money is the bottom line, period! You can put all your stats in strength and become a total beefcake, but it won't do you any good if you're broke! Total net worth determines the winner in the end, and everyone who's not a winner is a loooser!
 
@@ -80,13 +75,11 @@ CONTROLS
 
 You can swap character control from a human player to computer AI at any time during gameplay via the Settings → Switch command (see p.15). You can then press the Menu Button during that character's turn to revert them back to being human-controlled.
 
-![CPU Switch Settings](https://placehold.co/600x400?text=CPU+Switch+Settings)
 
 ### Switching controllers
 
 Players can select which controller to use if multiples are available and the game is being played with two or more participants. Just select the total number of players, then each player can pick their controller of choice. If you wish to make this change during play, you can do so via the Settings → Controller command (see p.15).
 
-![Controller Settings](https://placehold.co/600x400?text=Controller+Settings)
 
 ### Basic controls
 
@@ -570,8 +563,6 @@ It's not all alliances and Darklings; a wide variety of events, both large and s
 WORLD MAP
 {: .label .label-yellow }
 
-![Dokapon Kingdom World Map](https://placehold.co/800x600?text=World+Map)
-
 ### The Continents & Dungeon Map Entrances
 
 #### Continents
@@ -611,8 +602,6 @@ WORLD MAP
 GAME SETTINGS
 {: .label .label-purple }
 
-![Game Settings Menu](https://placehold.co/600x400?text=Game+Settings+Menu)
-
 You can customize settings to your liking before you even begin, in fun ways that were simply not possible in this game's original release. This includes things like setting a week limit to keep the game length under control, or beginning the match by giving every player one of every treasure uncovered thus far.
 
 ### Game Settings
@@ -638,13 +627,10 @@ You can customize settings to your liking before you even begin, in fun ways tha
 MULTIPLAYER
 {: .label .label-green }
 
-![Online Mode Menu](https://placehold.co/600x400?text=Online+Mode+Menu)
-
 Online Mode allows players to face off no matter where in the world they may be. Either join someone else's group, or create a group of your own, and get to money-grubbing!
 
 ### Create Group
 
-![Create Group Menu](https://placehold.co/600x400?text=Create+Group+Menu)
 
 1. **Players**  
    Select the number of players, controllers, etc.  
@@ -670,7 +656,6 @@ Online Mode allows players to face off no matter where in the world they may be.
 
 ### Join Group
 
-![Join Group Menu](https://placehold.co/600x400?text=Join+Group+Menu)
 
 1. **Recruit (Find a group)**  
    Choose a group to join from the list displayed.  
@@ -693,7 +678,6 @@ Unfinished games can be picked up from right where they were left off once all p
 
 ### Online Settings
 
-![Online Settings Menu](https://placehold.co/600x400?text=Online+Settings+Menu)
 
 Some aspects from the Settings menu cannot be carried over to Online Mode. Returning to the title screen may be necessary to adjust Online Config and music settings.
 
