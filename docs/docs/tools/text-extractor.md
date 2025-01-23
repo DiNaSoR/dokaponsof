@@ -25,7 +25,7 @@ The Text Extractor is a Python script that allows you to:
 - Import modified texts back into the executable
 - Support UTF-8 encoded text
 
-![Text Extractor showing hex and text offsets](/assets/images/text_extract.png)
+![Text Extractor showing hex and text offsets](/dokaponsof/assets/images/text_extract.png)
 {: .text-center }
 A visual representation of text extraction showing hex values and corresponding text offsets.
 {: .text-center .fs-3 .fw-300 }
