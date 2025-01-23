@@ -38,8 +38,8 @@ A visual representation of text extraction showing hex values and corresponding 
 
 ## Installation
 
-1. Download the `text_extract_repack.py` script
-2. Place it in a directory with your target executable file
+1. Download the `text_extract_repack.py` script.
+2. Place it in a directory with your target executable file.
 
 ## Usage
 
