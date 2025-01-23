@@ -46,8 +46,11 @@ BESTIARY
 {: .label .label-green }
 
 ### Complete Monster List
+
+<div style="overflow-x: auto;">
+
 | Name | Level | HP | AT | DF | MG | SP | Location | Special Skill | Attack Magic | Defense Magic | EXP | Money | Drop | Weakness | Attack Pattern | Defense Pattern |
-|:-----|:------|:---|:---|:---|:---|:---|:---------|:--------------|:-------------|:--------------|:----|:------|:-----|:---------|:--------------|:----------------|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
 | **Amazoness** | 12 | 70 | 32 | 22 | 20 | 21 | Vegetarin Village | Find Weakness | Maho Kes A | Maho Tasra | 676 | 2650 | 4 Vine | Dark | Mixed | Counter |
 | **Amazoness Queen** | 22 | 165 | 52 | 36 | 21 | 53 | Sisneiter Village | Vital Strike | Battle Nemnem | Maho Guard | 2116 | 3360 | Lupanza Sword | Fire | Attack | Magic/Counter |
 | **Amon** | 52 | 560 | 254 | 259 | 49 | 41 | Fumoo Village | Magic Charge | Twister | Maho Safe | 11236 | 41260 | Flame Sword | Physical | Magic/Attack | Defense/Magic |
@@ -247,6 +250,8 @@ BESTIARY
 | **Yagyu** | 35 | 240 | 135 | 89 | 32 | 69 | Archich Mountains | Zantetsuken | Do Zeni Get | Maho Guard | 5184 | 5440 | Insight Sake | Dark | Mixed | Counter/Defense |
 | **Zenis** | ? | ? | ? | ? | ? | ? | Sky Castle Boss | Weaken | ? | ? | ? | ? | Dokapon Orb | Dark | ? | ? |
 | **Zombie** | 19 | 128 | 75 | 78 | 14 | 34 | Baister Throat/Stomach | Weaken | Plasmara | Maho Safe | 1600 | 1940 | Hell Puu | Fire | Special/Attack | Magic |
+
+</div>
 
 {: .note }
 > Combat Tendencies  
