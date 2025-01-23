@@ -62,6 +62,7 @@ COMBAT
 {: .label .label-red }
 
 ### Offensive Skills
+
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
 | **Rampage** | 75% | Reduces both players' HP by half |
