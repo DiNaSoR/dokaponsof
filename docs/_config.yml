@@ -86,6 +86,3 @@ compress_html:
   profile: false
   # ignore:
   #   envs: all
-
-extra_css:
-  - assets/css/battle-mechanics.css

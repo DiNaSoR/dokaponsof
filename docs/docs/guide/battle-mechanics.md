@@ -1,7 +1,7 @@
 ---
 title: Battle Mechanics
 layout: default
-nav_order: 2
+nav_order: 1
 parent: Guides
 ---
 
@@ -75,58 +75,63 @@ Damage calculations use RNG tables based on the calculated base damage:
 
 ## Damage Calculations
 
-<div class="formula-box success">
-  <div class="formula-header success">Normal Attack</div>
-  <div class="formula-content">
-    <div class="formula-base">((Self_ATK × 2 - Target_DEF) × Defense_Command × Weakness) + RNG</div>
-    
-    <div class="multiplier-list">
-      <li>『Guard』: <span class="multiplier-value">2.0</span></li>
-      <li>『Magic Guard』: <span class="multiplier-value">2.25</span></li>
-      <li>『Counter』: <span class="multiplier-value">2.75</span></li>
-      <li>『Incapacitated』: <span class="multiplier-value">2.5</span></li>
-      <li>No Weakness: <span class="multiplier-value">1.0</span></li>
-      <li>Weakness (PS Only): <span class="multiplier-value">1.3</span></li>
-    </div>
-  </div>
-  
-  <div class="note-box">
-    <ul>
-      <li>If (Self_ATK × 2 < Target_DEF), damage will be 1 or 3</li>
-      <li>Decimal points are truncated in calculations</li>
-    </ul>
-  </div>
-</div>
+### Normal Attack
+{: .label .label-green }
 
-<div class="formula-box warning">
-  <div class="formula-header warning">Special Attack</div>
-  <div class="formula-content">
-    <div class="formula-base">((Self_ATK × 3 - Target_DEF) × Defense_Command × Weakness) + RNG</div>
-    
-    <div class="multiplier-list">
-      <li>『Guard』: <span class="multiplier-value">2.0</span></li>
-      <li>『Magic Guard』: <span class="multiplier-value">2.75</span></li>
-      <li>『Counter』: <span class="multiplier-value">Special Calculation</span></li>
-      <li>『Incapacitated』: <span class="multiplier-value">2.5</span></li>
-      <li>No Weakness: <span class="multiplier-value">1.0</span></li>
-      <li>Weakness (PS Only): <span class="multiplier-value">1.3</span></li>
-    </div>
-  </div>
-  
-  <div class="note-box">
-    <ul>
-      <li>If (Self_ATK × 3 < Target_DEF), damage will be 1 or 3</li>
-      <li>Decimal points are truncated in calculations</li>
-    </ul>
-  </div>
-</div>
+{: .highlight }
+> Base Formula: ((Self_ATK × 2 - Target_DEF) × Defense_Command × Weakness) + RNG
+
+Defense Command Multipliers:
+{: .text-delta }
+
+| Command | Multiplier |
+|:--------|:-----------|
+| 『Guard』 | 2.0 |
+| 『Magic Guard』 | 2.25 |
+| 『Counter』 | 2.75 |
+| 『Incapacitated』 | 2.5 |
+| No Weakness | 1.0 |
+| Weakness (PS Only) | 1.3 |
+
+{: .warning }
+> - If (Self_ATK × 2 < Target_DEF), damage will be 1 or 3
+> - Decimal points are truncated in calculations
+
+### Special Attack
+{: .label .label-yellow }
+
+{: .highlight }
+> Base Formula: ((Self_ATK × 3 - Target_DEF) × Defense_Command × Weakness) + RNG
+
+Defense Command Multipliers:
+{: .text-delta }
+
+| Command | Multiplier |
+|:--------|:-----------|
+| 『Guard』 | 2.0 |
+| 『Magic Guard』 | 2.75 |
+| 『Counter』 | Special Calculation |
+| 『Incapacitated』 | 2.5 |
+| No Weakness | 1.0 |
+| Weakness (PS Only) | 1.3 |
+
+{: .warning }
+> - If (Self_ATK × 3 < Target_DEF), damage will be 1 or 3
+> - Decimal points are truncated in calculations
 
 ### Magic Attack (Non-Physical)
+{: .label .label-blue }
+
 For non-weakness elements:
-((Self_MAG × 1.5 - Target_MAG) × Defense_Command × Spell_Multiplier × Defense_Magic) + RNG
+{: .highlight }
+> ((Self_MAG × 1.5 - Target_MAG) × Defense_Command × Spell_Multiplier × Defense_Magic) + RNG
 
 For weakness elements:
-(((Self_MAG × 2 - (Self_MAG × 0.05 + 1) - Target_MAG) × Defense_Command × Spell_Multiplier × Defense_Magic) + RNG
+{: .highlight }
+> (((Self_MAG × 2 - (Self_MAG × 0.05 + 1) - Target_MAG) × Defense_Command × Spell_Multiplier × Defense_Magic) + RNG
+
+{: .warning }
+> Magic damage calculations change significantly when hitting elemental weaknesses
 
 ## Magic Multipliers
 
