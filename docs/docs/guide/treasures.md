@@ -55,6 +55,7 @@ TREASURES
 {: .label .label-green }
 
 ### Heart Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Heart of Flea** | ★ | 10,000 | HP +10 | Ch.2+ ? Space |
@@ -62,6 +63,7 @@ TREASURES
 | **Goddess Figure** | ★★★ | 500,000 | - | Key: Sky Castle Upper Left |
 
 ### Stat Boost Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Muscle Pierce** | ★ | 10,000 | AT +1 | Ch.2+ ? Space |
@@ -72,6 +74,7 @@ TREASURES
 | **Miracle Cube** | ★★ | 58,000 | +1 Bonus on Level Up | Ch.3 Reward |
 
 ### Negative Items
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Something Bad** | BAD | 187,000 | All Stats -1, HP -10 | Various |
@@ -82,6 +85,7 @@ TREASURES
 | **Iron Shackles** | BAD | 18,700 | SP -1 | Ch.3+ ? Space |
 
 ### Field Magic Protection Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Ice Fan** | ★ | 12,000 | Reduces fire magic damage | Various |
@@ -92,6 +96,7 @@ TREASURES
 | **Hira Ring** | ★★ | 63,400 | Easier to dodge field magic | Ch.5+ ? Space |
 
 ### Church & Bank Items
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Holy Cross** | ★ | 1,500 | Halves church healing costs | Various |
@@ -99,6 +104,7 @@ TREASURES
 | **VIP Badge** | ★★ | 120,000 | Increases bank interest rate | Field Event |
 
 ### Monster Protection Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Void Chakra** | ★ | 8,000 | Resists Charm/Fear | Various |
@@ -115,6 +121,7 @@ TREASURES
 | **Bitter Bug** | ★ | 8,000 | Resists Tickle | Various |
 
 ### Terrain Protection Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Gas Mask** | ★ | 8,000 | Immune to poison swamps | Ch.8 Reward |
@@ -124,6 +131,7 @@ TREASURES
 | **Rain Coat** | ★ | 10,000 | No damage from stomach acid | Ch.3 Reward |
 
 ### Movement Effect Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Picopico Sandals** | ★ | 120 | Makes walking sound effects | Various |
@@ -132,6 +140,7 @@ TREASURES
 | **Kirakira Zori** | ★★ | 3,000 | Gain 1G per step | Field Event |
 
 ### Special Effect Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Lucky Star** | ★★ | 30,000 | Sometimes full heal at turn start | Ch.5 Reward |
@@ -141,6 +150,7 @@ TREASURES
 | **Heal Ring** | ★★ | 666 | Reduces grudge buildup | Various |
 
 ### High Stat Boost Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Magic Belt** | ★★ | 30,000 | AT +3 | Ch.4+ ? Space |
@@ -149,6 +159,7 @@ TREASURES
 | **Accelerator** | ★★ | 30,000 | SP +3 | Ch.4+ ? Space |
 
 ### Dokapon Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Dokaposo Crown** | ★★★ | 64,000 | HP +20, All Stats +2 | Ch.7+ ? Space |
@@ -158,6 +169,7 @@ TREASURES
 | **Dokaposo Ball** | ★ | 500 | - | Ch.2+ ? Space |
 
 ### Legendary Dokapon Series
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Dokapon Crown** | ★★★★ | 640,000 | HP +100, All Stats +10 | Field Event (Remaster) |
@@ -166,6 +178,7 @@ TREASURES
 | **Dokapon Orb** | ★★★★ | 5,000,000 | - | Zenis |
 
 ### Collectible Parts - Skull Stone
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Something Fragment** | ★★★ | 1,000 | Part 1/4 | Field Event |
@@ -175,6 +188,7 @@ TREASURES
 | **Skull Stone** | ★★★★ | 5,000,000 | Complete Set | Combine all 4 parts |
 
 ### Collectible Parts - Shining Seasons
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Spring Romance** | ★★ | 10,000 | Part 1/4 | Village Chief's Granddaughter |
@@ -184,6 +198,7 @@ TREASURES
 | **Shining Seasons** | ★★★★ | 5,000,000 | Complete Set | Combine all 4 parts |
 
 ### Collectible Parts - Dokapon Ball
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Weak Ball** | ★★★ | 1,000 | Part 1/4 | Field Event |
@@ -193,6 +208,7 @@ TREASURES
 | **Dokapon Ball** | ★★★★ | 30,071,634 | Complete Set | Combine all 4 parts |
 
 ### Miscellaneous Treasures
+
 | Name | Rarity | Value | Effect | Source |
 |:-----|:-------|:------|:-------|:-------|
 | **Dokapon Land 4** | ★ | 7,800 | - | Field Event |

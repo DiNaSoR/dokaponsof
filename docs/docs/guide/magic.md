@@ -223,6 +223,7 @@ BATTLE MAGIC
 ### Attack Magic List
 
 #### Thunder Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Plasma** | 5,000 | 3x | Small thunder damage |
@@ -230,6 +231,7 @@ BATTLE MAGIC
 | **Plasmadara** | 30,000 | 16x | Large thunder damage |
 
 #### Ice Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Freeze** | 8,000 | 4x | Small ice damage |
@@ -237,6 +239,7 @@ BATTLE MAGIC
 | **Freezedara** | 40,000 | 20x | Large ice damage |
 
 #### Fire Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Meteor** | 10,000 | 5x | Small fire damage |
@@ -244,6 +247,7 @@ BATTLE MAGIC
 | **Meteodara** | 55,000 | 24x | Large fire damage |
 
 #### Drain Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Zeni Get** | 1,500 | - | Steal half of target's money |
@@ -254,6 +258,7 @@ BATTLE MAGIC
 | **Ene Change** | 25,000 | - | Swap HP with target |
 
 #### Dark Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Go to Hell** | 444,000 | - | Reduce self to 1 HP to defeat target |
@@ -262,12 +267,14 @@ BATTLE MAGIC
 | **Battle Nemnem** | 80,000 | - | Inflict Sleep status |
 
 #### Physical Magic
+
 | Name | Cost | Power | Effect |
 |:-----|:-----|:------|:-------|
 | **Telepo Zan** | 20,000 | 4x | AT-based magic damage |
 | **Bunshin Zan** | 36,000 | 6x | AT-based magic damage |
 
 #### Alliance Magic
+
 | Name | Power | Type | Effect |
 |:-----|:------|:-----|:-------|
 | **Mecha Plasma** | 40x | Thunder | Alliance-only thunder magic |
@@ -278,6 +285,7 @@ BATTLE MAGIC
 | **Sword Dancer** | 40x | Physical | Alliance-only AT-based magic |
 
 #### Monster-Only Magic
+
 | Name | Power | Effect |
 |:-----|:------|:-------|
 | **Wave** | 5x | Damage and remove all of one item type |
@@ -309,6 +317,7 @@ DEFENSE
 ### Defense Magic List
 
 #### Basic Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Maho Safe** | 500 | 0.5x | Basic magic defense |
@@ -316,12 +325,14 @@ DEFENSE
 | **Maho Kikan** | 50,000 | 0x | Complete magic nullification |
 
 #### Stat Boost Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Guard Pool** | 150,000 | 0.05x | Increases DF by 1.5x |
 | **Magic Pool** | 15,000 | 0.3x | Increases MG by 1.5x |
 
 #### Recovery Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Genkikki** | 10,000 | 0.3x | Recover 100 HP |
@@ -329,12 +340,14 @@ DEFENSE
 | **Maho Genki** | 30,000 | 0.2x | Recover 100 HP and gain 3 Attack Magic uses |
 
 #### Seal Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Maho Fuuji** | 18,000 | 0.3x | Seal opponent's Attack Magic |
 | **Do Maho Fuuji** | 50,000 | 0.1x | Seal opponent's Attack and Defense Magic |
 
 #### Magic Restore Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Maho Tas** | 2,500 | 0.4x | Gain 1 Attack Magic use |
@@ -342,6 +355,7 @@ DEFENSE
 | **Maho Tasdara** | 15,000 | 0.25x | Gain 5 Attack Magic uses |
 
 #### Special Defense
+
 | Name | Cost | Damage Multiplier | Effect |
 |:-----|:-----|:-----------------|:-------|
 | **Maho Kacchin** | 200,000 | 0.25x | Temporarily paralyze opponent |

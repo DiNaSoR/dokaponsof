@@ -78,6 +78,7 @@ COMBAT
 | **Guard** | 100% | Doubles DF |
 
 ### Status Effect Skills
+
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
 | **Song** | 100% | Confuses target (random commands) |
@@ -92,6 +93,7 @@ COMBAT
 | **Charm** | 60% | Cannot Attack/Special/Counter for 1-2 turns |
 
 ### Utility Skills
+
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
 | **Vanish** | 100% | Physical attacks miss for 2-3 turns |
@@ -108,6 +110,7 @@ COMBAT
 | **Act Dumb** | 90% | Becomes immune to magic |
 
 ### Monster-Exclusive Skills
+
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
 | **Walsa's Skills** | Varies | Changes each battle |
