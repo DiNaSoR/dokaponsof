@@ -1,0 +1,72 @@
+/* Battle Mechanics Guide Custom Styling */
+
+.formula-box {
+  border: 2px solid #2c84fa; /* Using your site's blue accent color */
+  border-radius: 4px;
+  padding: 20px;
+  margin: 15px 0;
+  background-color: rgba(44, 132, 250, 0.05); /* Light blue background */
+}
+
+.formula-box.success {
+  border-color: #00c853; /* Success green */
+  background-color: rgba(0, 200, 83, 0.05);
+}
+
+.formula-box.warning {
+  border-color: #ff9100; /* Warning orange */
+  background-color: rgba(255, 145, 0, 0.05);
+}
+
+.formula-header {
+  background-color: #2c84fa;
+  color: white;
+  padding: 10px 15px;
+  margin: -20px -20px 15px -20px;
+  border-radius: 2px 2px 0 0;
+  font-weight: bold;
+}
+
+.formula-header.success {
+  background-color: #00c853;
+}
+
+.formula-header.warning {
+  background-color: #ff9100;
+}
+
+.formula-content {
+  margin: 10px 0;
+}
+
+.formula-base {
+  font-family: monospace;
+  font-size: 1.1em;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.multiplier-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 10px 0;
+}
+
+.multiplier-list li {
+  margin: 5px 0;
+  color: #5c5c5c;
+}
+
+.multiplier-value {
+  color: #2c84fa;
+  font-weight: bold;
+}
+
+.note-box {
+  background-color: rgba(255, 145, 0, 0.1);
+  border-left: 4px solid #ff9100;
+  padding: 10px 15px;
+  margin: 15px 0;
+} 
