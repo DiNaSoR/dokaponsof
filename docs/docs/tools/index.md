@@ -13,6 +13,9 @@ A collection of tools for modding DOKAPON! Sword of Fury.
 
 ## Available Tools
 
+### [Dokapon Extract](dokapon-extract)
+A versatile tool for extracting and repacking various game assets including textures, maps, sprites, and fonts.
+
 ### [Voice Pack Extractor](voice-extractor)
 Extract and convert voice files from the game's `.pck` format to standard WAV files.
 
