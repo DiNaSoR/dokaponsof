@@ -1,0 +1,18 @@
+# GUI Dependencies
+PyQt6>=6.4.0
+PyQt6-Qt6>=6.4.0
+PyQt6-sip>=13.4.0
+
+# Image Processing
+Pillow>=9.0.0
+numpy>=1.21.0
+
+# Build Dependencies
+pyinstaller>=5.7.0
+
+# Audio Support
+PyQt6-QMediaPlayer>=6.4.0
+
+# Optional Development Dependencies
+black>=22.0.0  # Code formatting
+pylint>=2.15.0  # Code linting 
