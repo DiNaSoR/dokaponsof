@@ -34,12 +34,12 @@ A comprehensive toolkit for modding DOKAPON! Sword of Fury (PC Version), enablin
 - 📊 Advanced audio analysis tools
 - ⚙️ Batch processing support
 
-### Image Extractor (Coming Soon)
+### Image Extractor
 - 🖼️ Extract and modify game textures
 - 🎨 Support for common image formats
 - 📦 Texture pack creation tools
 
-### Text Editor (Coming Soon)
+### Text Editor
 - 📝 Edit game dialogue and text
 - 🌐 Multi-language support
 - 🔄 Import/Export functionality
