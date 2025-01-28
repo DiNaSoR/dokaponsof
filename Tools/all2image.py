@@ -49,8 +49,29 @@ def extract_png(file_path, output_png_path):
     Also creates a JSON file that stores the offset and length
     of the embedded PNG for later reinsertion.
     """
+    # Initialize LZ77 decompressor for SPRANM files
+    decompressor = None
+    if file_path.lower().endswith('.spranm'):
+        import os
+        import sys
+        # Add the root directory to the Python path
+        tools_dir = os.path.dirname(os.path.abspath(__file__))
+        root_dir = os.path.dirname(tools_dir)  # Go up one level to root
+        if root_dir not in sys.path:
+            sys.path.append(root_dir)
+        from lz77_decompressor import LZ77Decompressor
+        decompressor = LZ77Decompressor(debug=False)
+
     with open(file_path, 'rb') as f:
-        data = f.read()
+        # For SPRANM files, decompress first
+        if decompressor:
+            try:
+                data = decompressor.decompress_file(file_path)
+            except Exception as e:
+                print(f"[{file_path}] Failed to decompress SPRANM: {str(e)}")
+                return
+        else:
+            data = f.read()
 
     start_index = data.find(PNG_SIGNATURE)
     if start_index == -1:
