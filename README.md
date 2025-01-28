@@ -4,7 +4,7 @@
 [![Website](https://img.shields.io/badge/Website-Documentation-green)](https://dinasor.github.io/dokaponsof/)
 
 <p align="center">
-  <img src="docs/assets/images/banner.jpg" alt="Dokapon SoF Banner" width="600">
+  <img src="docs/assets/images/banner.jpg" alt="Dokapon SoF Banner" width="900">
 </p>
 
 A comprehensive toolkit for modding DOKAPON! Sword of Fury (PC Version), enabling creative customization while respecting the original game's integrity.
