@@ -28,12 +28,6 @@ A comprehensive toolkit for modding DOKAPON! Sword of Fury (PC Version), enablin
 
 ## 🔧 Available Tools
 
-### Voice Pack Extractor
-- 🎤 Extracts voice files from `.pck` format
-- 🔊 Converts voice data to WAV format
-- 📊 Advanced audio analysis tools
-- ⚙️ Batch processing support
-
 ### Image Extractor
 - 🖼️ Extract and modify game textures
 - 🎨 Support for common image formats
@@ -43,6 +37,11 @@ A comprehensive toolkit for modding DOKAPON! Sword of Fury (PC Version), enablin
 - 📝 Edit game dialogue and text
 - 🌐 Multi-language support
 - 🔄 Import/Export functionality
+
+### Voice Pack Extractor (coming soon)
+- 🎤 Extracts voice files from `.pck` format
+- 📊 Advanced audio analysis tools
+- ⚙️ Batch processing support
 
 ## 🚀 Getting Started
 
