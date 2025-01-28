@@ -180,10 +180,11 @@ Found a bug or want to improve the tool?
 
 ## License
 
-This tool is licensed under the GNU General Public License v3.0 (GPL-3.0). You can:
-- Use the tool for any purpose
-- Modify and distribute the code
-- Must keep the source code open source
-- Must license modifications under GPL-3.0
+This tool is licensed under The Unlicense. You can:
+- ✅ Use freely for any purpose
+- ✅ Modify and distribute without restrictions
+- ✅ No attribution required
+- ✅ Dedicated to public domain
+- ✅ No warranty provided
 
 See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.

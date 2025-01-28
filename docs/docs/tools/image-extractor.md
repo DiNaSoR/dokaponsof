@@ -181,10 +181,11 @@ Found a bug or want to improve the tool?
 
 ## License
 
-This tool is licensed under the MIT License. You can:
-- Use the tool commercially
-- Modify and distribute the code
-- Use it privately or publicly
-- No warranty is provided
+This tool is licensed under The Unlicense. You can:
+- ✅ Use freely for any purpose
+- ✅ Modify and distribute without restrictions
+- ✅ No attribution required
+- ✅ Dedicated to public domain
+- ✅ No warranty provided
 
 See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details. 

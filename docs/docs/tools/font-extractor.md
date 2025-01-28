@@ -128,12 +128,11 @@ Found a bug or want to improve the tool?
 
 ## License
 
-This tool is licensed under the GNU General Public License v3.0 (GPL-3.0). This means:
-- You can freely use, modify, and distribute this software
-- If you distribute modified versions, you must:
-  - Make the source code available
-  - License it under GPL-3.0
-  - Document your changes
-- No warranty is provided
+This tool is licensed under The Unlicense. This means:
+- ✅ Use freely for any purpose
+- ✅ Modify and distribute without restrictions
+- ✅ No attribution required
+- ✅ Dedicated to public domain
+- ✅ No warranty provided
 
-For more details, see the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file in our repository. 
+See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details. 

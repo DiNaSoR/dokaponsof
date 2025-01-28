@@ -16,7 +16,9 @@ Example:
 
 Created by: DiNaSoR
 Repository: https://github.com/DiNaSoR/dokaponsof
-License: GNU General Public License v3.0 (GPL-3.0)
+
+This is free and unencumbered software released into the public domain.
+For more information, please refer to <http://unlicense.org/>
 """
 
 import struct

@@ -1,6 +1,6 @@
 # 🎮 DOKAPON! Sword of Fury - Modding Tools
 [![Discord](https://img.shields.io/discord/123456789?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/wXhAEvhTuR)
-[![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Unlicense-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/badge/Website-Documentation-green)](https://dinasor.github.io/dokaponsof/)
 
 <p align="center">
@@ -88,12 +88,12 @@ We welcome contributions! Here's how you can help:
 Check our [Contributing Guidelines](CONTRIBUTING.md) for more details.
 
 ## 📄 License
-This project is licensed under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE).
+This project is licensed under [The Unlicense](LICENSE).
 
-- ✅ Free to use and modify
-- ✅ Source code must remain open source
-- ✅ Changes must be documented
-- ✅ Include original license
+- ✅ Complete freedom to use, modify, and distribute
+- ✅ No attribution required
+- ✅ Dedicated to the public domain
+- ✅ Use for any purpose, commercial or non-commercial
 - ✅ No warranty provided
 
 ## 💖 Acknowledgments
