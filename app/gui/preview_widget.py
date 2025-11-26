@@ -303,71 +303,68 @@ class PreviewWidget(QWidget):
 
     def _preview_mdl(self, data, file_info):
         """Preview MDL (3D model) file."""
+        import struct
+        
         file_info += "\nFormat: 3D Model (MDL)\n"
         
-        # Try to parse geometry for 3D view
-        parser = MDLParser()
-        geometry = parser.parse(data)
+        # Parse LZ77 header for model info
+        if data.startswith(b'LZ77'):
+            try:
+                decompressed_size = struct.unpack('<I', data[4:8])[0]
+                flag1 = struct.unpack('<I', data[8:12])[0]
+                flag2 = struct.unpack('<I', data[12:16])[0]
+                file_info += f"Decompressed size: {decompressed_size:,} bytes\n"
+                file_info += f"Flags: 0x{flag1:08X}, 0x{flag2:08X}\n"
+            except:
+                pass
         
-        if geometry and geometry.vertex_count >= 3:
-            # We have geometry - show in 3D viewer
-            file_info += f"Vertices: {geometry.vertex_count:,}\n"
-            if geometry.indices is not None:
-                file_info += f"Faces: {geometry.face_count:,}\n"
-            if geometry.normals is not None:
-                file_info += f"Has normals: Yes\n"
-            
-            # Calculate bounds
-            min_b, max_b = geometry.bounds
-            size = max_b - min_b
-            file_info += f"Size: {size[0]:.1f} x {size[1]:.1f} x {size[2]:.1f}\n"
-            
-            # Try to display in 3D viewer
-            if is_3d_viewer_available():
-                success = self.viewer_3d.display_mesh(
-                    geometry.vertices,
-                    geometry.indices,
-                    geometry.normals
-                )
-                if success:
-                    self._show_3d_view()
-                    file_info += "\n✓ 3D Preview loaded"
-                    self.info_text.setText(file_info)
-                    return
-            else:
-                file_info += "\nNote: Install pyvista & pyvistaqt for 3D view"
-        
-        # Fallback: Look for common block markers
+        # Count block markers in raw compressed data
         markers = {
-            b'\x00\x00\xc0\x00': 'Geometry Blocks',
-            b'\x00\x00\x40\xc1': 'Normal Data',
-            b'\x00\x00\x80\xb9': 'Animation Blocks',
-            b'\x00\x00\x20\x00': 'Texture Data',
-            b'\x00\x20\x00\x00': 'Texture Data (Alt)',
+            b'\x00\x00\xc0\x00': ('Geometry', 0),
+            b'\x00\x00\x40\xc1': ('Normals', 0),
+            b'\x00\x00\x80\xb9': ('Animation', 0),
+            b'\xaa\xaa\xaa\xaa': ('Alignment', 0),
+            b'\x55\x55\x55\x55': ('Structure', 0),
+            b'\x00\x00\x80\x3f': ('Float Data', 0),
         }
         
-        found_stats = {}
-        for marker, name in markers.items():
+        found_markers = []
+        for marker, (name, _) in markers.items():
             count = data.count(marker)
             if count > 0:
-                found_stats[name] = found_stats.get(name, 0) + count
+                found_markers.append((name, count))
         
-        if found_stats:
-            file_info += "\nBlock Markers Found:\n"
-            for name, count in found_stats.items():
-                file_info += f"- {name}: {count}\n"
+        if found_markers:
+            file_info += "\nBlock Structure:\n"
+            for name, count in found_markers:
+                file_info += f"  • {name}: {count}\n"
         
-        # Check for embedded PNG
-        png_start = data.find(b'\x89PNG\r\n\x1a\n')
-        if png_start >= 0:
-            self._show_2d_view()
-            self._preview_png_data(data, png_start, file_info)
-        else:
-            self._show_2d_view()
-            self._current_pixmap = None
-            self.preview_label.setPixmap(QPixmap())
-            self.preview_label.setText("3D Model Data\n\n(Could not extract geometry\nfor 3D preview)")
-            self.info_text.setText(file_info)
+        # Estimate model complexity
+        geo_count = data.count(b'\x00\x00\xc0\x00')
+        if geo_count > 0:
+            if geo_count >= 7:
+                complexity = "High (detailed model)"
+            elif geo_count >= 3:
+                complexity = "Medium"
+            else:
+                complexity = "Low (simple model)"
+            file_info += f"\nEstimated complexity: {complexity}\n"
+        
+        # Note about 3D preview
+        file_info += "\n⚠ 3D Preview: MDL decompression is complex.\n"
+        file_info += "Full 3D rendering requires complete decompression."
+        
+        # Show 2D placeholder
+        self._show_2d_view()
+        self._current_pixmap = None
+        self.preview_label.setPixmap(QPixmap())
+        self.preview_label.setText(
+            "🎮 3D Enemy Model\n\n"
+            f"Contains {geo_count} geometry block(s)\n\n"
+            "Full 3D preview requires\n"
+            "complete LZ77 decompression"
+        )
+        self.info_text.setText(file_info)
 
     def _show_pixmap(self, pixmap):
         """Display a pixmap, scaled to fit the preview area."""
