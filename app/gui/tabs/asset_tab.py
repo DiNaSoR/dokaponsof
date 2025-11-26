@@ -1,8 +1,7 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
                             QLabel, QComboBox, QSplitter, QFileDialog, QMessageBox)
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QIcon, QStandardItem
-from ..widgets.file_tree import FileTreeWidget
+from ..widgets.file_browser import FileBrowserWidget
 from ..preview_widget import PreviewWidget
 from ..widgets.worker import WorkerThread
 from app.core.dokapon_extract import process_file
@@ -23,18 +22,20 @@ class AssetExtractorTab(QWidget):
         # Add file selection UI
         layout.addLayout(self._create_file_selection())
         
-        # Add tree and preview
+        # Add file browser and preview
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        self.file_tree = FileTreeWidget(self.file_type)  # Pass combo box reference
+        self.file_browser = FileBrowserWidget(self.file_type)
         self.preview = PreviewWidget()
-        self.file_tree.file_selected.connect(self.preview.show_preview)
-        self.file_tree.extract_file.connect(self._extract_single_file)  # New connection
-        splitter.addWidget(self.file_tree)
+        self.file_browser.file_selected.connect(self.preview.show_preview)
+        self.file_browser.extract_file.connect(self._extract_single_file)
+        splitter.addWidget(self.file_browser)
         splitter.addWidget(self.preview)
+        splitter.setSizes([400, 400])  # Equal split
         layout.addWidget(splitter)
         
         # Add extract button
         extract_btn = QPushButton("Extract Selected")
+        extract_btn.setProperty("class", "primary")
         extract_btn.clicked.connect(self._start_extraction)
         layout.addWidget(extract_btn)
 
@@ -93,7 +94,7 @@ class AssetExtractorTab(QWidget):
             )
         if path:
             self.input_path.setText(path)
-            self.file_tree.populate_tree(path)
+            self.file_browser.populate_tree(path)
 
     def _select_output_dir(self):
         path = QFileDialog.getExistingDirectory(self, "Select Output Directory")
@@ -110,7 +111,7 @@ class AssetExtractorTab(QWidget):
             self._log_status("Error: Please select an output directory")
             return
             
-        files_to_extract = self.file_tree.get_checked_files_with_paths()
+        files_to_extract = self.file_browser.get_checked_files_with_paths()
         if not files_to_extract:
             self._log_status("Error: No files selected for extraction")
             return
@@ -300,16 +301,4 @@ class AssetExtractorTab(QWidget):
             worker.start()
             
         except Exception as e:
-            self._log_status(f"Error extracting file: {str(e)}")
-
-    def _on_single_file_complete(self, worker):
-        """Handle completion of single file extraction"""
-        file_name = os.path.basename(worker.file_path)
-        # Check if a .bin file was created
-        bin_path = os.path.join(worker.args[1], file_name + ".bin")
-        if os.path.exists(bin_path):
-            self._log_status(f"Saved raw data: {file_name}.bin (Not yet decompressed)")
-        else:
-            self._log_status(f"Successfully extracted: {file_name}")
-
-    # ... (rest of the AssetExtractorTab methods) 
+            self._log_status(f"Error extracting file: {str(e)}") 

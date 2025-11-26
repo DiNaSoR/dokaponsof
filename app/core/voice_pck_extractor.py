@@ -20,12 +20,21 @@ def find_opus_header(data):
     """Find the start of an Opus stream by looking for 'OggS' marker"""
     return data.find(b'OggS')
 
-def extract_voices(pck_path):
-    """Extract voice files from a PCK file"""
+def extract_voices(pck_path, output_dir=None):
+    """
+    Extract voice files from a PCK file.
+    
+    Args:
+        pck_path: Path to the PCK file to extract
+        output_dir: Optional output directory. If not provided, extracts to 
+                    'extracted_voices' folder in the same directory as the PCK file.
+    """
     if not os.path.exists(pck_path):
         raise FileNotFoundError(f"Could not find file at {pck_path}")
 
-    output_dir = os.path.join(os.path.dirname(pck_path), "extracted_voices")
+    # Use provided output_dir or default to extracted_voices in pck directory
+    if output_dir is None:
+        output_dir = os.path.join(os.path.dirname(pck_path), "extracted_voices")
     os.makedirs(output_dir, exist_ok=True)
 
     with open(pck_path, 'rb') as file:

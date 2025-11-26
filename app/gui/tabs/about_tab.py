@@ -265,11 +265,15 @@ class AboutTab(QWidget):
                 # Running as compiled exe
                 base_path = sys._MEIPASS
             else:
-                # Running as script
+                # Running as script - go up to app/ directory then into resources/
                 base_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
             
-            # Update music path
-            music_path = os.path.join(base_path, "resources", "bgm.mp3")
+            # Update music path - resources is inside the app folder
+            music_path = os.path.join(base_path, "app", "resources", "bgm.mp3")
+            
+            # Fallback: try the frozen exe path structure
+            if not os.path.exists(music_path):
+                music_path = os.path.join(base_path, "resources", "bgm.mp3")
             
             if os.path.exists(music_path):
                 self.media_player = QMediaPlayer()

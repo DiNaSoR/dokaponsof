@@ -333,11 +333,13 @@ class TextTab(QWidget):
             
             # Highlight only the length column if length doesn't match original
             if curr_len != original_len:
-                length_item.setForeground(Qt.GlobalColor.darkYellow)
-                length_item.setBackground(Qt.GlobalColor.darkRed)
+                from PyQt6.QtGui import QColor
+                length_item.setForeground(QColor("#dcdcaa"))  # Warning yellow
+                length_item.setBackground(QColor("#5a1d1d"))  # Dark red background
             else:
-                length_item.setForeground(Qt.GlobalColor.black)
-                length_item.setBackground(Qt.GlobalColor.transparent)
+                from PyQt6.QtGui import QColor
+                length_item.setForeground(QColor("#4ec9b0"))  # Success green
+                length_item.setBackground(QColor("transparent"))
 
             # Update stats after text edit
             self._update_stats()
@@ -488,4 +490,12 @@ class TextTab(QWidget):
         
         self.total_lines_label.setText(f"Total Lines: {total_lines}")
         self.visible_lines_label.setText(f"Visible: {visible_lines}")
-        self.modified_lines_label.setText(f"Modified: {modified_lines}") 
+        self.modified_lines_label.setText(f"Modified: {modified_lines}")
+
+    def closeEvent(self, event):
+        """Clean up worker threads when closing"""
+        for worker in self.workers:
+            if worker.isRunning():
+                worker.quit()
+                worker.wait()
+        event.accept() 

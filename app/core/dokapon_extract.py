@@ -42,50 +42,70 @@ class MPDHeader:
     cell_height: int    # Height of each cell
 
 def decompress_lz77(data: bytes) -> Optional[bytes]:
-    """Decompress Nintendo-style LZ77 data with improved offset handling."""
+    """
+    Decompress LZ77/LZSS compressed data used in Dokapon.
+    
+    File format:
+    - Bytes 0-4: "LZ77" magic
+    - Bytes 4-8: unknown (possibly checksum)
+    - Bytes 8-12: decompressed size of compressed portion
+    - Bytes 12-16: offset to uncompressed data (Sequence header)
+    - Bytes 16 to offset: LZ77 compressed data
+    - Bytes offset to end: uncompressed Sequence metadata
+    """
     if not data.startswith(b'LZ77'):
         return None
     
-    compressed_size = struct.unpack('<I', data[8:12])[0]
-    decompressed_size = struct.unpack('<I', data[12:16])[0]
+    decompressed_size = struct.unpack('<I', data[8:12])[0]
+    uncompressed_offset = struct.unpack('<I', data[12:16])[0]
+    
+    # Determine where compressed data ends
+    compressed_end = uncompressed_offset if uncompressed_offset > 16 else len(data)
     
     result = bytearray()
     pos = 16  # Start after header
 
     try:
-        while pos < len(data) and len(result) < decompressed_size:
+        while pos < compressed_end and len(result) < decompressed_size:
             flag = data[pos]
             pos += 1
 
+            # Process 8 chunks per flag byte
             for bit in range(8):
-                if pos >= len(data) or len(result) >= decompressed_size:
+                if pos >= compressed_end or len(result) >= decompressed_size:
                     break
 
+                # MSB-first: bit 7 first, bit 0 last
                 if flag & (0x80 >> bit):
-                    # LZ77 backreference
-                    if pos + 1 >= len(data):
+                    # Compressed: back-reference
+                    if pos + 1 >= compressed_end:
                         break
-                        
-                    info = (data[pos] << 8) | data[pos + 1]
+                    
+                    b1 = data[pos]
+                    b2 = data[pos + 1]
                     pos += 2
-
-                    length = ((info >> 12) & 0xF) + 3
-                    offset = (info & 0xFFF) + 1
-
-                    # Handle overlapping copies correctly
-                    for i in range(length):
-                        if len(result) - offset < 0:
-                            # Invalid offset - treat as literal
-                            result.append(0)
+                    
+                    # Standard Nintendo LZ77 format:
+                    length = ((b1 >> 4) & 0x0F) + 3
+                    offset = ((b1 & 0x0F) << 8) | b2
+                    offset += 1
+                    
+                    for _ in range(length):
+                        if len(result) >= offset:
+                            result.append(result[-offset])
                         else:
-                            result.append(result[len(result) - offset])
+                            result.append(0)
                 else:
                     # Literal byte
-                    if pos >= len(data):
+                    if pos >= compressed_end:
                         break
                     result.append(data[pos])
                     pos += 1
 
+        # Append uncompressed Sequence data if present
+        if uncompressed_offset > 16 and uncompressed_offset < len(data):
+            result.extend(data[uncompressed_offset:])
+        
         return bytes(result) if len(result) > 0 else None
 
     except Exception as e:

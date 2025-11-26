@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QTreeView, QHeaderView, QTreeWidget, QTreeWidgetItem, QMenu, QMessageBox
-from PyQt6.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize
+from PyQt6.QtWidgets import QTreeView, QHeaderView, QMenu, QMessageBox
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
+from PyQt6.QtCore import Qt, pyqtSignal, QSize
 import os
 
 class FileTreeWidget(QTreeView):
@@ -126,24 +126,36 @@ class FileTreeWidget(QTreeView):
         file_name = os.path.basename(file_path)
         file_ext = os.path.splitext(file_name)[1].lower()
         
-        if selected_type and selected_type != "all files" and not file_ext in self.VALID_EXTENSIONS:
-            return
+        # Filter based on selected type
+        if selected_type and selected_type != "all files":
+            # Map dropdown text to extensions
+            type_ext_map = {
+                "texture files (.tex)": ".tex",
+                "sprite files (.spranm)": ".spranm",
+                "font files (.fnt)": ".fnt",
+            }
+            required_ext = type_ext_map.get(selected_type)
+            if required_ext and file_ext != required_ext:
+                return
         
-        file_item = QStandardItem(QIcon("file.png"), file_name)
+        file_item = QStandardItem(file_name)
         file_item.setData(file_path, Qt.ItemDataRole.UserRole)
         file_item.setCheckable(True)
         # Disable tri-state for file items
         file_item.setFlags(file_item.flags() & ~Qt.ItemFlag.ItemIsAutoTristate)
         
         type_item = QStandardItem(file_ext)
-        size_item = QStandardItem(self._format_size(os.path.getsize(file_path)))
+        try:
+            size_item = QStandardItem(self._format_size(os.path.getsize(file_path)))
+        except OSError:
+            size_item = QStandardItem("N/A")
         
         parent_item.appendRow([file_item, type_item, size_item])
 
     def _add_directory_to_tree(self, parent_item, dir_path, selected_type=None):
         """Add a directory and its contents to the tree"""
         dir_name = os.path.basename(dir_path) or dir_path
-        dir_item = QStandardItem(QIcon("folder.png"), dir_name)
+        dir_item = QStandardItem(dir_name)
         dir_item.setData(dir_path, Qt.ItemDataRole.UserRole)
         dir_item.setCheckable(True)
         # Disable tri-state for directory items
@@ -155,11 +167,14 @@ class FileTreeWidget(QTreeView):
         parent_item.appendRow([dir_item, type_item, size_item])
         
         # Add all files and subdirectories
-        for entry in os.scandir(dir_path):
-            if entry.is_file():
-                self._add_file_to_tree(dir_item, entry.path, selected_type)
-            else:
-                self._add_directory_to_tree(dir_item, entry.path, selected_type)
+        try:
+            for entry in os.scandir(dir_path):
+                if entry.is_file():
+                    self._add_file_to_tree(dir_item, entry.path, selected_type)
+                elif entry.is_dir():
+                    self._add_directory_to_tree(dir_item, entry.path, selected_type)
+        except PermissionError:
+            pass  # Skip directories we can't access
 
     def populate_tree(self, path):
         """Populate tree with files from path"""
@@ -178,7 +193,7 @@ class FileTreeWidget(QTreeView):
             self._add_file_to_tree(root_item, path, selected_type)
         else:
             # Add the input folder as the first item
-            input_item = QStandardItem(QIcon("folder.png"), os.path.basename(path) or path)
+            input_item = QStandardItem(os.path.basename(path) or path)
             input_item.setData(path, Qt.ItemDataRole.UserRole)
             input_item.setCheckable(True)
             input_item.setFlags(input_item.flags() & ~Qt.ItemFlag.ItemIsAutoTristate)
@@ -189,11 +204,19 @@ class FileTreeWidget(QTreeView):
             root_item.appendRow([input_item, type_item, size_item])
             
             # Add contents to the input folder
-            for entry in os.scandir(path):
-                if entry.is_file():
-                    self._add_file_to_tree(input_item, entry.path, selected_type)
-                else:
-                    self._add_directory_to_tree(input_item, entry.path, selected_type)
+            try:
+                for entry in os.scandir(path):
+                    if entry.is_file():
+                        self._add_file_to_tree(input_item, entry.path, selected_type)
+                    elif entry.is_dir():
+                        self._add_directory_to_tree(input_item, entry.path, selected_type)
+            except PermissionError:
+                pass  # Skip directories we can't access
+            
+            # Auto-expand the root folder to show contents
+            root_index = self.model.indexFromItem(input_item)
+            if root_index.isValid():
+                self.expand(root_index)
 
     def _handle_item_changed(self, item):
         """Handle checkbox state changes"""
@@ -278,8 +301,22 @@ class FileTreeWidget(QTreeView):
     def get_checked_files_with_paths(self):
         """Get list of checked files with their relative paths"""
         checked_files = []
-        root_path = os.path.dirname(self.model.invisibleRootItem().child(0).data(Qt.ItemDataRole.UserRole))
-        self._collect_checked_files_with_paths(self.model.invisibleRootItem(), checked_files, root_path)
+        
+        # Guard against empty tree
+        root_item = self.model.invisibleRootItem()
+        if root_item.rowCount() == 0:
+            return checked_files
+        
+        first_child = root_item.child(0)
+        if first_child is None:
+            return checked_files
+        
+        first_child_data = first_child.data(Qt.ItemDataRole.UserRole)
+        if first_child_data is None:
+            return checked_files
+        
+        root_path = os.path.dirname(first_child_data)
+        self._collect_checked_files_with_paths(root_item, checked_files, root_path)
         return checked_files
 
     def _collect_checked_files_with_paths(self, parent_item, checked_files, root_path):
