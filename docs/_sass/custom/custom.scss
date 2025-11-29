@@ -1,1 +1,146 @@
-// custom SCSS (or CSS) goes here
+// Modern Full Width Layout
+.container {
+  max-width: 100% !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.main-content {
+  max-width: 100% !important;
+  margin-right: 0;
+}
+
+// Modern UI Touches
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Sidebar Improvements
+.side-bar {
+  border-right: 1px solid $border-color;
+  background-color: $sidebar-color;
+  z-index: 10;
+  
+  .site-title {
+    border-bottom: 1px solid $border-color;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-list-link {
+    border-radius: 6px;
+    margin: 2px 8px;
+    padding: 6px 12px;
+    transition: background-color 0.2s, color 0.2s;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    &.active {
+      background-color: rgba($blue-000, 0.15);
+      color: $blue-000;
+      font-weight: 500;
+      background-image: none; // Remove default active indicator if any
+    }
+  }
+}
+
+// Search Bar Modernization
+.search {
+  margin-bottom: 1rem;
+  
+  input {
+    background-color: $grey-dk-300;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-family: $body-font-family;
+    
+    &:focus {
+      background-color: $grey-dk-300;
+      border-color: $blue-000;
+      box-shadow: 0 0 0 3px rgba($blue-000, 0.2);
+    }
+  }
+}
+
+// Content Modernization
+.main-content-wrap {
+  max-width: 1600px; // Keep readability on ultra-wide screens, but much wider than default
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: $grey-lt-000;
+}
+
+h1 { font-weight: 700; }
+
+// Tables
+table {
+  display: table; // Override block display if set
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  th, td {
+    border: none;
+    border-bottom: 1px solid $border-color;
+    padding: 0.75rem 1rem;
+  }
+  
+  th {
+    background-color: rgba($grey-dk-250, 0.5);
+    font-weight: 600;
+    color: $grey-lt-100;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+// Code Blocks
+div.highlighter-rouge .highlight {
+  background-color: $grey-dk-250 !important;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+code.highlighter-rouge {
+  background-color: rgba(110, 118, 129, 0.1); // Subtle inline code bg
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 85%;
+  color: $grey-lt-000;
+}
+
+// Buttons
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+  
+  &.btn-primary {
+    background-color: $blue-100;
+    border-color: $blue-100;
+    &:hover {
+      background-color: lighten($blue-100, 5%);
+    }
+  }
+}
+
+// Compact headings
+h1 { margin-top: 1rem; margin-bottom: 1rem; }
+h2 { margin-top: 2rem; margin-bottom: 0.75rem; }
+h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }

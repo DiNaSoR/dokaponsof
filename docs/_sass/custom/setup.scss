@@ -1,1 +1,32 @@
-// custom setup code goes here
+// Typography
+$body-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+$mono-font-family: "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+// Layout - Full Width
+$content-width: 98%; // Use percentage for full width
+$nav-width: 18rem; // Slightly wider nav for better readability
+
+// Spacing - Compact
+$spacing-unit: 0.875rem; // Reduce base spacing from 1rem
+
+// Modern Dark Theme Colors
+$grey-dk-300: #0a0c10; // Main Background (Very dark)
+$grey-dk-250: #161b22; // Sidebar / Secondary
+$grey-dk-200: #30363d; // Borders
+$grey-dk-100: #484f58; // Muted elements
+$grey-dk-000: #6e7681; // Muted text
+
+$grey-lt-000: #f0f6fc; // Main Text
+$grey-lt-100: #c9d1d9; // Secondary Text
+$grey-lt-200: #b1bac4;
+$grey-lt-300: #8b949e; // Tertiary Text
+
+$blue-000: #58a6ff; // Links
+$blue-100: #1f6feb;
+$blue-200: #238636; // Green for success/primary actions if needed
+$purple-000: #bc8cff;
+
+// Override Specific Theme Variables
+$body-background-color: $grey-dk-300;
+$sidebar-color: $grey-dk-250;
+$border-color: $grey-dk-200;
