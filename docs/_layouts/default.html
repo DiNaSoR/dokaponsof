@@ -9,96 +9,15 @@ layout: table_wrappers
 <body>
   <a class="skip-to-main" href="#main-content">Skip to main content</a>
   {% include icons/icons.html %}
-  
-  <!-- TOP NAVIGATION -->
-  <nav class="top-navigation" role="navigation" aria-label="Main navigation">
-    <a href="{{ '/' | relative_url }}" class="nav-brand">
-      <div class="nav-logo">D</div>
-      <span class="nav-title">{{ site.title }}</span>
-    </a>
-    
-    <ul class="nav-menu" id="nav-menu">
-      <li class="nav-item">
-        <a href="{{ '/' | relative_url }}" class="nav-link{% if page.url == '/' %} active{% endif %}">Home</a>
-      </li>
-      
-      <li class="nav-item">
-        <a href="{{ '/docs/guide/' | relative_url }}" class="nav-link{% if page.url contains '/guide/' %} active{% endif %}">
-          Guide
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </a>
-        <ul class="nav-dropdown">
-          <li><a href="{{ '/docs/guide/' | relative_url }}" class="dropdown-link">Overview</a></li>
-          <li><a href="{{ '/docs/guide/game-features' | relative_url }}" class="dropdown-link">Game Features</a></li>
-          <li><a href="{{ '/docs/guide/battle-mechanics' | relative_url }}" class="dropdown-link">Battle Mechanics</a></li>
-          <li><a href="{{ '/docs/guide/equipment' | relative_url }}" class="dropdown-link">Equipment</a></li>
-          <li><a href="{{ '/docs/guide/magic' | relative_url }}" class="dropdown-link">Magic</a></li>
-          <li><a href="{{ '/docs/guide/items' | relative_url }}" class="dropdown-link">Items</a></li>
-          <li><a href="{{ '/docs/guide/monsters' | relative_url }}" class="dropdown-link">Monsters</a></li>
-          <li><a href="{{ '/docs/guide/special-skills' | relative_url }}" class="dropdown-link">Special Skills</a></li>
-          <li><a href="{{ '/docs/guide/treasures' | relative_url }}" class="dropdown-link">Treasures</a></li>
-        </ul>
-      </li>
-      
-      <li class="nav-item">
-        <a href="{{ '/docs/tools/' | relative_url }}" class="nav-link{% if page.url contains '/tools/' %} active{% endif %}">
-          Tools
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </a>
-        <ul class="nav-dropdown">
-          <li><a href="{{ '/docs/tools/' | relative_url }}" class="dropdown-link">Overview</a></li>
-          <li><a href="{{ '/docs/tools/voice-extractor' | relative_url }}" class="dropdown-link">Voice Extractor</a></li>
-          <li><a href="{{ '/docs/tools/dokapon-extract' | relative_url }}" class="dropdown-link">Dokapon Extract</a></li>
-          <li><a href="{{ '/docs/tools/text-extractor' | relative_url }}" class="dropdown-link">Text Extractor</a></li>
-          <li><a href="{{ '/docs/tools/image-extractor' | relative_url }}" class="dropdown-link">Image Extractor</a></li>
-          <li><a href="{{ '/docs/tools/font-extractor' | relative_url }}" class="dropdown-link">Font Extractor</a></li>
-        </ul>
-      </li>
-      
-      <li class="nav-item">
-        <a href="{{ '/docs/technical/' | relative_url }}" class="nav-link{% if page.url contains '/technical/' %} active{% endif %}">
-          Technical
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </a>
-        <ul class="nav-dropdown">
-          <li><a href="{{ '/docs/technical/' | relative_url }}" class="dropdown-link">Overview</a></li>
-          <li><a href="{{ '/docs/technical/lz77-compression' | relative_url }}" class="dropdown-link">LZ77 Compression</a></li>
-          <li><a href="{{ '/docs/technical/mdl-format' | relative_url }}" class="dropdown-link">MDL Format</a></li>
-          <li><a href="{{ '/docs/technical/mpd-format' | relative_url }}" class="dropdown-link">MPD Format</a></li>
-          <li><a href="{{ '/docs/technical/spranm-format' | relative_url }}" class="dropdown-link">SPRANM Format</a></li>
-        </ul>
-      </li>
-    </ul>
-    
-    <div class="nav-actions">
-      {% if site.search_enabled != false %}
-      <div class="search" role="search">
-        <div class="search-input-wrap">
-          <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search docs..." aria-label="Search">
-        </div>
-        <div id="search-results" class="search-results"></div>
-      </div>
-      {% endif %}
-      
-      <a href="https://github.com/dinasor/dokaponsof" target="_blank" rel="noopener" class="nav-btn btn-github" aria-label="View on GitHub">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        <span>GitHub</span>
-      </a>
-      
-      <a href="https://discord.gg/HCrYwScDg5" target="_blank" rel="noopener" class="nav-btn btn-discord" aria-label="Join Discord">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        <span>Discord</span>
-      </a>
-      
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
-  
+  {% if page.nav_enabled == true %}
+    {% include components/sidebar.html %}
+  {% elsif layout.nav_enabled == true and page.nav_enabled == nil %}
+    {% include components/sidebar.html %}
+  {% elsif site.nav_enabled != false and layout.nav_enabled == nil and page.nav_enabled == nil %}
+    {% include components/sidebar.html %}
+  {% endif %}
   <div class="main" id="top">
+    {% include components/header.html %}
     <div class="main-content-wrap">
       {% include components/breadcrumbs.html %}
       <div id="main-content" class="main-content">
@@ -116,76 +35,13 @@ layout: table_wrappers
         {% include components/footer.html %}
       </div>
     </div>
+    {% if site.search_enabled != false %}
+      {% include components/search_footer.html %}
+    {% endif %}
   </div>
-  
-  <!-- Footer Bar -->
-  <footer class="footer-bar">
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="https://store.steampowered.com/app/3077020/" target="_blank">Steam</a>
-        <a href="https://reddit.com/r/dokaponofficial/" target="_blank">Reddit</a>
-        <a href="https://www.sting.co.jp/" target="_blank">Sting Entertainment</a>
-      </div>
-      <div class="footer-copyright">
-        {{ site.footer_content }}
-      </div>
-    </div>
-  </footer>
-  
-  <!-- Back to Top Button -->
-  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
-
-  {% if site.search_enabled != false %}
-    {% include components/search_footer.html %}
-  {% endif %}
 
   {% if site.mermaid %}
     {% include components/mermaid.html %}
   {% endif %}
-  
-  <!-- Custom JavaScript for navigation -->
-  <script>
-    // Mobile navigation toggle
-    const navToggle = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    
-    if (navToggle && navMenu) {
-      navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('nav-open');
-        const isOpen = navMenu.classList.contains('nav-open');
-        navToggle.setAttribute('aria-expanded', isOpen);
-      });
-    }
-    
-    // Back to top button
-    const backToTop = document.getElementById('back-to-top');
-    
-    if (backToTop) {
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-          backToTop.classList.add('visible');
-        } else {
-          backToTop.classList.remove('visible');
-        }
-      });
-      
-      backToTop.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-    
-    // Mobile dropdown toggle
-    document.querySelectorAll('.nav-item > .nav-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        const dropdown = this.nextElementSibling;
-        if (dropdown && dropdown.classList.contains('nav-dropdown') && window.innerWidth <= 900) {
-          e.preventDefault();
-          dropdown.classList.toggle('dropdown-open');
-        }
-      });
-    });
-  </script>
 </body>
 </html>
