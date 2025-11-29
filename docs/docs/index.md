@@ -6,6 +6,10 @@ description: "Documentation and guides for modding DOKAPON! Sword of Fury (PC Ve
 permalink: /
 ---
 
+<div class="banner-container">
+  <img src="{{ '/assets/images/dokabannar.png' | relative_url }}" alt="Dokapon Banner" class="banner-image">
+</div>
+
 # DOKAPON! Sword of Fury Modding Guide
 {: .fs-9 }
 

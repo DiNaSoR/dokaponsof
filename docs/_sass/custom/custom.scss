@@ -1,3 +1,28 @@
+// Banner - Responsive
+.banner-container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  .banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 300px;
+    
+    @media (max-width: 768px) {
+      max-height: 180px;
+    }
+    
+    @media (max-width: 480px) {
+      max-height: 120px;
+      border-radius: 8px;
+    }
+  }
+}
+
 // Modern Full Width Layout
 .side-bar + .main {
   max-width: 100%;
