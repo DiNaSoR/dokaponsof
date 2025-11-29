@@ -1,1 +1,21 @@
-// custom setup code goes here
+// Custom setup - variable overrides go here
+// These are loaded BEFORE the theme's default variables
+
+// Make content area full width
+$content-width: 100rem;  // Much larger to effectively be full width
+$nav-width: 18rem;       // Slightly wider navigation
+$nav-width-md: 16rem;
+
+// Improved spacing
+$gutter-spacing: 2.5rem;
+$gutter-spacing-sm: 1.5rem;
+
+// Better typography
+$body-line-height: 1.5;
+$content-line-height: 1.7;
+
+// Import custom fonts
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+$body-font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+$mono-font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
