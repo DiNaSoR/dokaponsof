@@ -2,7 +2,7 @@
 title: Items & Equipment
 layout: default
 nav_order: 5
-parent: Guides
+parent: Game Guide
 ---
 
 # Items & Equipment Guide

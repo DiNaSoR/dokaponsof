@@ -2,7 +2,7 @@
 title: Battle Mechanics
 layout: default
 nav_order: 1
-parent: Guides
+parent: Game Guide
 ---
 
 # Battle Mechanics Guide
@@ -170,6 +170,30 @@ Damage calculation:
 
 
 Field Magic Multipliers vary by spell and may be affected by distance and elements.
+
+## Hit Rate & Evasion
+
+### Attack Hit Rate
+
+Normal Attack and Deathblow can be evaded based on the target's SP (Speed). Magic attacks **always hit** and cannot be evaded.
+
+### Surrender Success Rate
+
+When attempting to surrender from battle:
+- Success rate depends on relative stats
+- Higher level enemies are harder to surrender to
+- Some enemies may not accept surrender
+
+## Key Battle Tips
+
+1. **Magic Always Hits** - Unlike Attack/Deathblow, Magic ignores SP
+2. **Elemental Weaknesses** - Both weapon types and magic elements deal 1.3x damage
+3. **Counter vs Deathblow** - Counter will reflect Deathblow damage back
+4. **Status Effects** - Sleep, Petrify, etc. make targets take 2.5x damage
+5. **Magic Shield** - Reduces Attack Magic damage to 1/4 in Remaster
+
+---
+
 
 {: .note }
 For the most accurate results, always test calculations in-game as there may be hidden factors affecting final damage values.

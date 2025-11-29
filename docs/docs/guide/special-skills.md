@@ -2,7 +2,7 @@
 title: Special Skills Guide
 layout: default
 nav_order: 9
-parent: Guides
+parent: Game Guide
 ---
 
 # Special Skills Guide

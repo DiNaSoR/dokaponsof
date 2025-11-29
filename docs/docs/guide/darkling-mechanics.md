@@ -2,7 +2,7 @@
 title: Darkling Mechanics
 layout: default
 nav_order: 2
-parent: Guides
+parent: Game Guide
 ---
 
 # Darkling Mechanics Guide

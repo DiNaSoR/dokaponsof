@@ -2,7 +2,7 @@
 title: Game Features
 layout: default
 nav_order: 3
-parent: Guides
+parent: Game Guide
 ---
 
 # This is DOKAPON!

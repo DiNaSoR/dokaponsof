@@ -2,7 +2,7 @@
 title: Game Manual
 layout: default
 nav_order: 4
-parent: Guides
+parent: Game Guide
 ---
 
 # Official Game Manual
