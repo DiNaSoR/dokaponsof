@@ -1,17 +1,17 @@
 source "https://rubygems.org"
 
-gem "github-pages", group: :jekyll_plugins
+gem "jekyll", "~> 3.9"
 
 group :jekyll_plugins do
   gem "jekyll-remote-theme"
   gem "jekyll-seo-tag"
   gem "jekyll-sitemap"
   gem "jekyll-include-cache"
+  gem "jekyll-github-metadata"
+  gem "jekyll-feed"
 end
 
-gem "base64"
-gem "csv"
-
-gem "jekyll-github-metadata", ">= 2.15"
+gem "webrick", "~> 1.7"
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "html-proofer", "~> 5.0", :group => :development
