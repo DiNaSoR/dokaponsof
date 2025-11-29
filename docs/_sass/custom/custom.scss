@@ -1,13 +1,16 @@
 // Modern Full Width Layout
-.container {
-  max-width: 100% !important;
-  padding-left: 1rem;
-  padding-right: 1rem;
+.side-bar + .main {
+  max-width: 100%;
 }
 
-.main-content {
-  max-width: 100% !important;
-  margin-right: 0;
+.main {
+  max-width: 100%;
+}
+
+.main-content-wrap {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
 }
 
 // Modern UI Touches
@@ -18,90 +21,83 @@ body {
 
 // Sidebar Improvements
 .side-bar {
-  border-right: 1px solid $border-color;
-  background-color: $sidebar-color;
-  z-index: 10;
+  border-right: 1px solid #30363d;
   
   .site-title {
-    border-bottom: 1px solid $border-color;
     font-weight: 600;
     letter-spacing: -0.02em;
   }
+}
 
-  .nav-list-link {
-    border-radius: 6px;
-    margin: 2px 8px;
-    padding: 6px 12px;
-    transition: background-color 0.2s, color 0.2s;
-    
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    &.active {
-      background-color: rgba($blue-000, 0.15);
-      color: $blue-000;
-      font-weight: 500;
-      background-image: none; // Remove default active indicator if any
-    }
+.nav-list-link {
+  border-radius: 6px;
+  margin: 2px 8px;
+  padding: 6px 12px !important;
+  transition: background-color 0.15s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  &.active {
+    background-color: rgba(88, 166, 255, 0.15);
+    color: #58a6ff;
+    font-weight: 500;
   }
 }
 
 // Search Bar Modernization
-.search {
-  margin-bottom: 1rem;
+.search-input {
+  background-color: #0a0c10 !important;
+  border: 1px solid #30363d !important;
+  border-radius: 6px !important;
   
-  input {
-    background-color: $grey-dk-300;
-    border: 1px solid $border-color;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-family: $body-font-family;
-    
-    &:focus {
-      background-color: $grey-dk-300;
-      border-color: $blue-000;
-      box-shadow: 0 0 0 3px rgba($blue-000, 0.2);
-    }
+  &:focus {
+    border-color: #58a6ff !important;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2) !important;
   }
-}
-
-// Content Modernization
-.main-content-wrap {
-  max-width: 1600px; // Keep readability on ultra-wide screens, but much wider than default
-  margin: 0 auto;
-  padding-top: 2rem;
 }
 
 // Typography
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
   font-weight: 600;
-  color: $grey-lt-000;
 }
 
-h1 { font-weight: 700; }
+h1 { 
+  font-weight: 700; 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+h2 { 
+  margin-top: 2rem; 
+  margin-bottom: 0.75rem; 
+}
+
+h3 { 
+  margin-top: 1.5rem; 
+  margin-bottom: 0.5rem; 
+}
 
 // Tables
 table {
-  display: table; // Override block display if set
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid $border-color;
+  border: 1px solid #30363d;
   border-radius: 8px;
   overflow: hidden;
   
   th, td {
     border: none;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid #30363d;
     padding: 0.75rem 1rem;
   }
   
   th {
-    background-color: rgba($grey-dk-250, 0.5);
+    background-color: rgba(22, 27, 34, 0.5);
     font-weight: 600;
-    color: $grey-lt-100;
   }
   
   tr:last-child td {
@@ -110,37 +106,65 @@ table {
 }
 
 // Code Blocks
-div.highlighter-rouge .highlight {
-  background-color: $grey-dk-250 !important;
-  border: 1px solid $border-color;
+div.highlighter-rouge,
+figure.highlight {
+  border: 1px solid #30363d;
   border-radius: 8px;
-  padding: 1rem;
+  overflow: hidden;
+  
+  pre {
+    margin: 0;
+    padding: 1rem;
+    background-color: #161b22 !important;
+  }
 }
 
 code.highlighter-rouge {
-  background-color: rgba(110, 118, 129, 0.1); // Subtle inline code bg
+  background-color: rgba(110, 118, 129, 0.2);
   border-radius: 4px;
   padding: 0.2em 0.4em;
   font-size: 85%;
-  color: $grey-lt-000;
 }
 
 // Buttons
 .btn {
   border-radius: 6px;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
+}
+
+// Scrollbar styling for webkit browsers
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0c10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
   
-  &.btn-primary {
-    background-color: $blue-100;
-    border-color: $blue-100;
-    &:hover {
-      background-color: lighten($blue-100, 5%);
-    }
+  &:hover {
+    background: #484f58;
   }
 }
 
-// Compact headings
-h1 { margin-top: 1rem; margin-bottom: 1rem; }
-h2 { margin-top: 2rem; margin-bottom: 0.75rem; }
-h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }
+// Links
+a {
+  transition: color 0.15s ease;
+}
+
+// Breadcrumbs compact
+.breadcrumb-nav {
+  font-size: 0.875rem;
+}
+
+// Footer
+.site-footer {
+  border-top: 1px solid #30363d;
+  padding-top: 1.5rem;
+  margin-top: 3rem;
+}

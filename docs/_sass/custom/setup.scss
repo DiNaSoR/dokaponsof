@@ -3,7 +3,7 @@ $body-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helve
 $mono-font-family: "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 
 // Layout - Full Width
-$content-width: 98%; // Use percentage for full width
+$content-width: 100rem; // Large value for wide content
 $nav-width: 18rem; // Slightly wider nav for better readability
 
 // Spacing - Compact
