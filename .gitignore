@@ -11,3 +11,6 @@ __pycache__/
 *.pyzwzwzw
 *.pyzwzwzwzw
 *.pyzwzwzwzwzw
+
+# Build output
+build/
