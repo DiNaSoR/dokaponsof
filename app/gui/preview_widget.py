@@ -92,16 +92,31 @@ class PreviewWidget(QWidget):
             with open(file_path, 'rb') as f:
                 data = f.read()
 
+            mdl_compression = None
+
             # Handle LZ77 compression - but for SPRANM, work with raw data
             # as many SPRANM files have hybrid format with Sequ header at fixed offset
             if data.startswith(b'LZ77'):
                 if file_ext == '.mdl':
                     try:
                         decompressor = LZ77Decompressor()
+                        header = decompressor.read_header(data)
                         decompressed = decompressor.decompress_data(data)
                         if decompressed:
-                            data = decompressed
-                            file_info += "LZ77 compression: Yes (Advanced)\n"
+                            # Combine decompressed payload and any trailing raw bytes
+                            trailing = decompressor.trailing_data or b""
+                            data = decompressed + trailing
+                            mdl_compression = {
+                                "header": header,
+                                "consumed": decompressor.bytes_consumed,
+                                "trailing": len(trailing),
+                            }
+                            file_info += "LZ77 compression: Yes (MDL token stream)\n"
+                            if header:
+                                file_info += f"Declared size: {header.decompressed_size:,} bytes\n"
+                                file_info += f"Flag1: 0x{header.flag1:08X}, Flag2: 0x{header.flag2:08X}\n"
+                            file_info += f"Stream bytes consumed: {decompressor.bytes_consumed:,}\n"
+                            file_info += f"Trailing raw bytes: {len(decompressor.trailing_data):,}\n"
                     except Exception as e:
                         file_info += f"LZ77 compression: Yes (Decompression error: {str(e)})\n"
                 elif file_ext != '.spranm':
@@ -122,7 +137,7 @@ class PreviewWidget(QWidget):
             elif file_ext == '.spranm':
                 self._preview_spranm(data, file_info)
             elif file_ext == '.mdl':
-                self._preview_mdl(data, file_info)
+                self._preview_mdl(data, file_info, mdl_compression)
             else:
                 self._current_pixmap = None
                 self.preview_label.setPixmap(QPixmap())
@@ -301,69 +316,66 @@ class PreviewWidget(QWidget):
         
         self.info_text.setText(file_info)
 
-    def _preview_mdl(self, data, file_info):
+    def _preview_mdl(self, data, file_info, compression_info=None):
         """Preview MDL (3D model) file."""
-        import struct
-        
         file_info += "\nFormat: 3D Model (MDL)\n"
-        
-        # Parse LZ77 header for model info
-        if data.startswith(b'LZ77'):
-            try:
-                decompressed_size = struct.unpack('<I', data[4:8])[0]
-                flag1 = struct.unpack('<I', data[8:12])[0]
-                flag2 = struct.unpack('<I', data[12:16])[0]
-                file_info += f"Decompressed size: {decompressed_size:,} bytes\n"
-                file_info += f"Flags: 0x{flag1:08X}, 0x{flag2:08X}\n"
-            except:
-                pass
-        
-        # Count block markers in raw compressed data
-        markers = {
-            b'\x00\x00\xc0\x00': ('Geometry', 0),
-            b'\x00\x00\x40\xc1': ('Normals', 0),
-            b'\x00\x00\x80\xb9': ('Animation', 0),
-            b'\xaa\xaa\xaa\xaa': ('Alignment', 0),
-            b'\x55\x55\x55\x55': ('Structure', 0),
-            b'\x00\x00\x80\x3f': ('Float Data', 0),
-        }
-        
-        found_markers = []
-        for marker, (name, _) in markers.items():
-            count = data.count(marker)
-            if count > 0:
-                found_markers.append((name, count))
-        
-        if found_markers:
-            file_info += "\nBlock Structure:\n"
-            for name, count in found_markers:
-                file_info += f"  • {name}: {count}\n"
-        
-        # Estimate model complexity
-        geo_count = data.count(b'\x00\x00\xc0\x00')
-        if geo_count > 0:
-            if geo_count >= 7:
-                complexity = "High (detailed model)"
-            elif geo_count >= 3:
-                complexity = "Medium"
+
+        if compression_info:
+            header = compression_info.get("header")
+            if header:
+                file_info += f"Declared size: {header.decompressed_size:,} bytes\n"
+                file_info += f"Flag1: 0x{header.flag1:08X}, Flag2: 0x{header.flag2:08X}\n"
+            file_info += f"Stream bytes consumed: {compression_info.get('consumed', 0):,}\n"
+            file_info += f"Trailing raw bytes: {compression_info.get('trailing', 0):,}\n"
+
+        geometry = None
+        try:
+            parser = MDLParser()
+            geometry = parser.parse(data)
+        except Exception as exc:
+            file_info += f"\nMDL parse error: {exc}"
+
+        if geometry and geometry.vertex_count > 0:
+            file_info += "\nGeometry:\n"
+            file_info += f"Vertices: {geometry.vertex_count}\n"
+            file_info += f"Faces: {geometry.face_count}\n"
+            if geometry.normals is not None:
+                file_info += f"Normals: {len(geometry.normals)}\n"
+            bounds_min, bounds_max = geometry.bounds
+            file_info += f"Bounds min: {bounds_min}\n"
+            file_info += f"Bounds max: {bounds_max}\n"
+
+            faces = geometry.indices
+            if is_3d_viewer_available():
+                shown = False
+                if faces is not None and len(faces) > 0:
+                    shown = self.viewer_3d.display_mesh(geometry.vertices, faces, geometry.normals)
+                if not shown:
+                    # Fallback to point cloud for models without indices
+                    shown = self.viewer_3d.display_point_cloud(geometry.vertices)
+                if shown:
+                    self._show_3d_view()
+                    self.info_text.setText(file_info)
+                    return
+                file_info += "\n3D viewer available but failed to render mesh."
             else:
-                complexity = "Low (simple model)"
-            file_info += f"\nEstimated complexity: {complexity}\n"
-        
-        # Note about 3D preview
-        file_info += "\n⚠ 3D Preview: MDL decompression is complex.\n"
-        file_info += "Full 3D rendering requires complete decompression."
-        
-        # Show 2D placeholder
+                file_info += "\nPyVista not installed; showing summary only."
+        else:
+            file_info += "\nCould not parse MDL geometry."
+
+        # Fallback summary when 3D view is not available
         self._show_2d_view()
         self._current_pixmap = None
         self.preview_label.setPixmap(QPixmap())
-        self.preview_label.setText(
-            "🎮 3D Enemy Model\n\n"
-            f"Contains {geo_count} geometry block(s)\n\n"
-            "Full 3D preview requires\n"
-            "complete LZ77 decompression"
-        )
+        fallback_text = "🎮 3D Enemy Model\n\n"
+        if geometry:
+            fallback_text += f"Vertices detected: {geometry.vertex_count}\n"
+            fallback_text += f"Faces detected: {geometry.face_count}\n"
+        else:
+            fallback_text += "MDL geometry could not be parsed\n"
+        if not is_3d_viewer_available():
+            fallback_text += "\nInstall pyvista + pyvistaqt to enable 3D preview"
+        self.preview_label.setText(fallback_text)
         self.info_text.setText(file_info)
 
     def _show_pixmap(self, pixmap):

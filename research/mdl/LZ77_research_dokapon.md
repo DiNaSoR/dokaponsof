@@ -42,6 +42,23 @@ Here is my findings and reasearch on the LZ77 compression used in Dokapon Sword 
 - E005.mdl
 ```
 
+## Updated MDL LZ77 Findings (Enemy models)
+- The enemy MDL files use a byte-oriented LZSS stream, **not** the flag-byte / 12-bit-offset variant previously assumed.
+- Header layout (little-endian):
+  - 0x00: `b"LZ77"`
+  - 0x04: decompressed size
+  - 0x08: flag1 (observed to align with compressed stream length but not required)
+  - 0x0C: flag2 (unknown purpose, not needed for decompression)
+- Token format (start at offset 0x10):
+  - If bit 7 is clear: literal byte (token value).
+  - If bit 7 is set: back-reference uses the next byte for the low offset bits.
+    - `length = ((token & 0x7C) >> 2) + 3`  (5 bits, range 3–34)
+    - `offset = (((token & 0x03) << 8) | next_byte) + 1` (10-bit window, range 1–1024)
+  - Continue until `decompressed_size` bytes are produced; stop there even if input remains.
+- Trailing data: after the compressed stream finishes, ~34–36 KB of raw data remains per file. This trailing block is not part of the LZ stream and should be preserved separately if needed.
+- Using this token format fully decompresses E000/E001/E002 to their declared sizes (e.g., E000: 649,400 bytes, consuming 110,650 bytes of compressed data).
+- Earlier attempts with 12-bit offsets only reached ~57–75% of the expected output because the control format was misidentified.
+
 Research:
 ---
 ### Note 001:

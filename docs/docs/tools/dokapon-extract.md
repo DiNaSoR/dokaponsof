@@ -238,10 +238,12 @@ Structure:
 Cell Data
 {: .label .label-blue }
 
+For detailed format documentation, see [MPD Map Format](../technical/mpd-format).
+
 Header Structure:
 ```c
 struct MPDHeader {
-    char magic[4];     // "Cell"
+    char magic[16];    // "Cell" (padded)
     int data_size;     // Size of data section
     int width;         // Image width
     int height;        // Image height
@@ -256,11 +258,18 @@ struct MPDHeader {
 Animation Data
 {: .label .label-purple }
 
-Format:
+For detailed format documentation, see [SPRANM Animation Format](../technical/spranm-format).
+
+Format (two variants):
 ```
-[LZ77 Header (optional)]
-"Sequ" marker
-[PNG Data (if present)]
+Type A - Animation Control (LZ77 compressed):
+[LZ77 Header]
+[Compressed control data]
+
+Type B - Sprite Resource (uncompressed):
+"Sequence" marker
+[Sprite definitions]
+[PNG Data]
 [Animation Data]
 ```
 
@@ -278,17 +287,17 @@ Contains:
 
 ### LZ77 Decompression
 
-The tool implements Nintendo-style LZ77 decompression:
+The tool implements Nintendo-style LZ77 decompression. For detailed format documentation, see [LZ77 Compression Format](../technical/lz77-compression).
 
 ```python
 def decompress_lz77(data: bytes) -> Optional[bytes]:
     """
     Format:
     - 4 byte magic "LZ77"
-    - 4 byte padding
-    - 4 byte compressed size
     - 4 byte decompressed size
-    - Compressed data
+    - 4 byte flag1 (compression parameters)
+    - 4 byte flag2 (additional parameters)
+    - Compressed data stream
     """
 ```
 

@@ -31,8 +31,16 @@ Extract and repack text strings from game executable files with UTF-8 support.
 ## Coming Soon
 
 We're working on additional tools for:
-- Character model modification
+- Character model modification (see [MDL Format](../technical/mdl-format) research)
 - Music replacement
 - Save game editing
+
+## Technical Documentation
+
+For developers working on modding tools, see our [Technical Reference](../technical/) section covering:
+- [LZ77 Compression](../technical/lz77-compression) - The compression algorithm used across formats
+- [MDL Model Format](../technical/mdl-format) - 3D model file structure
+- [SPRANM Animation Format](../technical/spranm-format) - Sprite animation system
+- [MPD Map Format](../technical/mpd-format) - Map and cell data
 
 Want to contribute a tool? Check out our [contribution guidelines](../contributing) or join our [Discord](https://discord.gg/HCrYwScDg5)! 

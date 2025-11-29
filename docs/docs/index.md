@@ -40,6 +40,28 @@ All tools are created by the community, for the community. If you'd like to cont
 - Analyze and modify game audio
 - [Learn more about Voice Pack Extractor](tools/voice-extractor)
 
+### Dokapon Extract
+- Extract textures, sprites, maps, and fonts
+- Handle multiple file formats (.tex, .mpd, .spranm, .fnt)
+- Support for LZ77 decompression
+- [Learn more about Dokapon Extract](tools/dokapon-extract)
+
+## Technical Reference
+
+For modders and developers who want to understand the game's file formats:
+
+### [LZ77 Compression](technical/lz77-compression)
+The compression system used across multiple file formats.
+
+### [MDL Model Format](technical/mdl-format)
+3D model format for characters, enemies, and objects.
+
+### [SPRANM Animation Format](technical/spranm-format)
+Sprite animation format for 2D graphics and effects.
+
+### [MPD Map Format](technical/mpd-format)
+Map and cell data format for game environments.
+
 ## Important Notes
 {: .text-delta }
 

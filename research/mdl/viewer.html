@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokapon MDL Viewer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        #canvas-container {
+            width: 100%;
+            height: calc(100% - 60px);
+        }
+        #controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn {
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+        #info {
+            margin-left: auto;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        #drop-zone {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(233, 69, 96, 0.1);
+            border: 3px dashed #e94560;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+        #drop-zone.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #drop-zone span {
+            font-size: 1.5rem;
+            color: #e94560;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #e94560;
+        }
+        input[type="file"] { display: none; }
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="controls">
+            <h1>🎮 Dokapon MDL Viewer</h1>
+            <input type="file" id="file-input" accept=".obj">
+            <button class="btn" onclick="document.getElementById('file-input').click()">📂 Load OBJ</button>
+            <select id="render-mode" onchange="changeRenderMode()">
+                <option value="solid">Solid</option>
+                <option value="wireframe">Wireframe</option>
+                <option value="points">Points</option>
+            </select>
+            <button class="btn" onclick="resetCamera()">🎯 Reset View</button>
+            <span id="info">Drag & drop OBJ file or click Load</span>
+        </div>
+        <div id="canvas-container"></div>
+        <div id="drop-zone"><span>Drop OBJ file here</span></div>
+        <div id="loading" style="display: none;">Loading...</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script>
+        let scene, camera, renderer, controls, currentModel;
+        let renderMode = 'solid';
+
+        function init() {
+            const container = document.getElementById('canvas-container');
+            
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a2e);
+            
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 10000);
+            camera.position.set(200, 200, 200);
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(100, 200, 100);
+            scene.add(directionalLight);
+            
+            const backLight = new THREE.DirectionalLight(0x4488ff, 0.5);
+            backLight.position.set(-100, -100, -100);
+            scene.add(backLight);
+            
+            // Grid
+            const gridHelper = new THREE.GridHelper(400, 20, 0x444444, 0x222222);
+            scene.add(gridHelper);
+            
+            // Axes
+            const axesHelper = new THREE.AxesHelper(100);
+            scene.add(axesHelper);
+            
+            // Resize handler
+            window.addEventListener('resize', onWindowResize);
+            
+            // File input
+            document.getElementById('file-input').addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            const dropZone = document.getElementById('drop-zone');
+            document.body.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('active');
+            });
+            document.body.addEventListener('dragleave', (e) => {
+                if (e.target === document.body) dropZone.classList.remove('active');
+            });
+            document.body.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('active');
+                if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+            });
+            
+            animate();
+            
+            // Try to load default file
+            loadDefaultModel();
+        }
+
+        function loadDefaultModel() {
+            // Try to load E000_filtered.obj from same directory
+            fetch('E000_filtered.obj')
+                .then(response => {
+                    if (response.ok) return response.text();
+                    throw new Error('Not found');
+                })
+                .then(text => {
+                    parseOBJ(text);
+                    document.getElementById('info').textContent = 'Loaded: E000_filtered.obj';
+                })
+                .catch(() => {
+                    document.getElementById('info').textContent = 'Drag & drop OBJ file or click Load';
+                });
+        }
+
+        function handleFileSelect(e) {
+            if (e.target.files.length) loadFile(e.target.files[0]);
+        }
+
+        function loadFile(file) {
+            document.getElementById('loading').style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                parseOBJ(e.target.result);
+                document.getElementById('info').textContent = `Loaded: ${file.name}`;
+                document.getElementById('loading').style.display = 'none';
+            };
+            reader.readAsText(file);
+        }
+
+        function parseOBJ(text) {
+            // Remove old model
+            if (currentModel) scene.remove(currentModel);
+            
+            const loader = new THREE.OBJLoader();
+            const object = loader.parse(text);
+            
+            // Apply material
+            object.traverse((child) => {
+                if (child.isMesh) {
+                    child.material = new THREE.MeshPhongMaterial({
+                        color: 0xe94560,
+                        flatShading: true,
+                        side: THREE.DoubleSide
+                    });
+                    child.geometry.computeVertexNormals();
+                }
+            });
+            
+            // Center and scale
+            const box = new THREE.Box3().setFromObject(object);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            
+            object.position.sub(center);
+            
+            currentModel = object;
+            scene.add(currentModel);
+            
+            // Adjust camera
+            camera.position.set(maxDim, maxDim, maxDim);
+            controls.target.set(0, 0, 0);
+            controls.update();
+            
+            applyRenderMode();
+        }
+
+        function changeRenderMode() {
+            renderMode = document.getElementById('render-mode').value;
+            applyRenderMode();
+        }
+
+        function applyRenderMode() {
+            if (!currentModel) return;
+            
+            currentModel.traverse((child) => {
+                if (child.isMesh) {
+                    switch(renderMode) {
+                        case 'wireframe':
+                            child.material = new THREE.MeshBasicMaterial({
+                                color: 0xe94560,
+                                wireframe: true
+                            });
+                            break;
+                        case 'points':
+                            child.material = new THREE.PointsMaterial({
+                                color: 0xe94560,
+                                size: 2
+                            });
+                            break;
+                        default:
+                            child.material = new THREE.MeshPhongMaterial({
+                                color: 0xe94560,
+                                flatShading: true,
+                                side: THREE.DoubleSide
+                            });
+                    }
+                }
+            });
+        }
+
+        function resetCamera() {
+            if (!currentModel) {
+                camera.position.set(200, 200, 200);
+            } else {
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                camera.position.set(maxDim, maxDim, maxDim);
+            }
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('canvas-container');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
+
