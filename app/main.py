@@ -32,7 +32,7 @@ def main():
     
     # Set application metadata
     app.setApplicationName("Dokapon SoF Tools")
-    app.setApplicationVersion("0.2.0")
+    app.setApplicationVersion("0.3.0")
     app.setOrganizationName("DiNaSoR")
     app.setDesktopFileName("dokapon-sof-tools")
     

@@ -14,6 +14,8 @@ from .widgets.sidebar import ModernSidebar
 from .tabs.asset_tab import AssetExtractorTab
 from .tabs.text_tab import TextTab
 from .tabs.voice_tab import VoiceExtractorTab
+from .tabs.hex_tab import HexEditorTab
+from .tabs.video_tab import VideoTab
 from .tabs.about_tab import AboutTab
 from .styles import COLORS
 from datetime import datetime
@@ -65,11 +67,15 @@ class DokaponToolsGUI(QMainWindow):
         self.asset_tab = AssetExtractorTab()
         self.text_tab = TextTab()
         self.voice_tab = VoiceExtractorTab()
+        self.hex_tab = HexEditorTab()
+        self.video_tab = VideoTab()
         self.about_tab = AboutTab()
         
         self.stacked_widget.addWidget(self.asset_tab)
         self.stacked_widget.addWidget(self.text_tab)
         self.stacked_widget.addWidget(self.voice_tab)
+        self.stacked_widget.addWidget(self.hex_tab)
+        self.stacked_widget.addWidget(self.video_tab)
         self.stacked_widget.addWidget(self.about_tab)
         
         content_layout.addWidget(self.stacked_widget, stretch=1)
@@ -78,6 +84,8 @@ class DokaponToolsGUI(QMainWindow):
         self.asset_tab.status_updated.connect(self._update_status)
         self.text_tab.status_updated.connect(self._update_status)
         self.voice_tab.status_updated.connect(self._update_status)
+        self.hex_tab.status_updated.connect(self._update_status)
+        self.video_tab.status_updated.connect(self._update_status)
         
         # Create status panel
         status_panel = self._create_status_panel()
@@ -137,8 +145,8 @@ class DokaponToolsGUI(QMainWindow):
         """Handle sidebar navigation changes."""
         self.stacked_widget.setCurrentIndex(index)
         
-        # Handle about tab music
-        if index == 3:  # About tab
+        # Handle about tab music (now at index 5)
+        if index == 5:  # About tab
             if hasattr(self.about_tab, 'media_player'):
                 self.about_tab.media_player.play()
         else:
@@ -179,7 +187,7 @@ class DokaponToolsGUI(QMainWindow):
     def _save_status_log(self):
         """Save status log to a text file."""
         # Get current view name for filename
-        view_names = ["asset_extractor", "text_tools", "voice_tools", "about"]
+        view_names = ["asset_extractor", "text_tools", "voice_tools", "hex_editor", "video_tools", "about"]
         current_view = view_names[self.stacked_widget.currentIndex()]
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -216,7 +224,7 @@ class DokaponToolsGUI(QMainWindow):
             self.about_tab.media_player.stop()
         
         # Clean up workers in each tab
-        for tab in [self.asset_tab, self.text_tab, self.voice_tab]:
+        for tab in [self.asset_tab, self.text_tab, self.voice_tab, self.hex_tab, self.video_tab]:
             if hasattr(tab, 'workers'):
                 for worker in tab.workers:
                     if worker.isRunning():
