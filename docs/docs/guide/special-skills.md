@@ -46,13 +46,13 @@ PASSIVE
 
 | Character | Effect |
 |:----------|:-------|
-| **Scoop** | Can use 1 item and 1 field magic per turn |
+| **Scop** | Can use 1 item and 1 field magic per turn |
 | **Urara** | Recovers HP equal to Level × 2 at turn start |
 | **Gamamaru** | Can use 2 items per turn |
 | **Burikin** | ~1/6 chance to cure status effects at turn start (including stat downs) |
 | **Molde** | Can use 2 field magic per turn |
 | **Don** | ~1/6 chance for Multi Crystal effect |
-| **Waltz** | 1.5x non-HP stats when HP below 20% (rounded down) |
+| **Valtz** | 1.5x non-HP stats when HP below 20% (rounded down) |
 | **Wiwi** | ~1/8 chance to duplicate held items |
 
 ## Battle Skills
@@ -68,21 +68,21 @@ COMBAT
 | **Rampage** | 75% | Reduces both players' HP by half |
 | **Swift Feet** | 100% | Doubles SP |
 | **Vital Strike** | 100% | Reduces target's HP to 1/8 |
-| **Head Strike** | 75% | Next hit kills target if it lands |
+| **Decapitation** | 75% | Next hit kills target if it lands |
 | **Energy** | 50% | Recovers 9999 HP |
 | **Tickle** | 40% | Makes target drop their weapon |
-| **Zantetsu Sword** | 100% | Destroys target's armor on hit |
-| **Opening Strike** | 100% | Reduces target's HP to 1/4 |
+| **Iaido** | 100% | Destroys target's armor on hit |
+| **Crit Opening** | 100% | Reduces target's HP to 1/4 |
 | **Power Charge** | 90% | Increases AT by 1.5x (stackable) |
 | **Magic Charge** | 90% | Increases MG by 1.5x (stackable) |
-| **Guard** | 100% | Doubles DF |
+| **Brace** | 100% | Doubles DF |
 
 ### Status Effect Skills
 
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
 | **Song** | 100% | Confuses target (random commands) |
-| **Shout** | 100% | Seals Attack/Defense Magic for 1-2 turns |
+| **War Cry** | 100% | Seals Attack/Defense Magic for 1-2 turns |
 | **Bite** | 100% | Lose 1/16 HP per turn |
 | **Big Bite** | 100% | Lose 1/8 HP per turn |
 | **Blood Drain** | 100% | Drains half of target's HP |
@@ -98,41 +98,41 @@ COMBAT
 |:-----|:-------------|:-------|
 | **Vanish** | 100% | Physical attacks miss for 2-3 turns |
 | **Harden** | 75% | Immune to physical damage for 2-3 turns |
-| **Flee** | 90% | Escape battle without penalty |
-| **Equipment Target** | 80% | Next hit destroys random equipment |
+| **Escape** | 90% | Escape battle without penalty |
+| **Target Gear** | 80% | Next hit destroys random equipment |
 | **Steal** | 100% | Takes one item (not returned if defeated) |
 | **Magic Pull** | 75% | Reduces Attack Magic uses |
-| **Copy** | 75% | Copies 1-4 stats higher than user's |
+| **Mimic** | 75% | Copies 1-4 stats higher than user's |
 | **Transform** | 100% | Becomes exact copy of target |
-| **Caltrops** | 50% | Halves HP each turn + on skill use |
+| **Thorn Spray** | 50% | Halves HP each turn + on skill use |
 | **Healing Light** | 100% | Fully heals both players |
 | **Fire** | 10% | May destroy Attack/Defense Magic |
-| **Act Dumb** | 90% | Becomes immune to magic |
+| **Play Dumb** | 90% | Becomes immune to magic |
 
 ### Monster-Exclusive Skills
 
 | Name | Success Rate | Effect |
 |:-----|:-------------|:-------|
-| **Walsa's Skills** | Varies | Changes each battle |
+| **Wallace's Skills** | Varies | Changes each battle |
 
 {: .important }
 > Walsa's Skills  
-> Walsa can use any battle skill and changes skills each battle, making him unpredictable
+> Wallace can use any battle skill and changes skills each battle, making him unpredictable
 
 {: .note }
 > Skill Counters  
 > Many skills can be countered by specific treasures:
-> - Charm/Fear resistance from Void Chakra
-> - Shout/Song resistance from Noise Canceller
+> - Charm/Fear resistance from Chakra
+> - War Cry/Song resistance from Earplugs
 > - Steal/Magic Pull resistance from Silver Chain
-> - Poison resistance from Poison Jizo
-> - Bite/Big Bite resistance from Red Medicine
-> - Weaken resistance from Healing Bandage
-> - Petrify resistance from Magnet Necklace
-> - Opening/Vital Strike resistance from Insight Sake
-> - Equipment Target resistance from Mithril Brace
+> - Poison resistance from Pure Statue
+> - Bite/Big Bite resistance from Red Bottle
+> - Weaken resistance from Heal Band
+> - Petrify resistance from Magnecklace
+> - Crit Opening/Vital Strike resistance from Insight Specs
+> - Target Gear resistance from Mythril Band
 > - Blood Drain resistance from Red Diamond
-> - Head Strike resistance from Guard Bracelet
+> - Decapitation resistance from Guard Amulet
 > - Tickle resistance from Bitter Bug
 
 {: .note }

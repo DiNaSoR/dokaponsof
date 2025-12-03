@@ -51,18 +51,18 @@ Complete reference for all treasures and their effects in DOKAPON! Sword of Fury
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 1 | ★ | ノミのしんぞう | Heart of Flea | ○ | ○ | | | 10,000 | HP +1 |
-| 2 | ★★ | 鉄のしんぞう | Heart of Iron | ○ | ○ | | | 30,000 | HP +3 |
-| 9 | ★ | マッスルピアス | Muscle Pierce | ○ | ○ | ○ | | 10,000 | Attack +1 |
+| 1 | ★ | ノミのしんぞう | Flea's Heart | ○ | ○ | | | 10,000 | HP +1 |
+| 2 | ★★ | 鉄のしんぞう | Iron Nucleus | ○ | ○ | | | 30,000 | HP +3 |
+| 9 | ★ | マッスルピアス | Stud Earring | ○ | ○ | ○ | | 10,000 | Attack +1 |
 | 10 | ★ | ゴーレムストーン | Golem Stone | ○ | ○ | ○ | | 10,000 | Defense +1 |
 | 11 | ★ | マジシャンハット | Magician Hat | ○ | ○ | ○ | | 10,000 | Magic +1 |
-| 12 | ★ | スピードバッシュ | Speed Bash | ○ | ○ | ○ | | 10,000 | Speed +1 |
+| 12 | ★ | スピードバッシュ | Speedy Kicks | ○ | ○ | ○ | | 10,000 | Speed +1 |
 | 13 | ★★ | ハッピーセット | Happy Set | | ○ | | Junky (Allied) | 55,000 | All Stats +1 |
 | 14 | ★★ | ミラクルキューブ | Miracle Cube | | | ○ | Reward | 58,000 | +1 Bonus Point on Level Up |
-| 51 | ★★ | マジックベルト | Magic Belt | ○ | ○ | ○ | | 30,000 | Attack +3 |
-| 52 | ★★ | コンクリトン | Concretion | ○ | ○ | ○ | | 30,000 | Defense +3 |
-| 53 | ★★ | ずのうパン | Brain Bread | ○ | ○ | ○ | | 30,000 | Magic +3 |
-| 54 | ★★ | かそくそうち | Accelerator | ○ | ○ | ○ | | 30,000 | Speed +3 |
+| 51 | ★★ | マジックベルト | Magical Belt | ○ | ○ | ○ | | 30,000 | Attack +3 |
+| 52 | ★★ | コンクリトン | Concreite | ○ | ○ | ○ | | 30,000 | Defense +3 |
+| 53 | ★★ | ずのうパン | Brainy Bread | ○ | ○ | ○ | | 30,000 | Magic +3 |
+| 54 | ★★ | かそくそうち | Fast Machine | ○ | ○ | ○ | | 30,000 | Speed +3 |
 | 55 | ★★★ | ドカポソクラウン | Dokaposo Crown | | ○ | | | 64,000 | All Stats +2 |
 | 56 | ★★★ | ドカポソハート | Dokaposo Heart | | ○ | | Reward | 256,000 | Magic +3, HP +3 |
 | 57 | ★★★ | ドカポソリング | Dokaposo Ring | | ○ | | Casino | 64,000 | Attack +3, Defense +3, Speed +3 |
@@ -74,111 +74,111 @@ Complete reference for all treasures and their effects in DOKAPON! Sword of Fury
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 6 | BAD | 何かイヤなモノ | Something Bad | ○ | | ○ | | 187,000 | All Stats -1 |
-| 8 | BAD | ふこうのかたまり | Chunk of Misfortune | | ○ | | | 5,000,000 | All Stats -5 |
+| 6 | BAD | 何かイヤなモノ | Icky Thingy | ○ | | ○ | | 187,000 | All Stats -1 |
+| 8 | BAD | ふこうのかたまり | Misfortune Clump | | ○ | | | 5,000,000 | All Stats -5 |
 | 15 | BAD | ずつうのタネ | Headache Seed | ○ | ○ | | | 18,700 | Magic -1 |
-| 16 | BAD | パワーレスト | Powerless | ○ | ○ | | | 18,700 | Attack -1 |
-| 17 | BAD | ソフトビネガー | Soft Vinegar | ○ | ○ | | | 18,700 | Defense -1 |
-| 18 | BAD | 鉄の足かせ | Iron Shackles | ○ | ○ | | | 18,700 | Speed -1 |
-| 89 | ★★ | ウラミのきもち | Grudge Heart | | ○ | | | 444 | Grudge builds up faster |
+| 16 | BAD | パワーレスト | Power Wrest | ○ | ○ | | | 18,700 | Attack -1 |
+| 17 | BAD | ソフトビネガー | Acid Vinegar | ○ | ○ | | | 18,700 | Defense -1 |
+| 18 | BAD | 鉄の足かせ | Iron Shackle | ○ | ○ | | | 18,700 | Speed -1 |
+| 89 | ★★ | ウラミのきもち | Hate Essence | | ○ | | | 444 | Grudge builds up faster |
 
 ### Field Magic Protection Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 36 | ★ | 氷ウチワ | Ice Fan | ○ | | ○ | | 12,000 | Reduces fire field magic damage |
-| 37 | ★ | しっぽアース | Tail Earth | ○ | | ○ | | 12,000 | Reduces thunder field magic damage |
-| 38 | ★ | ヒーターマフラー | Heater Muffler | ○ | | ○ | | 12,000 | Reduces ice field magic damage |
-| 39 | ★ | きいろいドカヘル | Yellow Dokahelm | ○ | | ○ | | 12,000 | Reduces earthquake field magic damage |
-| 40 | ★ | マメシェルター | Bean Shelter | ○ | | ○ | | 12,000 | Reduces explosive field magic damage |
+| 36 | ★ | 氷ウチワ | Icy Fan | ○ | | ○ | | 12,000 | Reduces fire field magic damage |
+| 37 | ★ | しっぽアース | Ground Tail | ○ | | ○ | | 12,000 | Reduces thunder field magic damage |
+| 38 | ★ | ヒーターマフラー | Heated Scarf | ○ | | ○ | | 12,000 | Reduces ice field magic damage |
+| 39 | ★ | きいろいドカヘル | Dokahelm | ○ | | ○ | | 12,000 | Reduces earthquake field magic damage |
+| 40 | ★ | マメシェルター | Mini Shelter | ○ | | ○ | | 12,000 | Reduces explosive field magic damage |
 | 41 | ★★ | ひらリング | Hira Ring | ○ | ○ | | Mystery Man | 63,400 | Field magic evasion rate up |
-| 81 | ★★ | 法力のジュズ | Prayer Beads | ○ | | ○ | Reward | 50,000 | Field magic accuracy up |
+| 81 | ★★ | 法力のジュズ | St Patience | ○ | | ○ | Reward | 50,000 | Field magic accuracy up |
 
 ### Terrain Protection Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 27 | ★ | 防毒マスク | Gas Mask | ○ | | ○ | Reward | 8,000 | No poison from poison swamps |
+| 27 | ★ | 防毒マスク | Hazmat Mask | ○ | | ○ | Reward | 8,000 | No poison from poison swamps |
 | 28 | ★ | 雪かき手ぶくろ | Snow Gloves | ○ | | ○ | Reward | 5,000 | No movement penalty in snow |
-| 29 | ★ | 超合金ゲタ | Super Alloy Geta | ○ | | ○ | Reward | 1,500 | No damage from spike spaces |
+| 29 | ★ | 超合金ゲタ | Tin Sandals | ○ | | ○ | Reward | 1,500 | No damage from spike spaces |
 | 30 | ★ | アクアペンダント | Aqua Pendant | ○ | | ○ | Reward | 10,000 | No damage in Bukubuku Temple |
-| 31 | ★ | 雨ガッパ | Rain Coat | ○ | | ○ | Reward | 10,000 | No damage from stomach acid |
+| 31 | ★ | 雨ガッパ | Rain Kappa | ○ | | ○ | Reward | 10,000 | No damage from stomach acid |
 
 ### Monster Skill Protection Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 60 | ★ | むがのチャクラ | Void Chakra | ○ | | ○ | | 8,000 | Reduces Charm/Fear success rate |
-| 61 | ★ | ぼうおんみみせん | Noise Canceller | ○ | | ○ | | 8,000 | Reduces Shout/Song success rate |
+| 60 | ★ | むがのチャクラ | Chakra | ○ | | ○ | | 8,000 | Reduces Charm/Fear success rate |
+| 61 | ★ | ぼうおんみみせん | Earplugs | ○ | | ○ | | 8,000 | Reduces Shout/Song success rate |
 | 62 | ★ | シルバーチェーン | Silver Chain | ○ | | ○ | | 8,000 | Reduces Steal/Magic Pull success rate |
-| 63 | ★ | 毒ぬきじぞう | Poison Jizo | ○ | | ○ | | 8,000 | Reduces Poison success rate |
-| 64 | ★ | 赤チンボトル | Red Medicine | ○ | | ○ | | 8,000 | Reduces Bite attack success rate |
-| 65 | ★ | いやしのホウタイ | Healing Bandage | ○ | | ○ | | 8,000 | Reduces Weaken success rate |
-| 66 | ★ | マグネックレス | Magnet Necklace | ○ | | ○ | | 8,000 | Reduces Petrify success rate |
-| 67 | ★ | 見切りおみき | Insight Sake | ○ | | ○ | | 8,000 | Reduces Opening/Vital Strike success rate |
-| 68 | ★ | ミスリルブレス | Mithril Brace | ○ | | ○ | | 8,000 | Reduces Equipment Targeting success rate |
+| 63 | ★ | 毒ぬきじぞう | Pure Statue | ○ | | ○ | | 8,000 | Reduces Poison success rate |
+| 64 | ★ | 赤チンボトル | Red Bottle | ○ | | ○ | | 8,000 | Reduces Bite attack success rate |
+| 65 | ★ | いやしのホウタイ | Heal Band | ○ | | ○ | | 8,000 | Reduces Weaken success rate |
+| 66 | ★ | マグネックレス | Magnecklace | ○ | | ○ | | 8,000 | Reduces Petrify success rate |
+| 67 | ★ | 見切りおみき | Insight Specs | ○ | | ○ | | 8,000 | Reduces Opening/Vital Strike success rate |
+| 68 | ★ | ミスリルブレス | Mythril Band | ○ | | ○ | | 8,000 | Reduces Equipment Targeting success rate |
 | 69 | ★ | レッドダイヤ | Red Diamond | ○ | | ○ | | 8,000 | Reduces Blood Drain success rate |
-| 70 | ★ | ガーディのうでわ | Guard Bracelet | ○ | | ○ | | 8,000 | Reduces Head Targeting success rate |
+| 70 | ★ | ガーディのうでわ | Guard Amulet | ○ | | ○ | | 8,000 | Reduces Head Targeting success rate |
 | 71 | ★ | ニガムシ | Bitter Bug | ○ | | ○ | | 8,000 | Reduces Tickle success rate |
 
 ### Movement Effect Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 32 | ★ | ピコピコサンダル | Picopico Sandals | ○ | | ○ | | 120 | Makes sound when moving |
+| 32 | ★ | ピコピコサンダル | Loud Sandals | ○ | | ○ | | 120 | Makes sound when moving |
 | 33 | ★★ | ラッキーシューズ | Lucky Shoes | | ○ | ○ | Lost Dog Punch | 8,000 | Heal 1 HP per step |
-| 34 | ★★ | ウハウハブーツ | Uhuhu Boots | | | | Lost Dog Punch | 5,800 | Gain 1 EXP per step |
-| 35 | ★★ | キラキラゾウリ | Kirakira Zori | | | | Lost Dog Punch | 3,000 | Gain 1G per step |
+| 34 | ★★ | ウハウハブーツ | Smiley Boots | | | | Lost Dog Punch | 5,800 | Gain 1 EXP per step |
+| 35 | ★★ | キラキラゾウリ | Gold Sandals | | | | Lost Dog Punch | 3,000 | Gain 1G per step |
 
 ### Church & Bank Items
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 19 | ★ | しんじゃのクロス | Holy Cross | | | ○ | | 1,500 | Church healing costs halved |
-| 20 | ★ | しとのパスポート | Saint Passport | ○ | | ○ | Reward | 3,200 | Church warp costs halved |
+| 19 | ★ | しんじゃのクロス | Temple Cross | | | ○ | | 1,500 | Church healing costs halved |
+| 20 | ★ | しとのパスポート | Temple Pass | ○ | | ○ | Reward | 3,200 | Church warp costs halved |
 | 42 | ★★ | ＶＩＰバッジ | VIP Badge | | | | Mystery Man | 120,000 | Bank interest rate up |
 
 ### Turn Start Effect Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 45 | ★ | デジステ | Digital Pet | ○ | | ○ | | 18,000 | None |
+| 45 | ★ | デジステ | Gamestation | ○ | | ○ | | 18,000 | None |
 | 46 | ★★ | ラッキースター | Lucky Star | ○ | | ○ | Reward | 30,000 | Random full HP recovery at turn start |
-| 47 | ★★ | 幸せガマグチ | Happy Wallet | ○ | | ○ | Reward | 1,800 | Random gain of Week × 1000G at turn start |
-| 79 | ★★ | ふしぎなポケット | Strange Pocket | ○ | | ○ | | 50,000 | Random item/magic duplication at turn start |
-| 80 | ★★ | とびからスパイス | Flying Spice | | | ○ | | 50,000 | Random status recovery at turn start |
-| 82 | ★★ | とくとくダイス | Lucky Dice | ○ | | ○ | Reward | 50,000 | Random Multi Crystal effect at turn start |
+| 47 | ★★ | 幸せガマグチ | Happy Purse | ○ | | ○ | Reward | 1,800 | Random gain of Week × 1000G at turn start |
+| 79 | ★★ | ふしぎなポケット | Magic Pocket | ○ | | ○ | | 50,000 | Random item/magic duplication at turn start |
+| 80 | ★★ | とびからスパイス | Red Hot Chili | | | ○ | | 50,000 | Random status recovery at turn start |
+| 82 | ★★ | とくとくダイス | Loaded Dice | ○ | | ○ | Reward | 50,000 | Random Multi Crystal effect at turn start |
 
 ### ? Space Protection Series
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 83 | ★★ | ブランドバッグ | Brand Bag | | ○ | | | 185,000 | Don't drop items/magic on ? spaces |
-| 84 | ★★ | サイフのヒモ | Wallet String | | ○ | | | 25,000 | Don't drop money on ? spaces |
-| 85 | ★★ | 守りのごふ | Protection Charm | | ○ | | Casino | 25,000 | No damage/status from ? spaces |
+| 83 | ★★ | ブランドバッグ | Designer Bag | | ○ | | | 185,000 | Don't drop items/magic on ? spaces |
+| 84 | ★★ | サイフのヒモ | Purse String | | ○ | | | 25,000 | Don't drop money on ? spaces |
+| 85 | ★★ | 守りのごふ | Pig Protect | | ○ | | Casino | 25,000 | No damage/status from ? spaces |
 
 ### Special Effect Treasures
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 3 | ★★★ | めがみフィギュア | Goddess Figure | | ○ | | | 500,000 | None |
+| 3 | ★★★ | めがみフィギュア | Goddess Idol | | ○ | | | 500,000 | None |
 | 4 | ★ | ドカポンランド４ | Dokapon Land 4 | | | | Junky (Allied) | 7,800 | None |
 | 5 | ★ | ドカポン３２１ | Dokapon 321 | | | | Junky (Allied) | 8,900 | None |
-| 7 | ★ | ただの名物 | Just a Specialty | ○ | | ○ | | 2,000 | None |
+| 7 | ★ | ただの名物 | Local Goods | ○ | | ○ | | 2,000 | None |
 | 21 | ☆ | どくろストーン | Skull Stone | | | | Synthesis | 5,000,000 | None |
 | 26 | ★★★ | 戦士のじゅう | Warrior Equipment | | | ○ | | 800,000 | None |
-| 43 | ★ | 人気モノリス | Popular Monolith | ○ | | ○ | | 7,000 | Cheers play on battle victory |
+| 43 | ★ | 人気モノリス | Fame Stone | ○ | | ○ | | 7,000 | Cheers play on battle victory |
 | 44 | ★ | ヒイの木 | Bonsai Tree | ○ | | ○ | | 5,800 | God praises you |
-| 48 | ★ | クールリング | Cool Ring | ○ | | ○ | | 78,000 | None |
-| 49 | ★★★ | シュールリング | Sure Ring | | ○ | | | 250,000 | None |
-| 50 | ★★ | ヒールリング | Heal Ring | | | | Mercy | 666 | Grudge builds up slower |
+| 48 | ★ | クールリング | Shiny Ring | ○ | | ○ | | 78,000 | None |
+| 49 | ★★★ | シュールリング | Surreal Ring | | ○ | | | 250,000 | None |
+| 50 | ★★ | ヒールリング | Heel Ring | | | | Mercy | 666 | Grudge builds up slower |
 | 58 | ★ | ドカポソオーブ | Dokaposo Orb | ○ | ○ | ○ | | 2,980 | None |
 | 59 | ★ | ドカポソボール | Dokaposo Ball | ○ | ○ | ○ | | 500 | None |
 | 72 | ★ | イケてるマスク | Cool Mask | ○ | | ○ | | 8,000 | None |
-| 73 | ★★ | とうしメガネ | Investor Glasses | | | | Casino | 36,000 | Random "Mierundesu" effect at battle start |
-| 86 | ☆ | 金食いムシ | Money Eater | | | | Casino | 2,000,000 | Costs 10,000G maintenance per week |
-| 87 | ★ | ルパンのハリガネ | Lupin's Wire | | | ○ | Reward | 1,980 | Can open treasure without Magic Key |
-| 88 | ★★ | ブッダの心 | Buddha's Heart | | ○ | | | 550,000 | Grudge builds up slower |
+| 73 | ★★ | とうしメガネ | Insight Specs | | | | Casino | 36,000 | Random "Mierundesu" effect at battle start |
+| 86 | ☆ | 金食いムシ | Money Grub | | | | Casino | 2,000,000 | Costs 10,000G maintenance per week |
+| 87 | ★ | ルパンのハリガネ | Lupin Wire | | | ○ | Reward | 1,980 | Can open treasure without Magic Key |
+| 88 | ★★ | ブッダの心 | Buddha Beads | | ○ | | | 550,000 | Grudge builds up slower |
 | 90 | ☆ | まんねんパズル | Eternal Puzzle | | | | Reward | 1,000,000 | Stats up when HP below 10% |
 | 94 | ☆ | ドカポンオーブ | Dokapon Orb | | | | Monster | 5,000,000 | None |
 | 100 | ☆ | 魔王のタマゴ | Devil's Egg | | | | | 444,444 | Magic World national treasure |
@@ -187,20 +187,20 @@ Complete reference for all treasures and their effects in DOKAPON! Sword of Fury
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
-| 22 | ★★★ | 何かのカケラ | Something Fragment | | | | Getus | 1,000 | Part of Skull Stone |
-| 23 | ★★★ | 何かのぶひん | Something Part | | ○ | | Getus | 1,000 | Part of Skull Stone |
-| 24 | ★★★ | 何かのパーツ | Something Piece | | | | Getus | 1,000 | Part of Skull Stone |
-| 25 | ★★★ | 何かのはへん | Something Shard | | | | Getus | 1,000 | Part of Skull Stone |
+| 22 | ★★★ | 何かのカケラ | Some Bit | | | | Getus | 1,000 | Part of Skull Stone |
+| 23 | ★★★ | 何かのぶひん | Some Part | | ○ | | Getus | 1,000 | Part of Skull Stone |
+| 24 | ★★★ | 何かのパーツ | Some Piece | | | | Getus | 1,000 | Part of Skull Stone |
+| 25 | ★★★ | 何かのはへん | Some Shard | | | | Getus | 1,000 | Part of Skull Stone |
 
 ### Shining Seasons Parts
 
 | # | Rarity | Name (JP) | Name (EN) | Village | ? Space | Garmets | Event | Value | Effect |
 |---|--------|-----------|-----------|---------|---------|---------|-------|-------|--------|
 | 74 | ☆ | カガヤイタキセツ | Shining Seasons | | | | Synthesis | 500,000 | None |
-| 75 | ★★ | 春のトキメキ | Spring Romance | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
+| 75 | ★★ | 春のトキメキ | Spring Excitia | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
 | 76 | ★★ | 夏のオモイデ | Summer Memories | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
-| 77 | ★★ | 秋のタソガレ | Autumn Twilight | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
-| 78 | ★★ | 冬はナベダロ | Winter is Nabe | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
+| 77 | ★★ | 秋のタソガレ | Autumn Blues | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
+| 78 | ★★ | 冬はナベダロ | Winter Feast | | | | Village Chief's Granddaughter | 10,000 | Part of Shining Seasons |
 
 ### Dokapon Ball Parts
 

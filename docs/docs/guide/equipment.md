@@ -90,21 +90,21 @@ Many weapons have special effects:
 
 | Name (EN) | Name (JP) | Price | AT | Type | Shop | Drop | Other | Special Effect |
 |-----------|-----------|-------|-----|------|------|------|-------|----------------|
-| Cheap Sword | 安い剣 | 40 | 2 | Sword | - | - | Starting equipment | - |
+| Shabby Sword | 安い剣 | 40 | 2 | Sword | - | - | Starting equipment | - |
 | Super Rare Axe | ゲキレアックス | 1,000,000 | 3 | Axe | - | - | Ch.6+ ? Space | - |
-| Steak Knife | ステーキナイフ | 450 | 4 | Knife | Hajimaris | - | - | - |
+| Carving Knife | ステーキナイフ | 450 | 4 | Knife | Hajimaris | - | - | - |
 | Club | こんぼう | 2,500 | 8 | Mace | Hajimaris | - | - | - |
 | Hand Axe | ハンドアックス | 5,600 | 12 | Axe | Hajimaris | - | - | - |
 | Poison Dagger | ポイズンダガー | 4,200 | 13 | Knife | - | - | Ch.1+ ? Space | ~1/5 chance to Poison on Attack/Deathblow |
 | BJ Knife | BJナイフ | 560 | 14 | Knife | - | Kemumaki | - | - |
 | Light Rod | ライトロッド | 6,800 | 16 | Staff | Vejetarin | - | - | - |
 | Femeles Bow | フィメレスの弓 | 2,700 | 18 | Bow | - | Snipe Elf | - | - |
-| Woodcutter's Axe | 木こりのオノ | 1,620 | 19 | Axe | - | Stump Ghost | - | - |
-| Yakuza Blade | カチコミブレード | 9,200 | 20 | Sword | Vejetarin | - | - | - |
+| Wood Axe | 木こりのオノ | 1,620 | 19 | Axe | - | Stump Ghost | - | - |
+| Local Assault | カチコミブレード | 9,200 | 20 | Sword | Vejetarin | - | - | - |
 | Light Bow | ライトボウ | 11,600 | 25 | Bow | Vejetarin | - | - | - |
 | Survival Knife | サバイバルナイフ | 14,000 | 27 | Knife | Sunabada | - | - | - |
 | Gokudo Sword | ゴクドーソード | 560 | 29 | Sword | - | Sand Lizard | - | - |
-| Power Wrist | パワーリスト | 17,600 | 30 | Fist | Sunabada | - | - | - |
+| Power Wrest | パワーリスト | 17,600 | 30 | Fist | Sunabada | - | - | - |
 
 ### Mid-Game Weapons (AT 32-75)
 
@@ -118,14 +118,14 @@ Many weapons have special effects:
 | Assassin Dagger | アサシンダガー | 24,000 | 42 | Knife | - | Hattori | - | ~1/10 Attack→Deathblow. **CURSED** |
 | Killer Tomahawk | キラートマホーク | 560 | 42 | Axe | - | Minotaur | - | - |
 | Long Bow | ロングボウ | 30,800 | 43 | Bow | Cisneitor | - | - | - |
-| Lorilin Saber | ロリリンセイバー | 1,620 | 46 | Sword | - | Bean Sprout | - | - |
+| Lolirin Saber | ロリリンセイバー | 1,620 | 46 | Sword | - | Bean Sprout | - | - |
 | Bringer Sword | ブリンガソード | 35,300 | 48 | Sword | Cisneitor | Beheading Knight | - | - |
 | Anubis Sword | アヌビスの剣 | 35,000 | 49 | Sword | - | Bone General | - | ~1/10 Attack chosen randomly. **CURSED** |
 | Indra | インドラ | 2,700 | 53 | Sword | - | Tutankhamun | - | May destroy YOUR armor |
 | Dream Staff | 幻夢のつえ | 6,900 | 53 | Staff | - | Snake Shaman | - | ~1/5 chance to Sleep on hit |
 | Javelin | ジャベリン | 41,500 | 54 | Spear | Cisneitor | - | - | - |
 | Heavy Mace | ヘビーメイス | 47,700 | 60 | Mace | Hiyarinko | - | - | - |
-| Lupin Sword | ルパンザソード | 40 | 62 | Sword | - | Amazones Queen | - | Steal half of enemy's gold on hit |
+| Lupan Sword | ルパンザソード | 40 | 62 | Sword | - | Amazones Queen | - | Steal half of enemy's gold on hit |
 | Battle Axe | バトルアックス | 54,800 | 66 | Axe | Hiyarinko | - | - | - |
 | Iron Claw | アイアンクロー | 62,000 | 73 | Fist | Hiyarinko | - | - | - |
 | Full Moon Bow | 満月の弓 | 1,620 | 74 | Bow | - | Vampire Horror | - | - |
@@ -135,7 +135,7 @@ Many weapons have special effects:
 
 | Name (EN) | Name (JP) | Price | AT | Type | Shop | Drop | Other | Special Effect |
 |-----------|-----------|-------|-----|------|------|------|-------|----------------|
-| Ken's Dagger | ケンさんのドス | 69,200 | 77 | Knife | Civuzail | - | - | - |
+| Ken's Knife | ケンさんのドス | 69,200 | 77 | Knife | Civuzail | - | - | - |
 | Iron Rod | アイアンロッド | 77,400 | 83 | Staff | Civuzail | - | - | - |
 | Ice Javelin | アイスジャベリン | 4,200 | 83 | Spear | - | Demon Machine | Reizokko Cave Chest | ~1/4 Attack becomes Ice element |
 | Lance | ランス | 86,000 | 88 | Spear | Civuzail | - | - | - |
@@ -175,10 +175,10 @@ Many weapons have special effects:
 | Orichalcum | オリハルコン | 2,700 | 158 | Knife | - | Deep Sea Demon | - | - |
 | Megaton Hammer | メガトンハンマー | 359,100 | 161 | Mace | Fumo | - | - | - |
 | Dragon Buster | ドラゴンバスター | 429,600 | 166 | Sword | Fumo | - | - | - |
-| Flame Sword | 火炎剣 | 6,900 | 166 | Sword | - | Amon | - | ~1/4 Attack becomes Fire element |
+| Inferno Sword | 火炎剣 | 6,900 | 166 | Sword | - | Amon | - | ~1/4 Attack becomes Fire element |
 | Heaven's Bow | ヘブンズボウ | 6,900 | 168 | Bow | - | - | ??? | - |
 | Unicorn Spear | ユニコーンスピア | 560 | 168 | Spear | - | - | Bubble Tower Chest | - |
-| Cursed Blade Nihil | 妖刀ニヒル | 136,660 | 172 | Sword | - | - | Demon Castle Chest | Lose 1/8 HP but ~1/4 chance for 9999 damage. **CURSED** |
+| Nihilist Sword | 妖刀ニヒル | 136,660 | 172 | Sword | - | - | Demon Castle Chest | Lose 1/8 HP but ~1/4 chance for 9999 damage. **CURSED** |
 | Dragon Sword | 剛竜剣 | 4 | 185 | Sword | - | - | Devilerman | - |
 
 ---
@@ -251,27 +251,27 @@ These weapons cannot be unequipped without paying to remove the curse at a churc
 
 | Name (EN) | Name (JP) | Price | DF | Shop | Drop | Other | Special Effect |
 |-----------|-----------|-------|----|------|------|-------|----------------|
-| **Ragged Clothes** | ボロいふく | (10) | 1 | - | - | Starting equipment | - |
+| **Tattered Rags** | ボロいふく | (10) | 1 | - | - | Starting equipment | - |
 | **Jersey** | ジャージ | 280 | 3 | Hajimaris | - | - | - |
-| **Morning Robe** | あさのローブ | 1,600 | 5 | Hajimaris | - | - | - |
+| **Hemp Robe** | あさのローブ | 1,600 | 5 | Hajimaris | - | - | - |
 | **Bargain Suit** | バーゲンスーツ | 4,300 | 9 | Hajimaris | - | - | - |
 | **Tin Armor** | ブリキアーマー | 5,200 | 12 | Vejetarin | - | - | - |
 | **Leather Armor** | レザーアーマー | 8,300 | 16 | Vejetarin | - | - | - |
 | **Iron Haramaki** | 鉄のハラマキ | 12,900 | 18 | Vejetarin | - | - | - |
-| **Tengu Dougi** | てんぐのどうぎ | 17,400 | 21 | Sunabada | - | - | - |
+| **Tengu Gi** | てんぐのどうぎ | 17,400 | 21 | Sunabada | - | - | - |
 | **Magic Mail** | マジックメイル | (5,100) | 23 | - | Doppel Mirror | - | Sometimes Magic x1.2 |
 | **Wood Armor** | 木の鎧 | 23,500 | 25 | Sunabada | - | - | - |
 | **Light Armor** | ライトアーマー | 25,600 | 28 | Sisneiter | Arc Machine | - | - |
 | **Stone Wool Mantle** | 石わたマント | 30,200 | 31 | Sisneiter | - | - | - |
 | **Battle Jacket** | バトルジャケット | 35,300 | 36 | Sisneiter | - | - | - |
 | **Scale Mail** | スケイルメイル | 40,700 | 40 | Sisneiter | - | - | - |
-| **Elven Mantle** | エルブンマント | (7,500) | 42 | - | - | Ch.4+ ? Space | Sometimes Speed x1.5 |
+| **Elven Coat** | エルブンマント | (7,500) | 42 | - | - | Ch.4+ ? Space | Sometimes Speed x1.5 |
 | **Protector** | プロテクター | 43,100 | 45 | Hiyarinko | - | - | - |
 | **Ring Mail** | リングメイル | 49,900 | 48 | Hiyarinko | Devil Cider | - | - |
 | **Silver Bustier** | シルバービスチェ | 55,600 | 53 | Hiyarinko | - | - | - |
 | **Rainbow Dress** | レインボードレス | (11,000) | 54 | - | - | Ch.5+ ? Space | Sometimes recover Level × HP |
 | **Lamellar Armor** | ラメラーアーマー | 69,700 | 60 | Sibuzail | - | - | - |
-| **Comsade Robe** | コムサデローブ | 75,600 | 64 | Archich | - | - | - |
+| **Comsa de Robe** | コムサデローブ | 75,600 | 64 | Archich | - | - | - |
 | **Veteran's Armor** | 古兵の鎧 | 81,400 | 69 | Archich | - | - | - |
 | **Red Cuirass** | 赤胴 | 87,300 | 73 | Archich | - | - | - |
 | **Metal Jacket** | メタルジャケット | 109,200 | 77 | Lateen | - | - | - |
@@ -299,9 +299,9 @@ These weapons cannot be unequipped without paying to remove the curse at a churc
 
 | Name (EN) | Name (JP) | Price | DF | Shop | Drop | Other | Special Effect |
 |-----------|-----------|-------|----|------|------|-------|----------------|
-| **Cheap Shield** | チャチな盾 | (10) | 1 | - | - | Starting equipment | - |
-| **Flashy Shield** | ハデな盾 | (1,000,000) | 2 | - | Nyonyo | - | - |
-| **Wood Shield** | ウッドシールド | 320 | 3 | Hajimaris | - | - | - |
+| **Shoddy Shield** | チャチな盾 | (10) | 1 | - | - | Starting equipment | - |
+| **Glitzy Shield** | ハデな盾 | (1,000,000) | 2 | - | Nyonyo | - | - |
+| **Wooden Shield** | ウッドシールド | 320 | 3 | Hajimaris | - | - | - |
 | **Bronze Shield** | 青銅の盾 | 2,000 | 5 | Hajimaris | - | - | - |
 | **Iron Shield** | 鉄の盾 | 5,400 | 7 | Vejetarin | - | - | - |
 | **Round Shield** | ラウンドシールド | 8,700 | 10 | Vejetarin | - | - | - |
@@ -310,18 +310,18 @@ These weapons cannot be unequipped without paying to remove the curse at a churc
 | **Steel Shield** | 鋼の盾 | 19,700 | 15 | Sunabada | - | - | - |
 | **Shell Shield** | こうらの盾 | 36,400 | 20 | Sisneiter | - | - | - |
 | **Athena Shield** | アテナの盾 | (10,000) | 20 | - | The Face | Pyramid Chest (Upper) | 1/4 chance to recover 1 status ailment |
-| **Stubborn Shield** | ガンコシールド | 40,500 | 24 | Hiyarinko | - | - | - |
+| **Stoic Shield** | ガンコシールド | 40,500 | 24 | Hiyarinko | - | - | - |
 | **Moon Shield** | ムーンシールド | (10) | 24 | - | Blue Dragon, Great Dragon | - | 1/8 chance to recover status ailments |
-| **Courage Shield** | 勇気の盾 | (1,250) | 25 | - | - | Ch.4+ ? Space | Sometimes recover all status ailments |
+| **Gallant Shield** | 勇気の盾 | (1,250) | 25 | - | - | Ch.4+ ? Space | Sometimes recover all status ailments |
 | **Warrior Shield** | 戦士の盾 | 49,200 | 27 | Hiyarinko | - | - | - |
 | **Metal Shield** | メタルシールド | 52,200 | 31 | Sibuzail | - | - | - |
 | **Battle Shield** | バトルシールド | 61,500 | 36 | Sibuzail | - | - | - |
-| **Spike Shield** | スパイクシールド | 76,100 | 40 | Sibuzail | - | - | - |
+| **Spiked Shield** | スパイクシールド | 76,100 | 40 | Sibuzail | - | - | - |
 | **Veteran's Shield** | 古兵の盾 | 88,400 | 47 | Archich | - | - | - |
 | **Sun Shield** | 太陽の盾 | (21,000) | 51 | - | The Sun | - | Sometimes recover Level × HP |
 | **Knight's Shield** | ナイツシールド | 107,600 | 58 | Lateen | - | - | - |
 | **Magic Shield** | マジックシールド | (3,400) | 58 | - | - | Ch.6+ ? Space | Reduces magic damage |
-| **Illusion Shield** | まやかしの盾 | (10,000) | 58 | - | - | Ch.6+ ? Space | Sometimes reduces enemy attack accuracy |
+| **Mirage Shield** | まやかしの盾 | (10,000) | 58 | - | - | Ch.6+ ? Space | Sometimes reduces enemy attack accuracy |
 | **Aura Shield** | オーラシールド | 184,600 | 64 | Fumoo | - | - | - |
 | **Last Shield** | 最後の盾 | (13,000) | 70 | - | - | Bubble Tower Chest (1F) | Sometimes Defense x3 |
 | **Demon Shield** | デモンシールド | (113,000) | 80 | - | - | Demon Castle Chest (1F) | **CURSED** - HP decreases by Level × 2 |

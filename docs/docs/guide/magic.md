@@ -92,36 +92,36 @@ If the enemy equips **Magic Shield** (マジックシールド), Attack Magic da
 
 | Name (EN) | Name (JP) | Price | Mult. | Effect | Shop | Drop |
 |-----------|-----------|-------|-------|--------|------|------|
-| Meteor | メテオ | 10,000 | 5x | Small fire damage | Sisneiter | - |
-| Meteora | メテオラ | 28,000 | 12x | Medium fire damage | Archich | - |
-| Meteodara | メテオダラ | 55,000 | 24x | Large fire damage | Archich, Fumoo | Ifrit |
+| Magma | メテオ | 10,000 | 5x | Small fire damage | Sisneiter | - |
+| Magmara | メテオラ | 28,000 | 12x | Medium fire damage | Archich | - |
+| Magmadara | メテオダラ | 55,000 | 24x | Large fire damage | Archich, Fumoo | Ifrit |
 
 ### Absorption Element (吸収)
 
 | Name (EN) | Name (JP) | Price | Mult. | Effect | Shop | Drop |
 |-----------|-----------|-------|-------|--------|------|------|
-| Zeni Get | ゼニゲット | 1,500 | 0 | Steal half of enemy's gold | Hajimaris | Starting equipment |
-| Do Zeni Get | ドゼニゲット | 15,000 | 0 | Steal ALL of enemy's gold | Hiyarinko | Bandit Orc |
-| Mahokes A | マホケスA | 2,200 | 3x | Destroy enemy's Attack Magic | Vejetarin, Hiyarinko | - |
-| Mahokes D | マホケスD | 12,000 | 4x | Destroy enemy's Defense Magic | Sibuzail | - |
-| Ene Get | エネゲット | 9,800 | 0 | Drain half enemy HP, add to yours | Hajimaris | Ogre Bat |
-| Ene Change | エネチェンジ | 25,000 | 0 | Swap HP with enemy | Sunabada, Fumoo | - |
+| Money Get | ゼニゲット | 1,500 | 0 | Steal half of enemy's gold | Hajimaris | Starting equipment |
+| Total Grab | ドゼニゲット | 15,000 | 0 | Steal ALL of enemy's gold | Hiyarinko | Orc Bandit |
+| Break Attack | マホケスA | 2,200 | 3x | Destroy enemy's Attack Magic | Vegetarin, Hiyarinko | - |
+| Break Defense | マホケスD | 12,000 | 4x | Destroy enemy's Defense Magic | Sibuzail | - |
+| Drain | エネゲット | 9,800 | 0 | Drain half enemy HP, add to yours | Hajimaris | Demon Bat |
+| Swap | エネチェンジ | 25,000 | 0 | Swap HP with enemy | Sunabada, Fumoo | - |
 
 ### Dark Element (闇)
 
 | Name (EN) | Name (JP) | Price | Mult. | Effect | Shop | Drop |
 |-----------|-----------|-------|-------|--------|------|------|
-| Go To Hell | ゴウトゥヘル | 444,000 | 0 | Set your HP to 1, instantly defeat enemy | Lateen | Devilerman starting equipment |
-| Sabir | サビール | 98,000 | 20x | Destroy one of enemy's equipment | Vejetarin, Sibuzail, Lateen | Rusty Tadpole |
-| Battle Dory | バトルドリー | 40,000 | 10x | Inflict Curse status | Vejetarin, Sunabada | - |
-| Battle Nemunemu | バトルネムネム | 80,000 | 0 | Inflict Sleep status | Sisneiter, Archich | Sleep Cook |
+| Go to Hell | ゴウトゥヘル | 444,000 | 0 | Set your HP to 1, instantly defeat enemy | Lateen | Darkling starting equipment |
+| Rust | サビール | 98,000 | 20x | Destroy one of enemy's equipment | Vegetarin, Sibuzail, Lateen | Rusty Catfish |
+| Curse | バトルドリー | 40,000 | 10x | Inflict Curse status | Vegetarin, Sunabada | - |
+| Sleepy Time | バトルネムネム | 80,000 | 0 | Inflict Sleep status | Sisneiter, Archich | Sleepcluck |
 
 ### Physical Element (物理)
 
 | Name (EN) | Name (JP) | Price | Mult. | Effect | Shop | Drop |
 |-----------|-----------|-------|-------|--------|------|------|
 | Teleport Slash | テレポーザン | 20,000 | 4x | AT-based magic attack | Sunabada, Lateen | - |
-| Clone Slash | ブンシンザン | 36,000 | 6x | AT-based magic attack | Archich, Lateen | - |
+| Double Slash | ブンシンザン | 36,000 | 6x | AT-based magic attack | Archich, Lateen | - |
 
 ---
 
@@ -169,21 +169,21 @@ Defense Magic is used to protect against attacks and magic.
 
 | Name (EN) | Name (JP) | Price | Defense | Effect | Shop | Drop |
 |-----------|-----------|-------|---------|--------|------|------|
-| Magic Safe | マホセーフ | 500 | 50 | Basic magic defense | Hajimaris | Starting equipment |
-| Magic Guard | マホガード | 5,000 | 75 | Improved magic defense | Hajimaris, Sunabada | - |
-| Magic Kikan | マホキカン | 50,000 | 100 | Maximum magic defense | Hiyarinko, Sibuzail, Archich | - |
-| Genki Ki | ゲンキッキ | 10,000 | 100 | Heal 100 HP | Vejetarin, Sunabada | - |
-| Do Genki Ki | ドゲンキッキ | 25,000 | 100 | Heal 200 HP | Hiyarinko, Lateen, Fumoo | - |
-| Magic Tas | マホタス | 2,500 | 80 | Restore 1 Attack Magic use | Hajimaris, Vejetarin | - |
-| Magic Tasra | マホタスラ | 10,000 | 70 | Restore 3 Attack Magic uses | Sunabada, Sisneiter | - |
-| Magic Tasdara | マホタスダラ | 15,000 | 85 | Restore 5 Attack Magic uses | Hiyarinko, Sibuzail | Retro Ghost |
-| Magic Genki | マホゲンキ | 30,000 | 75 | Heal 100 HP + restore 3 Attack Magic uses | Vejetarin, Sibuzail, Lateen | - |
-| Magic Fuji | マホフウジ | 18,000 | 90 | Seal enemy Attack Magic | Hajimaris, Sisneiter | - |
-| Do Magic Fuji | ドマホフウジ | 50,000 | 70 | Seal enemy Attack & Defense Magic | Hiyarinko, Lateen | - |
-| Guard Pool | ガードプール | 150,000 | 70 | Defense x2 | Sunabada, Archich, Fumoo | - |
-| Magic Pool | マジックプール | 15,000 | 70 | Magic x2 | Vejetarin, Sisneiter, Archich | - |
-| Magic Catchin | マホカッチン | 200,000 | 70 | Temporarily paralyze enemy | Sibuzail, Lateen, Fumoo | Escargon |
-| Magic Mirror | マホミラー | 200,000 | 0 | Reflect Attack Magic back | Sisneiter, Archich, Fumoo | Phantasm, Devilerman starting equipment |
+| M Guard | マホセーフ | 500 | 50 | Basic magic defense | Hajimaris | Starting equipment |
+| M Guard+ | マホガード | 5,000 | 75 | Improved magic defense | Hajimaris, Sunabada | - |
+| M Guard++ | マホキカン | 50,000 | 100 | Maximum magic defense | Hiyarinko, Sibuzail, Archich | - |
+| Heal | ゲンキッキ | 10,000 | 100 | Heal 100 HP | Vegetarin, Sunabada | - |
+| Heal+ | ドゲンキッキ | 25,000 | 100 | Heal 200 HP | Hiyarinko, Lateen, Fumoo | - |
+| Recharge | マホタス | 2,500 | 80 | Restore 1 Attack Magic use | Hajimaris, Vegetarin | - |
+| Recharge+ | マホタスラ | 10,000 | 70 | Restore 3 Attack Magic uses | Sunabada, Sisneiter | - |
+| Recharge++ | マホタスダラ | 15,000 | 85 | Restore 5 Attack Magic uses | Hiyarinko, Sibuzail | Retro Ghost |
+| Regenrate | マホゲンキ | 30,000 | 75 | Heal 100 HP + restore 3 Attack Magic uses | Vegetarin, Sibuzail, Lateen | - |
+| Seal | マホフウジ | 18,000 | 90 | Seal enemy Attack Magic | Hajimaris, Sisneiter | - |
+| Seal+ | ドマホフウジ | 50,000 | 70 | Seal enemy Attack & Defense Magic | Hiyarinko, Lateen | - |
+| Guard Up | ガードプール | 150,000 | 70 | Defense x2 | Sunabada, Archich, Fumoo | - |
+| Magic Up | マジックプール | 15,000 | 70 | Magic x2 | Vegetarin, Sisneiter, Archich | - |
+| Absorb Magic | マホカッチン | 200,000 | 70 | Temporarily paralyze enemy | Sibuzail, Lateen, Fumoo | Escargon |
+| Bounce | マホミラー | 200,000 | 0 | Reflect Attack Magic back | Sisneiter, Archich, Fumoo | Phantasm, Darkling starting equipment |
 
 ---
 

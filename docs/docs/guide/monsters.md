@@ -62,13 +62,13 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 | ゴブリン | Goblin | 1 | 13 | 3 | 1 | 1 | 2 | None | None | Steal | 16 | 130 | Power Rice | Plains |
 | コボルト | Kobold | 2 | 27 | 7 | 5 | 3 | 2 | Zeni Get | None | None | 36 | 240 | Get Chu Robot | Plains |
 | キラーフラワー | Killer Flower | 2 | 29 | 8 | 4 | 2 | 2 | Ene Get | Maho Safe | None | 36 | 300 | Hard Yakisoba | Forest |
-| きのここぞう | Kinoko Kozo | 2 | 26 | 5 | 4 | 3 | 2 | Battle Nemnem | Maho Safe | None | 36 | 220 | Hayashi Rice | Forest |
+| きのここぞう | Fungo Kid | 2 | 26 | 5 | 4 | 3 | 2 | Battle Nemnem | Maho Safe | None | 36 | 220 | Hayashi Rice | Forest |
 | カボチャカエル | Pumpkin Frog | 2 | 26 | 5 | 6 | 1 | 3 | Freeze | None | None | 36 | 200 | Noronoro | Forest |
 | スコーピオン | Scorpion | 3 | 39 | 6 | 12 | 3 | 4 | None | None | Poison | 54 | 280 | Panacea | Desert |
-| タマゴン | Tamagon | 4 | 46 | 8 | 12 | 5 | 6 | Meteo | Maho Safe | None | 100 | 320 | Hayashi Rice | Mountains |
-| ちび魔道師 | Little Magician | 4 | 32 | 2 | 6 | 12 | 3 | Meteo | Maho Safe | Magic Charge | 100 | 380 | Mag Mag | Mountains |
-| てっきゅうくん | Tekkyu-kun | 4 | 60 | 9 | 18 | 4 | 4 | None | None | Rampage | 100 | 450 | Vine | Mountains |
-| 大魔導士 | Grand Magician | 5 | 20 | 4 | 7 | 16 | 5 | Plasma | Maho Guard | Magic Charge | 144 | 1000 | Magmela | Village |
+| タマゴン | Egg'n | 4 | 46 | 8 | 12 | 5 | 6 | Meteo | Maho Safe | None | 100 | 320 | Hayashi Rice | Mountains |
+| ちび魔道師 | Lil' Magician | 4 | 32 | 2 | 6 | 12 | 3 | Meteo | Maho Safe | Magic Charge | 100 | 380 | Mag Mag | Mountains |
+| てっきゅうくん | Ballboy | 4 | 60 | 9 | 18 | 4 | 4 | None | None | Rampage | 100 | 450 | Vine | Mountains |
+| 大魔導士 | High Magician | 5 | 20 | 4 | 7 | 16 | 5 | Plasma | Maho Guard | Magic Charge | 144 | 1000 | Magmela | Village |
 | ハーピィ | Harpy | 5 | 44 | 12 | 9 | 1 | 15 | Plasma | Maho Safe | Charm | 144 | 1420 | Boo Hoo Woo | Village |
 | ボーンウォーリア | Bone Warrior | 6 | 100 | 19 | 21 | 8 | 3 | Freeze | Maho Safe | Power Charge | 196 | 2220 | Recovery Item | Village |
 | エビルマシン | Evil Machine | 6 | 55 | 20 | 32 | 1 | 12 | Freeze | Maho Safe | Power Charge | 196 | 2000 | Disguise Set | Village |
@@ -81,8 +81,8 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| ちび魔道師 | Little Magician | 4 | 32 | 2 | 6 | 12 | 3 | Meteo | Maho Safe | Magic Charge | 100 | 380 | Mag Mag | Cave |
-| てっきゅうくん | Tekkyu-kun | 4 | 60 | 9 | 18 | 4 | 4 | None | None | Rampage | 100 | 450 | Vine | Cave |
+| ちび魔道師 | Lil' Magician | 4 | 32 | 2 | 6 | 12 | 3 | Meteo | Maho Safe | Magic Charge | 100 | 380 | Mag Mag | Cave |
+| てっきゅうくん | Ballboy | 4 | 60 | 9 | 18 | 4 | 4 | None | None | Rampage | 100 | 450 | Vine | Cave |
 | どくガエル | Poison Frog | 5 | 58 | 19 | 12 | 7 | 6 | Zeni Get | Maho Safe | Poison | 144 | 420 | Panacea | Cave |
 | バット | Bat | 5 | 40 | 7 | 6 | 4 | 14 | Ene Get | Maho Safe | None | 144 | 500 | Escape Incense | Cave |
 | スパイダー | Spider | 7 | 68 | 15 | 9 | 2 | 21 | None | None | Poison | 256 | 580 | Magic Key | Cave |
@@ -95,14 +95,14 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| デンデン | Denden | 5 | 60 | 17 | 51 | 2 | 2 | Meteo | None | None | 144 | 520 | 1 Crystal | Plains |
-| オーク | Oak | 6 | 90 | 26 | 19 | 8 | 4 | Ene Change | Maho Safe | Magic Pull | 196 | 600 | Vine | Plains |
+| デンデン | Snail | 5 | 60 | 17 | 51 | 2 | 2 | Meteo | None | None | 144 | 520 | 1 Crystal | Plains |
+| オーク | Orc | 6 | 90 | 26 | 19 | 8 | 4 | Ene Change | Maho Safe | Magic Pull | 196 | 600 | Vine | Plains |
 | スパイダー | Spider | 7 | 68 | 15 | 9 | 2 | 21 | None | None | Poison | 256 | 580 | Magic Key | Plains |
-| マタンゴ | Matango | 7 | 91 | 27 | 25 | 9 | 5 | Ene Change | Maho Guard | Poison | 256 | 450 | Panacea | Forest |
+| マタンゴ | Mycopath | 7 | 91 | 27 | 25 | 9 | 5 | Ene Change | Maho Guard | Poison | 256 | 450 | Panacea | Forest |
 | ドワーフ | Dwarf | 8 | 101 | 30 | 27 | 11 | 6 | Zeni Get | Maho Safe | Steal | 324 | 800 | Get Chu Robot | Forest/Mountains |
-| 人喰い草 | Man-Eating Plant | 8 | 91 | 24 | 21 | 11 | 10 | Plasma | Maho Safe | None | 324 | 800 | Magic Key | Forest |
+| 人喰い草 | Carnivorous Plant | 8 | 91 | 24 | 21 | 11 | 10 | Plasma | Maho Safe | None | 324 | 800 | Magic Key | Forest |
 | 黒サソリ | Black Scorpion | 8 | 65 | 23 | 60 | 4 | 11 | Sabiru | None | Poison | 324 | 550 | Torena Rock | Mountains |
-| 切りカブおばけ | Stump Ghost | 9 | 90 | 39 | 33 | 13 | 7 | Battle Nemnem | Maho Safe | None | 400 | 700 | Woodcutter's Axe | Forest |
+| 切りカブおばけ | Haunted Stump | 9 | 90 | 39 | 33 | 13 | 7 | Battle Nemnem | Maho Safe | None | 400 | 700 | Woodcutter's Axe | Forest |
 | マーメイド | Mermaid | 11 | 78 | 25 | 26 | 20 | 16 | Freeze | Maho Safe | Song | 576 | 1000 | Get Chu Robot G | Sea |
 | マーマン | Merman | 11 | 98 | 42 | 35 | 13 | 15 | Ene Change | Maho Safe | Magic Pull | 576 | 700 | 6 Crystal | Sea |
 | コカトリス | Cockatrice | 12 | 95 | 18 | 19 | 5 | 37 | Zeni Get | Maho Safe | Petrify | 676 | 880 | Magnet Necklace | Mountains |
@@ -116,13 +116,13 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| 人喰い草 | Man-Eating Plant | 8 | 91 | 24 | 21 | 11 | 10 | Plasma | Maho Safe | None | 324 | 800 | Magic Key | Forest |
+| 人喰い草 | Carnivorous Plant | 8 | 91 | 24 | 21 | 11 | 10 | Plasma | Maho Safe | None | 324 | 800 | Magic Key | Forest |
 | ウィスプ | Wisp | 10 | 70 | 8 | 16 | 24 | 14 | Freeze | Do Genki Ki | None | 484 | 630 | Kochi Kochi | Forest |
-| 鬼コウモリ | Ogre Bat | 11 | 70 | 17 | 6 | 4 | 39 | Ene Get | None | None | 576 | 780 | Ene Get | Forest/1F |
-| トレント | Trent | 11 | 82 | 59 | 53 | 14 | 8 | Battle Nemnem | Maho Guard | None | 576 | 880 | Magic Key | Forest/1F |
-| デンデントップ | Denden Top | 11 | 80 | 28 | 112 | 15 | 1 | Meteo | Maho Safe | Brace | 576 | 930 | Escape Incense | 1F/2F/Small Room |
-| エナジーボール | Energy Ball | 11 | 88 | 25 | 9 | 26 | 13 | Meteo | Maho Guard | None | 576 | 850 | 3 Vine | 1F/2F/Small Room |
-| イヌ兵士 | Dog Soldier | 12 | 92 | 38 | 33 | 18 | 18 | Plasma | None | None | 676 | 700 | 3 Crystal | 1F/2F/Small Room |
+| 鬼コウモリ | Demon Bat | 11 | 70 | 17 | 6 | 4 | 39 | Ene Get | None | None | 576 | 780 | Ene Get | Forest/1F |
+| トレント | Treant | 11 | 82 | 59 | 53 | 14 | 8 | Battle Nemnem | Maho Guard | None | 576 | 880 | Magic Key | Forest/1F |
+| デンデントップ | Top Snail | 11 | 80 | 28 | 112 | 15 | 1 | Meteo | Maho Safe | Brace | 576 | 930 | Escape Incense | 1F/2F/Small Room |
+| エナジーボール | Energy Orb | 11 | 88 | 25 | 9 | 26 | 13 | Meteo | Maho Guard | None | 576 | 850 | 3 Vine | 1F/2F/Small Room |
+| イヌ兵士 | Canine Soldier | 12 | 92 | 38 | 33 | 18 | 18 | Plasma | None | None | 676 | 700 | 3 Crystal | 1F/2F/Small Room |
 | ホブゴブリン | Hobgoblin | 12 | 86 | 22 | 20 | 15 | 27 | Meteo | Maho Guard | Steal | 676 | 1000 | Magic Key | 2F/Small Room |
 
 ---
@@ -137,17 +137,17 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 | マーマン | Merman | 11 | 98 | 42 | 35 | 13 | 15 | Ene Change | Maho Safe | Magic Pull | 576 | 700 | 6 Crystal | Sea |
 | ホブゴブリン | Hobgoblin | 12 | 86 | 22 | 20 | 15 | 27 | Meteo | Maho Guard | Steal | 676 | 1000 | Magic Key | Plains |
 | スケルトン | Skeleton | 12 | 89 | 18 | 10 | 21 | 58 | None | Maho Safe | Power Charge | 676 | 1280 | Recovery Item | Desert/Swamp |
-| バンディオーク | Bandit Orc | 13 | 112 | 44 | 39 | 18 | 17 | Plasma | Maho Guard | Magic Pull | 784 | 1300 | Do Zeni Get | Plains |
-| タマゴンピータン | Tamagon Peetan | 13 | 159 | 17 | 91 | 14 | 11 | Zeni Down | Maho Safe | None | 784 | 10 | Torena Rock | Desert/Plains |
+| バンディオーク | Orc Bandit | 13 | 112 | 44 | 39 | 18 | 17 | Plasma | Maho Guard | Magic Pull | 784 | 1300 | Do Zeni Get | Plains |
+| タマゴンピータン | Century Egg'n | 13 | 159 | 17 | 91 | 14 | 11 | Zeni Down | Maho Safe | None | 784 | 10 | Torena Rock | Desert/Plains |
 | すなトカゲ | Sand Lizard | 13 | 100 | 49 | 41 | 16 | 19 | Meteora | Maho Guard | Power Charge | 784 | 1370 | Gokudo Sword | Desert/Swamp |
 | はぐれクモ | Stray Spider | 13 | 80 | 21 | 28 | 2 | 44 | Go To Hell | Maho Safe | Poison | 784 | 1290 | Panacea | Swamp |
 | ゴーレム | Golem | 14 | 298 | 42 | 116 | 3 | 2 | Sabiru | None | Power Charge | 900 | 100 | Golem Stone | Desert |
 | ゴースト | Ghost | 14 | 42 | 26 | 18 | 39 | 17 | Ene Change | Maho Tasra | Vanish | 900 | 1400 | Disappear | Swamp |
-| ボーンジェネラル | Bone General | 14 | 170 | 59 | 59 | 12 | 15 | Plasmara | Maho Safe | Energy | 900 | 800 | Anubis Sword | Village |
-| ライノマン | Rhino Man | 14 | 277 | 74 | 35 | 7 | 11 | Quake | Genki Ki | Rampage | 900 | 2000 | Muscle Pierce | Village |
-| アークマシン | Arc Machine | 15 | 150 | 52 | 110 | 13 | 11 | Plasmara | Maho Safe | Harden | 1024 | 2840 | Light Armor | Village |
-| ミノタウロス | Minotaur | 16 | 322 | 68 | 30 | 10 | 16 | Berserk | Maho Guard | Brace | 1156 | 2760 | Killer Tomahawk | Village |
-| ハーピィシスター | Harpy Sister | 16 | 80 | 28 | 27 | 6 | 54 | Maho Kes A | Maho Safe | Charm | 1156 | 2320 | Muga Chakra | Village |
+| ボーンジェネラル | Bone Knight | 14 | 170 | 59 | 59 | 12 | 15 | Plasmara | Maho Safe | Energy | 900 | 800 | Anubis Sword | Village |
+| ライノマン | Violent Bull | 14 | 277 | 74 | 35 | 7 | 11 | Quake | Genki Ki | Rampage | 900 | 2000 | Muscle Pierce | Village |
+| アークマシン | Armbreaker | 15 | 150 | 52 | 110 | 13 | 11 | Plasmara | Maho Safe | Harden | 1024 | 2840 | Light Armor | Village |
+| ミノタウロス | Raging Bull | 16 | 322 | 68 | 30 | 10 | 16 | Berserk | Maho Guard | Brace | 1156 | 2760 | Killer Tomahawk | Village |
+| ハーピィシスター | Venusian Harpy | 16 | 80 | 28 | 27 | 6 | 54 | Maho Kes A | Maho Safe | Charm | 1156 | 2320 | Muga Chakra | Village |
 | ハットリ | Hattori | 19 | 95 | 37 | 33 | 12 | 58 | Battle Dree | Maho Safe | Neck Target | 1600 | 2910 | Assassin Dagger | Village |
 
 ### Pyramid
@@ -158,12 +158,12 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 | はぐれクモ | Stray Spider | 13 | 80 | 21 | 28 | 2 | 44 | Go To Hell | Maho Safe | Poison | 784 | 1290 | Panacea | Exterior/Upper/Lower |
 | ゴーレム | Golem | 14 | 298 | 42 | 116 | 3 | 2 | Sabiru | None | Power Charge | 900 | 100 | Golem Stone | Exterior |
 | ゴースト | Ghost | 14 | 42 | 26 | 18 | 39 | 17 | Ene Change | Maho Tasra | Vanish | 900 | 1400 | Disappear | Exterior/Upper/Lower |
-| ボーヤ | Boy | 12 | 84 | 21 | 12 | 34 | 10 | Meteora | Maho Guard | None | 676 | 1150 | Blue Witch | Upper/Lower |
+| ボーヤ | Kid Magician | 12 | 84 | 21 | 12 | 34 | 10 | Meteora | Maho Guard | None | 676 | 1150 | Blue Witch | Upper/Lower |
 | ガスト | Ghast | 13 | 64 | 22 | 20 | 37 | 12 | Twister | Maho Tas | None | 784 | 980 | Mise Jump | Lower |
-| ドッペルミラー | Doppel Mirror | 14 | 10 | 10 | 51 | 40 | 15 | Ene Change | Maho Safe | Transform | 900 | 3500 | Magic Mail | Upper |
-| ミイラ男 | Mummy | 14 | 90 | 69 | 61 | 18 | 14 | Battle Dree | Maho Guard | Energy | 900 | 1580 | Magic Key | Upper/Lower |
-| メルトクラウド | Melt Cloud | 15 | 93 | 29 | 30 | 39 | 14 | Sabiru | Maho Kikan | None | 1024 | 1640 | Escape Incense | Upper |
-| キングコボルト | King Kobold | 15 | 136 | 57 | 49 | 20 | 18 | Meteo | Maho Guard | None | 1024 | 1770 | 3 Crystal | Upper |
+| ドッペルミラー | Doppeler | 14 | 10 | 10 | 51 | 40 | 15 | Ene Change | Maho Safe | Transform | 900 | 3500 | Magic Mail | Upper |
+| ミイラ男 | Mummyman | 14 | 90 | 69 | 61 | 18 | 14 | Battle Dree | Maho Guard | Energy | 900 | 1580 | Magic Key | Upper/Lower |
+| メルトクラウド | Meltdown Cloud | 15 | 93 | 29 | 30 | 39 | 14 | Sabiru | Maho Kikan | None | 1024 | 1640 | Escape Incense | Upper |
+| キングコボルト | Kobold King | 15 | 136 | 57 | 49 | 20 | 18 | Meteo | Maho Guard | None | 1024 | 1770 | 3 Crystal | Upper |
 
 ---
 
@@ -173,38 +173,38 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| キングコボルト | King Kobold | 15 | 136 | 57 | 49 | 20 | 18 | Meteo | Maho Guard | None | 1024 | 1770 | 3 Crystal | Plains |
-| マメモヤシ | Mememoyashi | 16 | 140 | 43 | 36 | 20 | 28 | Do Zeni Get | Maho Fuji | Song | 1156 | 3000 | Loririn Saber | Plains |
-| 魔法こぞう | Magic Boy | 16 | 88 | 21 | 30 | 41 | 19 | Freezera | Maho Tasdara | Magic Charge | 1156 | 1690 | Magician Hat | Plains |
+| キングコボルト | Kobold King | 15 | 136 | 57 | 49 | 20 | 18 | Meteo | Maho Guard | None | 1024 | 1770 | 3 Crystal | Plains |
+| マメモヤシ | Bean Sprout | 16 | 140 | 43 | 36 | 20 | 28 | Do Zeni Get | Maho Fuji | Song | 1156 | 3000 | Loririn Saber | Plains |
+| 魔法こぞう | Kid Magician | 16 | 88 | 21 | 30 | 41 | 19 | Freezera | Maho Tasdara | Magic Charge | 1156 | 1690 | Magician Hat | Plains |
 | カメ戦車 | Turtle Tank | 16 | 118 | 52 | 174 | 14 | 4 | Meteora | None | Brace | 1156 | 1000 | Vine | Plains |
 | リザードマン | Lizardman | 16 | 115 | 55 | 46 | 17 | 28 | Telepozan | Maho Guard | Devour | 1156 | 1740 | Down | Plains/Sea |
 | セイレーン | Siren | 16 | 114 | 43 | 41 | 27 | 23 | Zeni Get | Maho Guard | Song | 1156 | 1840 | Noise-Canceling Earplugs | Sea |
-| 大目玉 | Giant Eye | 16 | 105 | 38 | 35 | 39 | 14 | Ene Get | Maho Tasra | Target Equipment | 1156 | 1700 | Believer's Cross | Sea |
+| 大目玉 | Giant Eyeball | 16 | 105 | 38 | 35 | 39 | 14 | Ene Get | Maho Tasra | Target Equipment | 1156 | 1700 | Believer's Cross | Sea |
 | レッドマンタ | Red Manta | 17 | 100 | 107 | 37 | 23 | 20 | Freezera | Maho Safe | Vital Strike | 1296 | 1860 | 2 Crystal | Sea |
-| あかさびオタマ | Rusty Tadpole | 17 | 122 | 40 | 50 | 26 | 26 | Sabiru | Magic Pool | None | 1296 | 500 | Sabiru | Sea |
-| チューチューマン | Chu Chu Man | 17 | 151 | 50 | 47 | 25 | 24 | Freeze | Maho Guard | Fear | 1296 | 1920 | 3 Vine | Sea |
-| 大王イカ | Giant Squid | 18 | 295 | 105 | 46 | 9 | 18 | Wave | Maho Safe | Rampage | 1444 | 1980 | Vine | Sea |
-| 首切りナイト | Beheading Knight | 18 | 200 | 50 | 60 | 28 | 17 | Telepozan | Maho Guard | Neck Target | 1444 | 3920 | Bringer Sword | Village |
-| ツインシャーク | Twin Shark | 18 | 187 | 51 | 44 | 23 | 26 | Freezera | Genki Ki | Bite | 1444 | 3080 | Rain Coat | Village |
-| アックスカイマン | Axe Caiman | 19 | 197 | 59 | 53 | 19 | 23 | Quake | Maho Safe | Fire | 1600 | 3000 | Super Alloy Geta | Village |
-| ヘビシャーマン | Snake Shaman | 20 | 188 | 41 | 44 | 34 | 28 | Plasma | Maho Genki | Charm | 1764 | 4200 | Dream Staff | Village |
-| アマゾネスクイン | Amazoness Queen | 22 | 165 | 52 | 36 | 21 | 53 | Battle Nemnem | Maho Guard | Vital Strike | 2116 | 3360 | Lupanza Sword | Village |
-| ブラックホーン | Black Horn | 22 | 350 | 107 | 51 | 19 | 21 | Quake | Maho Guard | Rampage | 2116 | 2730 | Muscle Pierce | Village |
-| デビルサイダー | Devil Cider | 24 | 248 | 90 | 86 | 34 | 22 | Plasmara | Maho Guard | Swift | 2500 | 6900 | Ring Mail | Village |
+| あかさびオタマ | Rusty Catfish | 17 | 122 | 40 | 50 | 26 | 26 | Sabiru | Magic Pool | None | 1296 | 500 | Sabiru | Sea |
+| チューチューマン | Suckerfish | 17 | 151 | 50 | 47 | 25 | 24 | Freeze | Maho Guard | Fear | 1296 | 1920 | 3 Vine | Sea |
+| 大王イカ | Emperor Squid | 18 | 295 | 105 | 46 | 9 | 18 | Wave | Maho Safe | Rampage | 1444 | 1980 | Vine | Sea |
+| 首切りナイト | Guillotine King | 18 | 200 | 50 | 60 | 28 | 17 | Telepozan | Maho Guard | Neck Target | 1444 | 3920 | Bringer Sword | Village |
+| ツインシャーク | Sea Dragon | 18 | 187 | 51 | 44 | 23 | 26 | Freezera | Genki Ki | Bite | 1444 | 3080 | Rain Coat | Village |
+| アックスカイマン | Gangway | 19 | 197 | 59 | 53 | 19 | 23 | Quake | Maho Safe | Fire | 1600 | 3000 | Super Alloy Geta | Village |
+| ヘビシャーマン | Venom | 20 | 188 | 41 | 44 | 34 | 28 | Plasma | Maho Genki | Charm | 1764 | 4200 | Dream Staff | Village |
+| アマゾネスクイン | Blade Witch | 22 | 165 | 52 | 36 | 21 | 53 | Battle Nemnem | Maho Guard | Vital Strike | 2116 | 3360 | Lupanza Sword | Village |
+| ブラックホーン | Bloodthirsty Bull | 22 | 350 | 107 | 51 | 19 | 21 | Quake | Maho Guard | Rampage | 2116 | 2730 | Muscle Pierce | Village |
+| デビルサイダー | Balgor | 24 | 248 | 90 | 86 | 34 | 22 | Plasmara | Maho Guard | Swift | 2500 | 6900 | Ring Mail | Village |
 
 ### Baister
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
 | セイレーン | Siren | 16 | 114 | 43 | 41 | 27 | 23 | Zeni Get | Maho Guard | Song | 1156 | 1840 | Noise-Canceling Earplugs | Mouth |
-| チューチューマン | Chu Chu Man | 17 | 151 | 50 | 47 | 25 | 24 | Freeze | Maho Guard | Fear | 1296 | 1920 | 3 Vine | Mouth |
+| チューチューマン | Suckerfish | 17 | 151 | 50 | 47 | 25 | 24 | Freeze | Maho Guard | Fear | 1296 | 1920 | 3 Vine | Mouth |
 | レッドマンタ | Red Manta | 17 | 100 | 107 | 37 | 23 | 20 | Freezera | Maho Safe | Vital Strike | 1296 | 1860 | 2 Crystal | Mouth |
-| あかさびオタマ | Rusty Tadpole | 17 | 122 | 40 | 50 | 26 | 26 | Sabiru | Magic Pool | None | 1296 | 500 | Sabiru | Mouth/Esophagus/Stomach |
-| 大王イカ | Giant Squid | 18 | 295 | 105 | 46 | 9 | 18 | Wave | Maho Safe | Rampage | 1444 | 1980 | Vine | Mouth/Esophagus |
-| ゾウガメ戦車 | Elephant Turtle Tank | 18 | 92 | 101 | 127 | 16 | 14 | Meteora | Maho Safe | Brace | 1444 | 2100 | Golem Stone | Mouth/Esophagus |
-| ほねほね魚 | Bone Bone Fish | 18 | 244 | 76 | 79 | 8 | 23 | Telepozan | Maho Guard | Weaken | 1444 | 2000 | Messe Yo | Esophagus/Stomach |
+| あかさびオタマ | Rusty Catfish | 17 | 122 | 40 | 50 | 26 | 26 | Sabiru | Magic Pool | None | 1296 | 500 | Sabiru | Mouth/Esophagus/Stomach |
+| 大王イカ | Emperor Squid | 18 | 295 | 105 | 46 | 9 | 18 | Wave | Maho Safe | Rampage | 1444 | 1980 | Vine | Mouth/Esophagus |
+| ゾウガメ戦車 | Tortoise Tank | 18 | 92 | 101 | 127 | 16 | 14 | Meteora | Maho Safe | Brace | 1444 | 2100 | Golem Stone | Mouth/Esophagus |
+| ほねほね魚 | Bonefish | 18 | 244 | 76 | 79 | 8 | 23 | Telepozan | Maho Guard | Weaken | 1444 | 2000 | Messe Yo | Esophagus/Stomach |
 | ゾンビ | Zombie | 19 | 128 | 75 | 78 | 14 | 34 | Plasmara | Maho Safe | Weaken | 1600 | 1940 | Hell Puu | Esophagus/Stomach |
-| ゲルミート | Gel Meat | 19 | 208 | 69 | 71 | 26 | 18 | Sabiru | Genki Ki | None | 1600 | 2050 | Sweet Juice | Stomach |
+| ゲルミート | Meat Moss | 19 | 208 | 69 | 71 | 26 | 18 | Sabiru | Genki Ki | None | 1600 | 2050 | Sweet Juice | Stomach |
 | ボーンソルジャー | Bone Soldier | 20 | 228 | 131 | 72 | 8 | 24 | Berserk | Do Genki Ki | Power Charge | 1764 | 800 | 6 Crystal | Stomach |
 | エスカルゴン | Escargon | 21 | 257 | 40 | 164 | 19 | 15 | Maho Kes D | None | Swift | 1936 | 2600 | Maho Catchin | Stomach |
 
@@ -217,17 +217,17 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
 | ウミリュウ | Sea Dragon | 20 | 245 | 98 | 53 | 18 | 24 | Freezera | Maho Guard | Poison | 1764 | 2240 | Poison Mask | Sea |
-| 人食コウモリ | Man-Eating Bat | 20 | 120 | 35 | 29 | 5 | 69 | Ene Get | None | None | 1764 | 2410 | Jump | Plains/Sea |
+| 人食コウモリ | Carnivorous Bat | 20 | 120 | 35 | 29 | 5 | 69 | Ene Get | None | None | 1764 | 2410 | Jump | Plains/Sea |
 | 殺人エイ | Killer Ray | 20 | 206 | 104 | 60 | 17 | 26 | Telepozan | Maho Guard | Vital Strike | 1764 | 2180 | Barabaramba | Sea |
 | アイストード | Ice Toad | 20 | 196 | 64 | 56 | 28 | 25 | Freezedara | Maho Guard | None | 1764 | 2350 | Snow Gloves | Snow |
 | エスカルゴン | Escargon | 21 | 257 | 40 | 164 | 19 | 15 | Maho Kes D | None | Swift | 1936 | 2600 | Maho Catchin | Plains |
-| スリープクック | Sleep Cook | 21 | 140 | 33 | 30 | 12 | 65 | Battle Nemnem | None | None | 1936 | 2520 | Battle Nemnem | Snow |
-| ゴブリンヒーロー | Goblin Hero | 22 | 152 | 42 | 40 | 12 | 65 | Freeze | Maho Safe | Steal | 2116 | 2650 | 2 Crystal | Snow/Plains |
+| スリープクック | Sleepcluck | 21 | 140 | 33 | 30 | 12 | 65 | Battle Nemnem | None | None | 1936 | 2520 | Battle Nemnem | Snow |
+| ゴブリンヒーロー | Hero Goblin | 22 | 152 | 42 | 40 | 12 | 65 | Freeze | Maho Safe | Steal | 2116 | 2650 | 2 Crystal | Snow/Plains |
 | サムライ | Samurai | 22 | 146 | 83 | 33 | 25 | 45 | Do Zeni Get | Maho Tas | Zantetsuken | 2116 | 1980 | Magic Key | Snow/Plains |
-| タケシ | Takeshi | 23 | 248 | 83 | 85 | 27 | 25 | Plasmara | Maho Guard | Song | 2304 | 2600 | Noise-Canceling Earplugs | Snow/Plains |
+| タケシ | Bronzeman | 23 | 248 | 83 | 85 | 27 | 25 | Plasmara | Maho Guard | Song | 2304 | 2600 | Noise-Canceling Earplugs | Snow/Plains |
 | ドルイド | Druid | 25 | 180 | 46 | 49 | 58 | 28 | Plasmadara | Magic Pool | Petrify | 2704 | 3330 | Flash Bomber | Village |
-| バンパイアホラー | Vampire Horror | 25 | 208 | 52 | 53 | 48 | 33 | Freezera | Maho Genki | Weaken | 2704 | 3620 | Full Moon Bow | Village |
-| ジェノサイドテル | Genocide Tell | 26 | 215 | 65 | 60 | 17 | 64 | Battle Nemnem | Maho Safe | Neck Target | 2916 | 4320 | Mithril Breath | Village |
+| バンパイアホラー | Vampiric Horror | 25 | 208 | 52 | 53 | 48 | 33 | Freezera | Maho Genki | Weaken | 2704 | 3620 | Full Moon Bow | Village |
+| ジェノサイドテル | Shadowstalker | 26 | 215 | 65 | 60 | 17 | 64 | Battle Nemnem | Maho Safe | Neck Target | 2916 | 4320 | Mithril Breath | Village |
 | ハーピィビーナス | Harpy Venus | 27 | 200 | 66 | 56 | 20 | 68 | Twister | Maho Safe | Song | 3136 | 4210 | Yokerundesu | Village |
 | デモンマシン | Demon Machine | 28 | 320 | 68 | 198 | 24 | 25 | Telepozan | Maho Kikan | Power Charge | 3364 | 3810 | Ice Javelin | Village |
 | ブルードラゴン | Blue Dragon | 30 | 278 | 104 | 86 | 44 | 36 | Wave | Maho Catchin | Healing Light | 3844 | 36400 | Moon Shield | Village |
@@ -237,13 +237,13 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
 | サムライ | Samurai | 22 | 146 | 83 | 33 | 25 | 45 | Do Zeni Get | Maho Tas | Zantetsuken | 2116 | 1980 | Magic Key | 1F/2F |
-| 氷の化身 | Ice Incarnation | 22 | 150 | 39 | 37 | 57 | 21 | Freezedara | Maho Tas | None | 2116 | 2740 | Heater Muffler | 1F |
-| タケシ | Takeshi | 23 | 248 | 83 | 85 | 27 | 25 | Plasmara | Maho Guard | Song | 2304 | 2600 | Noise-Canceling Earplugs | 1F |
+| 氷の化身 | Ice Elemental | 22 | 150 | 39 | 37 | 57 | 21 | Freezedara | Maho Tas | None | 2116 | 2740 | Heater Muffler | 1F |
+| タケシ | Bronzeman | 23 | 248 | 83 | 85 | 27 | 25 | Plasmara | Maho Guard | Song | 2304 | 2600 | Noise-Canceling Earplugs | 1F |
 | レトロゴースト | Retro Ghost | 24 | 163 | 47 | 42 | 73 | 11 | Plasma | Maho Tas | Vanish | 2500 | 2800 | Maho Tasdara | 1F/2F |
 | メガウィスプ | Mega Wisp | 25 | 168 | 51 | 40 | 62 | 26 | Freezedara | Maho Tas | None | 2704 | 2940 | Escape Incense | 2F/3F |
 | ギャザー | Gather | 25 | 155 | 49 | 45 | 66 | 22 | Plasmadara | Maho Tasra | Magic Pull | 2704 | 2880 | Mierundesu | 2F/3F |
 | フロストゴーレム | Frost Golem | 26 | 562 | 54 | 188 | 12 | 8 | Sabiru | None | Harden | 2916 | 3000 | Kochi Kocchin | 2F/3F |
-| タマゴンリッチ | Tamagon Lich | 43 | 1200 | 17 | 37 | 35 | 48 | Zeni Down | Maho Kikan | Leave | 7744 | 200000 | Gold Beetle | 1F/2F/3F |
+| タマゴンリッチ | Lordly Egg | 43 | 1200 | 17 | 37 | 35 | 48 | Zeni Down | Maho Kikan | Leave | 7744 | 200000 | Gold Beetle | 1F/2F/3F |
 
 ---
 
@@ -253,31 +253,31 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| ブレイクアーム | Break Arm | 26 | 271 | 101 | 91 | 30 | 31 | Quake | Maho Tas | Fear | 2916 | 3180 | Delon | Plains |
-| ドワーフギャング | Dwarf Gang | 26 | 261 | 92 | 87 | 31 | 33 | Do Zeni Get | Maho Guard | Steal | 2916 | 3220 | Silver Chain | Plains/Forest |
-| ニョニョ | Nyonyo | 27 | 233 | 85 | 89 | 34 | 38 | Do Zeni Get | Maho Guard | Song | 3136 | 3500 | Flashy Shield | Plains |
+| ブレイクアーム | Deadarm | 26 | 271 | 101 | 91 | 30 | 31 | Quake | Maho Tas | Fear | 2916 | 3180 | Delon | Plains |
+| ドワーフギャング | Crooked Dwarf | 26 | 261 | 92 | 87 | 31 | 33 | Do Zeni Get | Maho Guard | Steal | 2916 | 3220 | Silver Chain | Plains/Forest |
+| ニョニョ | Critter | 27 | 233 | 85 | 89 | 34 | 38 | Do Zeni Get | Maho Guard | Song | 3136 | 3500 | Flashy Shield | Plains |
 | あばれ牛 | Rampaging Bull | 28 | 473 | 138 | 68 | 21 | 26 | Berserk | Maho Safe | Rampage | 3364 | 3570 | Mattock | Mountains/Forest |
-| きのこ戦士 | Kinoko Warrior | 28 | 275 | 96 | 93 | 33 | 38 | Freeze | Maho Kikan | Pretend | 3364 | 3330 | Tobikara Spice | Forest |
+| きのこ戦士 | Mushmadman | 28 | 275 | 96 | 93 | 33 | 38 | Freeze | Maho Kikan | Pretend | 3364 | 3330 | Tobikara Spice | Forest |
 | エント | Ent | 28 | 282 | 129 | 144 | 28 | 23 | Battle Nemnem | Maho Guard | None | 3364 | 3450 | Muraderon | Forest |
 | サイクロプス | Cyclops | 29 | 306 | 119 | 121 | 24 | 37 | Quake | Maho Safe | Healing Light | 3600 | 4500 | 1 Crystal | Mountains |
-| さびナマズ | Rusty Catfish | 30 | 287 | 101 | 101 | 37 | 40 | Sabiru | Maho Guard | None | 3844 | 3550 | Tail Earth | Sea/Swamp |
+| さびナマズ | Rusty Whisker | 30 | 287 | 101 | 101 | 37 | 40 | Sabiru | Maho Guard | None | 3844 | 3550 | Tail Earth | Sea/Swamp |
 | クラーケン | Kraken | 30 | 404 | 106 | 77 | 32 | 37 | Wave | Maho Safe | Rampage | 3844 | 3760 | Aqua Pendant | Sea |
-| 一つ目鬼 | One-Eyed Oni | 31 | 205 | 107 | 85 | 46 | 46 | Freezera | Maho Safe | Magic Pull | 4096 | 3810 | Yellow Dokahelm | Swamp |
-| ブルブラッド | Blue Blood | 31 | 529 | 128 | 75 | 23 | 34 | Freezera | Maho Safe | Rampage | 4096 | 3930 | Red Diamond | Swamp |
+| 一つ目鬼 | One-Eyed Ogre | 31 | 205 | 107 | 85 | 46 | 46 | Freezera | Maho Safe | Magic Pull | 4096 | 3810 | Yellow Dokahelm | Swamp |
+| ブルブラッド | Bloodborn | 31 | 529 | 128 | 75 | 23 | 34 | Freezera | Maho Safe | Rampage | 4096 | 3930 | Red Diamond | Swamp |
 | ホークソルジャー | Hawk Soldier | 30 | 240 | 81 | 70 | 15 | 77 | Telepozan | Maho Guard | Vital Strike | 3844 | 5620 | Acceleration Device | Village |
 | ケンタウロス | Centaur | 31 | 232 | 93 | 65 | 26 | 71 | Plasmara | Maho Safe | Target Equipment | 4096 | 5100 | Hira Ring | Village |
-| ダブルジョーズ | Double Jaws | 32 | 337 | 94 | 92 | 35 | 41 | Wave | Maho Tasdara | Bite | 4356 | 3700 | Mjolnir | Village |
+| ダブルジョーズ | Doublejaw | 32 | 337 | 94 | 92 | 35 | 41 | Wave | Maho Tasdara | Bite | 4356 | 3700 | Mjolnir | Village |
 | メデューサ | Medusa | 33 | 245 | 69 | 67 | 69 | 41 | Battle Dree | Maho Catchin | Petrify | 4624 | 6320 | Magnet Necklace | Village |
-| ギガサイノシス | Giga Cygnosis | 33 | 530 | 123 | 75 | 33 | 35 | Quake | Maho Kikan | Rampage | 4624 | 5740 | Mjolnir | Village |
+| ギガサイノシス | Giganoceros | 33 | 530 | 123 | 75 | 33 | 35 | Quake | Maho Kikan | Rampage | 4624 | 5740 | Mjolnir | Village |
 
 ### Sky Realm
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
 | ベビーインプ | Baby Imp | 31 | 196 | 67 | 14 | 84 | 33 | Battle Dree | Maho Tasdara | Magic Pull | 4096 | 4120 | Magic Key | Sky/Sky Castle |
-| ナイトストーカー | Night Stalker | 31 | 208 | 70 | 14 | 86 | 30 | Freezera | Maho Tasra | Vanish | 4096 | 4040 | Escape Incense | Sky/Sky Castle |
-| いたずら天使 | Mischievous Angel | 32 | 294 | 118 | 102 | 38 | 43 | Zeni Down | Maho Kikan | Tickle | 4356 | 4320 | Sleep Arrow | Sky/Sky Castle |
-| ハイマジシャン | High Magician | 32 | 181 | 68 | 56 | 86 | 28 | Go To Hell | Magic Pool | Vanish | 4356 | 4570 | Magic Key | Sky/Sky Castle |
+| ナイトストーカー | Nightwalker | 31 | 208 | 70 | 14 | 86 | 30 | Freezera | Maho Tasra | Vanish | 4096 | 4040 | Escape Incense | Sky/Sky Castle |
+| いたずら天使 | Trickster Angel | 32 | 294 | 118 | 102 | 38 | 43 | Zeni Down | Maho Kikan | Tickle | 4356 | 4320 | Sleep Arrow | Sky/Sky Castle |
+| ハイマジシャン | Master Magician | 32 | 181 | 68 | 56 | 86 | 28 | Go To Hell | Magic Pool | Vanish | 4356 | 4570 | Magic Key | Sky/Sky Castle |
 
 ---
 
@@ -287,20 +287,20 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 
 | Name (JP) | Name (EN) | Lv | HP | AT | DF | MG | SP | Attack Magic | Defense Magic | Special Skill | EXP | Money | Drop Item | Terrain |
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
-| 竜牙兵 | Dragon Knight | 33 | 322 | 206 | 135 | 26 | 31 | Berserk | Maho Guard | Energy | 4624 | 5000 | Revival Item | Plains |
+| 竜牙兵 | Dragon Fang | 33 | 322 | 206 | 135 | 26 | 31 | Berserk | Maho Guard | Energy | 4624 | 5000 | Revival Item | Plains |
 | 狂犬 | Mad Dog | 33 | 236 | 81 | 61 | 12 | 98 | Berserk | Maho Safe | Bite | 4624 | 5040 | Torena Rock | Plains |
 | エビルドワーフ | Evil Dwarf | 33 | 334 | 120 | 111 | 39 | 42 | Do Zeni Get | Maho Guard | Steal | 4624 | 5190 | Speed Bash | Plains |
 | エミュー | Emu | 34 | 244 | 77 | 60 | 11 | 104 | Go To Hell | Maho Safe | None | 4900 | 5360 | Kaero Kana | Forest |
 | グール | Ghoul | 34 | 341 | 159 | 160 | 25 | 40 | Sabiru | Maho Safe | Weaken | 4900 | 5240 | 5 Crystal | Forest |
 | ヤギュウ | Yagyu | 35 | 240 | 135 | 89 | 32 | 69 | Do Zeni Get | Maho Guard | Zantetsuken | 5184 | 5440 | Insight Sake | Mountains |
-| アイアンヘッド | Iron Head | 35 | 253 | 103 | 242 | 40 | 33 | Meteora | Maho Safe | Rampage | 5184 | 5510 | Psychokinesis | Mountains |
-| メタルミリピード | Metal Millipede | 35 | 255 | 90 | 236 | 36 | 41 | Maho Kes A | Maho Safe | Poison | 5184 | 5590 | Sleepless Statue | Mountains |
-| ホットドック | Hot Dog | 36 | 250 | 94 | 70 | 18 | 101 | Meteodara | Maho Safe | Bite | 5476 | 5620 | Panther Claw | Mountains |
-| ヘルウォーカー | Hell Walker | 36 | 313 | 182 | 186 | 32 | 35 | Maho Kes D | Genki Ki | Brace | 5476 | 3000 | Countdown | Village |
+| アイアンヘッド | Ironhead | 35 | 253 | 103 | 242 | 40 | 33 | Meteora | Maho Safe | Rampage | 5184 | 5510 | Psychokinesis | Mountains |
+| メタルミリピード | Metalpede | 35 | 255 | 90 | 236 | 36 | 41 | Maho Kes A | Maho Safe | Poison | 5184 | 5590 | Sleepless Statue | Mountains |
+| ホットドック | Hotdog | 36 | 250 | 94 | 70 | 18 | 101 | Meteodara | Maho Safe | Bite | 5476 | 5620 | Panther Claw | Mountains |
+| ヘルウォーカー | Hellwalker | 36 | 313 | 182 | 186 | 32 | 35 | Maho Kes D | Genki Ki | Brace | 5476 | 3000 | Countdown | Village |
 | カムイ | Kamui | 37 | 340 | 127 | 84 | 22 | 82 | Berserk | Maho Guard | Neck Target | 5776 | 12000 | Demon Sword | Village |
 | セントール | Centaur | 37 | 348 | 111 | 71 | 33 | 77 | Plasmadara | Maho Kikan | Target Equipment | 5776 | 5580 | Shiraha no Ya | Village |
 | サルガタナス | Sargatanas | 38 | 420 | 149 | 175 | 41 | 35 | Plasmadara | Maho Guard | Healing Light | 6084 | 7800 | Adamant Claw | Village |
-| バイオレンスブル | Violence Bull | 39 | 691 | 179 | 100 | 33 | 31 | Berserk | Maho Kikan | Power Charge | 6400 | 7220 | Puppet | Village |
+| バイオレンスブル | Raging Minotaur | 39 | 691 | 179 | 100 | 33 | 31 | Berserk | Maho Kikan | Power Charge | 6400 | 7220 | Puppet | Village |
 | レッドドラゴン | Red Dragon | 41 | 460 | 152 | 100 | 53 | 50 | Meteodara | Maho Catchin | Fire | 7056 | 19650 | Dragon Claw | Village |
 
 ### Saunan Cave / Saunan Ruins
@@ -309,7 +309,7 @@ Complete reference for all monsters in DOKAPON! Sword of Fury with stats, locati
 |-----------|-----------|----|----|----|----|----|----|--------------|---------------|---------------|-----|-------|-----------|---------|
 | マグマン | Magman | 33 | 212 | 73 | 57 | 96 | 19 | Meteodara | Maho Tasdara | None | 4624 | 4880 | Mag Fire | Cave/1F |
 | 狂犬 | Mad Dog | 33 | 236 | 81 | 61 | 12 | 98 | Berserk | Maho Safe | Bite | 4624 | 5040 | Torena Rock | 2F |
-| ホットドック | Hot Dog | 36 | 250 | 94 | 70 | 18 | 101 | Meteodara | Maho Safe | Bite | 5476 | 5620 | Panther Claw | Cave |
+| ホットドック | Hotdog | 36 | 250 | 94 | 70 | 18 | 101 | Meteodara | Maho Safe | Bite | 5476 | 5620 | Panther Claw | Cave |
 | ケロイダー | Keloidar | 36 | 363 | 158 | 164 | 30 | 42 | Ene Change | Do Genki Ki | Energy | 5476 | 5600 | Ice Fan | Cave/1F |
 | レイス | Wraith | 36 | 258 | 67 | 62 | 96 | 30 | Ene Get | Maho Genki | Fear | 5476 | 5740 | Magic Key | Cave |
 | ワイト | Wight | 37 | 360 | 159 | 170 | 30 | 46 | Maho Kes D | Maho Guard | Weaken | 5776 | 5990 | Escape Incense | Cave/1F |
@@ -451,7 +451,7 @@ Boss monsters copy stats from players, making them scale with your party's stren
 | ゼノン | Xenon | Fear | Diamond Knuckle |
 | ザ・サン | The Sun | Energy | Sun Shield |
 | 深海魔人 | Deep Sea Demon | Blood Drain | Orichalcum |
-| 大魔王 | Great Demon King | Weaken | Dokapon Heart |
+| 大魔王 | Overlord | Weaken | Dokapon Heart |
 | 神様 | God | Weaken | Dokapon Orb |
 
 ---
