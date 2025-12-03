@@ -48,9 +48,9 @@ body {
     align-items: center;
     
     .site-logo-img {
-      height: 32px;
-      width: auto;
-      margin-right: 8px;
+      max-height: 58px;
+      width: 224px;
+      height: auto;
       vertical-align: middle;
       flex-shrink: 0;
     }
