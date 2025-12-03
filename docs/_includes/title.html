@@ -1,5 +1,6 @@
 {% if site.logo %}
-  <div class="site-logo" role="img" aria-label="{{ site.title }}"></div>
+  <img src="{{ site.logo | relative_url }}" alt="{{ site.title }}" class="site-logo-img">
+  {{ site.title }}
 {% else %}
   {{ site.title }}
 {% endif %}

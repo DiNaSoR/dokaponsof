@@ -44,6 +44,16 @@ body {
   .site-title {
     font-weight: 600;
     letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    
+    .site-logo-img {
+      height: 32px;
+      width: auto;
+      margin-right: 8px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
   }
 }
 
