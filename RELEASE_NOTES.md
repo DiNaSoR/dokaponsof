@@ -1,10 +1,10 @@
-# 🎮 DokaponSoFTools v0.2.0 Release
+# 🎮 DokaponSoFTools v0.3.0 Release
 
 ## 🌟 Overview
 
 DokaponSoFTools is a comprehensive modding toolkit for DOKAPON! Sword of Fury (PC Version), providing an easy-to-use GUI interface for extracting and managing game assets.
 
-This release includes significant improvements and new features, with enhanced 3D model viewing capabilities and improved asset extraction tools.
+This release focuses on documentation improvements, enhanced text extraction capabilities, and UI refinements.
 
 ---
 
@@ -30,12 +30,11 @@ This release includes significant improvements and new features, with enhanced 3
 
 ## 🛠️ Technical Details
 
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 **Platform:** Windows  
 **Architecture:** 64-bit  
-**Framework:** Python 3.12 with PyQt6  
-**File Size:** ~229MB  
-**Build Date:** November 29, 2025
+**Framework:** Python 3.12 with PyQt6
+**Build Date:** 04-12-2025
 
 ### Bundled Dependencies
 
@@ -57,28 +56,31 @@ This release includes significant improvements and new features, with enhanced 3
 
 ---
 
-## 🔄 Changes from v0.1
+## 🔄 Changes from v0.2.0
 
 ### ✨ New Features
 
-- 🎮 **3D Model Viewer**: Full 3D preview for MDL model files using PyVista
-- 🗜️ **LZ77 Compression**: Decompress and compress LZ77 compressed files
-- 🗺️ **MPD Support**: Extract sprites and images from map data files
-- 📊 **Enhanced Preview**: Improved preview system for all asset types
-- 🎯 **Better Error Handling**: More informative error messages and status updates
+- 📚 **Comprehensive Documentation Updates**: Major terminology corrections and enhancements across all documentation
+- 🔤 **Enhanced Text Extraction**: Improved text extraction and voice tools functionality
+- 🎨 **UI Improvements**: Banner centered with max-width for better visual presentation
 
 ### 🔧 Improvements
 
-- ⚡ **Performance**: Optimized file processing and memory usage
-- 🎨 **UI Enhancements**: Improved interface layout and responsiveness
-- 📝 **Better Documentation**: Comprehensive guides and tooltips
-- 🐛 **Bug Fixes**: Various stability improvements and bug fixes
+- 📝 **Documentation Accuracy**: Updated all game terminology to match official game text:
+  - **Monsters**: Corrected names like "Tamagon" → "Egg'n", "Kinoko Kozo" → "Fungo Kid", "Little Magician" → "Lil' Magician"
+  - **Items**: Updated item names like "Recovery" → "Potion", "Full Recovery" → "Elixir", "Bine" → "Spinner"
+  - **Equipment**: Renamed weapons and armor for consistency (e.g., "Cheap Sword" → "Shabby Sword", "Ken's Dagger" → "Ken's Knife")
+  - **Magic**: Updated spell names (e.g., "Meteor" → "Magma", "Zeni Get" → "Money Get", "Sabir" → "Rust")
+  - **Treasures**: Corrected treasure names (e.g., "Heart of Flea" → "Flea's Heart", "Magic Belt" → "Magical Belt")
+  - **Special Skills**: Updated skill terminology (e.g., "Scoop" → "Scop", "Head Strike" → "Decapitation")
+- 🎯 **Better Consistency**: Ensured consistent formatting and terminology throughout all documentation
+- 📖 **Improved Readability**: Enhanced documentation structure for better user understanding
 
-### 📦 Updated Dependencies
+### 📦 Research Tools
 
-- Upgraded to Python 3.12
-- Updated PyQt6 to latest version
-- Enhanced 3D visualization capabilities
+- 🧹 **Text Cleaning Tool**: Added `clean_text.py` for processing extracted game text
+- 📊 **Name Extraction**: Created comprehensive name extraction from game text files
+- 📄 **Translation CSV**: Generated translation-ready CSV files for extracted texts
 
 ---
 
@@ -144,16 +146,5 @@ This project is licensed under the GNU General Public License v3.0 (GPL-3.0)
 
 ## 💖 If you find this tool helpful, consider supporting the development
 
----
-
-## 🔮 Future Plans
-
-- [ ] Optimize executable size
-- [ ] Add more export formats
-- [ ] Improve batch processing
-- [ ] Cross-platform support
-- [ ] Additional file format support
-
----
 
 **Note:** This is a standalone executable. No Python installation or additional dependencies are required to run the application.
