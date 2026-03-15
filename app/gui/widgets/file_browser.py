@@ -12,10 +12,59 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import (
     QStandardItemModel, QStandardItem, QPixmap, QIcon
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QSize, QModelIndex, QTimer
+from PyQt6.QtCore import Qt, pyqtSignal, QSize, QModelIndex, QTimer, QThread, QMutex, QMutexLocker
 import os
 
 from app.core.dokapon_extract import decompress_lz77
+from app.gui.styles import COLORS
+
+
+class ThumbnailLoader(QThread):
+    """Background thread that loads thumbnails for asset files."""
+    thumbnail_ready = pyqtSignal(str, QPixmap)  # (file_path, pixmap)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._queue = []
+        self._mutex = QMutex()
+        self._abort = False
+
+    def enqueue(self, paths):
+        """Add file paths to the thumbnail loading queue."""
+        with QMutexLocker(self._mutex):
+            self._queue.extend(paths)
+
+    def abort(self):
+        self._abort = True
+
+    def run(self):
+        while True:
+            with QMutexLocker(self._mutex):
+                if not self._queue or self._abort:
+                    return
+                file_path = self._queue.pop(0)
+
+            try:
+                with open(file_path, 'rb') as f:
+                    data = f.read()
+
+                if data.startswith(b'LZ77'):
+                    data = decompress_lz77(data)
+                    if not data:
+                        continue
+
+                png_start = data.find(b'\x89PNG\r\n\x1a\n')
+                if png_start >= 0:
+                    pixmap = QPixmap()
+                    if pixmap.loadFromData(data[png_start:]):
+                        thumbnail = pixmap.scaled(
+                            96, 96,
+                            Qt.AspectRatioMode.KeepAspectRatio,
+                            Qt.TransformationMode.SmoothTransformation
+                        )
+                        self.thumbnail_ready.emit(file_path, thumbnail)
+            except Exception:
+                pass
 
 
 class FileBrowserWidget(QWidget):
@@ -39,8 +88,10 @@ class FileBrowserWidget(QWidget):
         self._root_path = None      # Original root path
         self._current_path = None   # Current path in grid view
         self._thumbnail_cache = {}
+        self._thumbnail_items = {}  # path -> list of QStandardItem to update
         self._all_files = []        # Flat list of all files for tree view
         self._navigation_history = []  # For back navigation
+        self._thumb_loader = None
         self._init_ui()
     
     def _init_ui(self):
@@ -115,7 +166,7 @@ class FileBrowserWidget(QWidget):
         nav_layout.addWidget(self.back_btn)
         
         self.path_label = QLabel("")
-        self.path_label.setStyleSheet("color: #858585; padding: 4px;")
+        self.path_label.setStyleSheet(f"color: {COLORS['text_secondary']}; padding: 4px;")
         nav_layout.addWidget(self.path_label, stretch=1)
         
         thumb_layout.addLayout(nav_layout)
@@ -345,49 +396,67 @@ class FileBrowserWidget(QWidget):
     
     def populate_tree(self, path: str):
         """Populate the browser with files from the given path."""
+        # Stop any running thumbnail loader
+        if self._thumb_loader and self._thumb_loader.isRunning():
+            self._thumb_loader.abort()
+            self._thumb_loader.wait(2000)
+
         self._root_path = path
         self._current_path = path
         self._thumbnail_cache.clear()
-        self._all_files = []  # Reset flat file list
-        self._navigation_history = []  # Reset navigation
-        
+        self._thumbnail_items.clear()
+        self._all_files = []
+        self._navigation_history = []
+
         # Clear both models
         self.tree_model.clear()
         self.tree_model.setHorizontalHeaderLabels(['Name', 'Type', 'Size'])
         self.grid_model.clear()
-        
+
         if not os.path.exists(path):
             self.file_count_label.setText("0 files")
             return
-        
+
         selected_type = "all files"
         if self.file_type_combo:
             selected_type = self.file_type_combo.currentText().lower()
-        
+
         root_item = self.tree_model.invisibleRootItem()
         file_count = 0
-        
+
         if os.path.isfile(path):
             self._add_file_item(root_item, path, selected_type)
             file_count = 1
         else:
-            # Add root folder to tree
             folder_item = self._create_folder_item(os.path.basename(path) or path, path)
             root_item.appendRow(folder_item)
-            
-            # Add contents to tree and collect files for grid
             file_count = self._add_directory_contents(folder_item[0], path, selected_type)
-            
-            # Auto-expand root in tree view
+
             root_index = self.tree_model.indexFromItem(folder_item[0])
             if root_index.isValid():
                 self.tree_view.expand(root_index)
-        
+
         self.file_count_label.setText(f"{file_count} files")
-        
+
         # Populate grid view with current folder contents
         self._populate_grid_folder(path)
         self._update_nav_ui()
+
+        # Start async thumbnail loading for queued paths
+        paths_to_load = [p for p in self._thumbnail_items if p not in self._thumbnail_cache]
+        if paths_to_load:
+            self._thumb_loader = ThumbnailLoader(self)
+            self._thumb_loader.thumbnail_ready.connect(self._on_thumbnail_ready)
+            self._thumb_loader.enqueue(paths_to_load)
+            self._thumb_loader.start()
+
+    def _on_thumbnail_ready(self, file_path: str, pixmap: QPixmap):
+        """Handle async thumbnail loaded — update all items referencing this path."""
+        self._thumbnail_cache[file_path] = pixmap
+        icon = QIcon(pixmap)
+        for item in self._thumbnail_items.get(file_path, []):
+            item.setIcon(icon)
+        self._thumbnail_items.pop(file_path, None)
     
     def _create_folder_item(self, name: str, path: str) -> list:
         """Create a folder item row."""
@@ -401,8 +470,7 @@ class FileBrowserWidget(QWidget):
         return [name_item, type_item, size_item]
     
     def _create_file_item(self, name: str, path: str, size: int, ext: str) -> list:
-        """Create a file item row with optional thumbnail."""
-        # Choose icon based on extension
+        """Create a file item row with placeholder icon (thumbnails loaded async)."""
         icon_map = {
             ".tex": "🖼",
             ".spranm": "🎬",
@@ -410,54 +478,24 @@ class FileBrowserWidget(QWidget):
             ".fnt": "🔤",
         }
         icon = icon_map.get(ext, "📄")
-        
+
         name_item = QStandardItem(f"{icon} {name}")
         name_item.setData(path, Qt.ItemDataRole.UserRole)
         name_item.setCheckable(True)
-        
-        # Try to load thumbnail for grid view
+
+        # Use cached thumbnail if available, otherwise placeholder
         if ext in self.PREVIEW_EXTENSIONS:
-            thumbnail = self._get_thumbnail(path)
-            if thumbnail:
-                name_item.setIcon(QIcon(thumbnail))
-        
+            if path in self._thumbnail_cache:
+                name_item.setIcon(QIcon(self._thumbnail_cache[path]))
+            else:
+                name_item.setIcon(self._get_placeholder_icon(ext))
+                # Track item for async thumbnail update
+                self._thumbnail_items.setdefault(path, []).append(name_item)
+
         type_item = QStandardItem(ext)
         size_item = QStandardItem(self._format_size(size))
-        
+
         return [name_item, type_item, size_item]
-    
-    def _get_thumbnail(self, file_path: str) -> QPixmap:
-        """Get or create a thumbnail for a file."""
-        if file_path in self._thumbnail_cache:
-            return self._thumbnail_cache[file_path]
-        
-        try:
-            with open(file_path, 'rb') as f:
-                data = f.read()
-            
-            # Handle LZ77 compression
-            if data.startswith(b'LZ77'):
-                data = decompress_lz77(data)
-                if not data:
-                    return None
-            
-            # Find PNG data
-            png_start = data.find(b'\x89PNG\r\n\x1a\n')
-            if png_start >= 0:
-                pixmap = QPixmap()
-                if pixmap.loadFromData(data[png_start:]):
-                    # Scale to thumbnail size
-                    thumbnail = pixmap.scaled(
-                        96, 96,
-                        Qt.AspectRatioMode.KeepAspectRatio,
-                        Qt.TransformationMode.SmoothTransformation
-                    )
-                    self._thumbnail_cache[file_path] = thumbnail
-                    return thumbnail
-        except Exception:
-            pass
-        
-        return None
     
     def _add_file_item(self, parent_item: QStandardItem, file_path: str, selected_type: str) -> bool:
         """Add a file item to the tree. Returns True if file was added."""
@@ -535,7 +573,7 @@ class FileBrowserWidget(QWidget):
                     
                 elif entry.is_file():
                     file_ext = os.path.splitext(entry.name)[1].lower()
-                    
+
                     # Filter by type
                     if selected_type != "all files":
                         type_ext_map = {
@@ -546,24 +584,24 @@ class FileBrowserWidget(QWidget):
                         required_ext = type_ext_map.get(selected_type)
                         if required_ext and file_ext != required_ext:
                             continue
-                    
+
                     # Add file item
                     item = QStandardItem(entry.name)
                     item.setData(entry.path, Qt.ItemDataRole.UserRole)
-                    item.setData(False, Qt.ItemDataRole.UserRole + 1)  # Mark as file
+                    item.setData(False, Qt.ItemDataRole.UserRole + 1)
                     item.setCheckable(True)
                     item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom)
-                    
-                    # Try to load thumbnail
+
+                    # Use cached thumbnail or placeholder
                     if file_ext in self.PREVIEW_EXTENSIONS:
-                        thumbnail = self._get_thumbnail(entry.path)
-                        if thumbnail and not thumbnail.isNull():
-                            item.setIcon(QIcon(thumbnail))
+                        if entry.path in self._thumbnail_cache:
+                            item.setIcon(QIcon(self._thumbnail_cache[entry.path]))
                         else:
                             item.setIcon(self._get_placeholder_icon(file_ext))
+                            self._thumbnail_items.setdefault(entry.path, []).append(item)
                     else:
                         item.setIcon(self._get_placeholder_icon(file_ext))
-                    
+
                     self.grid_model.appendRow(item)
                     
         except PermissionError:

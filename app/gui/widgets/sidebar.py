@@ -43,6 +43,7 @@ class ModernSidebar(QWidget):
         ("Voice Tools", "🎙"),
         ("Hex Editor", "🔧"),
         ("Video Tools", "🎬"),
+        ("Map Explorer", "🗺"),
         ("About", "ℹ"),
     ]
     
@@ -87,7 +88,7 @@ class ModernSidebar(QWidget):
         )
         
         # Version label at bottom
-        version_label = QLabel("v0.3.0 • By DiNaSoR")
+        version_label = QLabel("v0.4.0 • By DiNaSoR")
         version_label.setObjectName("sidebarVersion")
         layout.addWidget(version_label)
         

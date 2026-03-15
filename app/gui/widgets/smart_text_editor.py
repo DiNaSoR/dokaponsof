@@ -82,7 +82,7 @@ class DokaponSyntaxHighlighter(QSyntaxHighlighter):
 class SmartTextEdit(QTextEdit):
     """Text editor with control code protection"""
     
-    textModified = pyqtSignal(str)  # Emits the full text when modified
+    text_modified = pyqtSignal(str)  # Emits the full text when modified
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -109,7 +109,7 @@ class SmartTextEdit(QTextEdit):
     
     def _on_text_changed(self):
         """Handle text changes - emit modified signal"""
-        self.textModified.emit(self.toPlainText())
+        self.text_modified.emit(self.toPlainText())
     
     def getEditableText(self) -> str:
         """Get only the editable (non-control-code) parts"""
@@ -229,7 +229,7 @@ class CodeLegendWidget(QFrame):
 class SmartTextEditorWidget(QWidget):
     """Complete smart text editor with preview and legend"""
     
-    textChanged = pyqtSignal(str)
+    text_changed = pyqtSignal(str)
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -260,7 +260,7 @@ class SmartTextEditorWidget(QWidget):
             }
         """)
         self.editor.setMinimumHeight(150)
-        self.editor.textModified.connect(self._on_text_modified)
+        self.editor.text_modified.connect(self._on_text_modified)
         editor_layout.addWidget(self.editor)
         
         layout.addLayout(editor_layout, stretch=2)
@@ -284,7 +284,7 @@ class SmartTextEditorWidget(QWidget):
     def _on_text_modified(self, text: str):
         """Handle text modification"""
         self.preview.updatePreview(text)
-        self.textChanged.emit(text)
+        self.text_changed.emit(text)
     
     def setText(self, text: str):
         """Set the editor text"""

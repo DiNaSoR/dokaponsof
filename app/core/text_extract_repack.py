@@ -30,7 +30,7 @@ def find_text_end(content: bytes, start: int) -> int:
     Text blocks end at:
     1. \k (5C 6B) - wait for key
     2. \z (5C 7A) - unknown terminator
-    3. Two or more consecutive null bytes
+    3. One or more consecutive null bytes
     4. Next \p (5C 70) - start of new text block
     """
     pos = start + 2  # Skip initial \p
@@ -63,6 +63,36 @@ def find_text_end(content: bytes, start: int) -> int:
         pos += 1
     
     return len(content)
+
+
+def extract_texts_to_memory(exe_path: str) -> list[tuple[str, str, int]]:
+    """Extract texts from executable to memory without writing temp files.
+
+    Returns list of (text, offset_hex_str, max_length) tuples.
+    """
+    with open(exe_path, "rb") as f:
+        content = f.read()
+
+    pattern = rb'\\p'
+    results = []
+
+    for match in re.finditer(pattern, content):
+        start = match.start()
+        end = find_text_end(content, start)
+        text_bytes = content[start:end]
+
+        try:
+            text = text_bytes.decode('utf-8')
+            if len(text) < 3:
+                continue
+            printable_ratio = sum(1 for c in text if c.isprintable() or c in '\n\r\t') / len(text)
+            if printable_ratio < 0.5:
+                continue
+            results.append((text, str(start), len(text_bytes)))
+        except UnicodeDecodeError:
+            continue
+
+    return results
 
 
 def extract_texts(exe_file_path: str, output_file_path: str, offsets_file_path: str) -> int:

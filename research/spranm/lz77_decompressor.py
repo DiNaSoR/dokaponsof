@@ -1,3 +1,4 @@
+# NOTE: Research reference only. Production code is in app/core/lz77.py
 """
 LZ77 Decompressor
 A specialized tool for decompressing LZ77-compressed data with advanced block handling and window management.

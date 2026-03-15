@@ -4,13 +4,14 @@ Provides PCK sound file extraction and replacement functionality.
 """
 
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
-    QFileDialog, QRadioButton, QButtonGroup, QTableWidget, 
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
+    QFileDialog, QRadioButton, QButtonGroup, QTableWidget,
     QTableWidgetItem, QHeaderView, QProgressBar, QSpinBox,
     QGroupBox, QSplitter, QMessageBox, QAbstractItemView
 )
-from PyQt6.QtCore import pyqtSignal, Qt, QMimeData
+from PyQt6.QtCore import Qt, QMimeData
 from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent
+from .base_tab import BaseTab
 from ..widgets.worker import WorkerThread
 from app.core.pck_handler import PCKFile, Sound, extract_pck
 from app.core.tool_manager import ToolManager
@@ -20,14 +21,11 @@ import subprocess
 import tempfile
 
 
-class VoiceExtractorTab(QWidget):
+class VoiceExtractorTab(BaseTab):
     """Enhanced Voice Tools tab with Extract and Replace modes."""
-    
-    status_updated = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
-        self.workers = []
         self.current_pck: PCKFile = None
         self.replacement_queue = {}  # {original_name: (new_path, loop_start, loop_end)}
         self._init_ui()
@@ -266,10 +264,6 @@ class VoiceExtractorTab(QWidget):
         if path:
             self.output_path_label.setText(path)
 
-    def _log_status(self, message: str):
-        """Emit status update."""
-        self.status_updated.emit(message)
-
     def _start_extraction(self):
         """Extract all sounds from current PCK."""
         if not self.current_pck:
@@ -383,38 +377,50 @@ class VoiceExtractorTab(QWidget):
         if not self.current_pck:
             self._log_status("Error: No PCK file loaded")
             return
-        
+
         if not self.replacement_queue:
             self._log_status("Error: No replacements queued")
             return
-        
-        # Check if opusenc is available
-        tool_manager = ToolManager.get_instance()
-        opusenc_path = tool_manager.get_opusenc_path()
-        
-        try:
-            self._log_status(f"Processing {len(self.replacement_queue)} replacements...")
-            
-            for original_name, (replacement_path, loop_start, loop_end) in self.replacement_queue.items():
+
+        # Disable buttons during processing
+        self.apply_btn.setEnabled(False)
+        self.clear_replacements_btn.setEnabled(False)
+
+        self._log_status(f"Processing {len(self.replacement_queue)} replacements...")
+
+        # Capture state needed by worker
+        replacement_queue = dict(self.replacement_queue)
+        opusenc_path = ToolManager.get_instance().get_opusenc_path()
+
+        worker = WorkerThread(
+            self._do_replacements_work,
+            [replacement_queue, opusenc_path]
+        )
+        worker.result.connect(self._on_replacements_complete)
+        worker.error.connect(self._on_replacements_error)
+        self.workers.append(worker)
+        worker.start()
+
+    def _do_replacements_work(self, replacement_queue, opusenc_path):
+        """Worker function: process replacements off the GUI thread."""
+        results = []  # list of (original_name, success, message, new_sound_or_None)
+
+        for original_name, (replacement_path, loop_start, loop_end) in replacement_queue.items():
+            try:
                 # Convert to Opus if needed
                 if not replacement_path.lower().endswith(('.opus', '.ogg')):
-                    self._log_status(f"Converting {os.path.basename(replacement_path)} to Opus...")
-                    
-                    # Create temp file for conversion
                     temp_opus = tempfile.mktemp(suffix='.opus')
-                    
-                    # Build opusenc command
+
                     cmd = [opusenc_path]
                     if loop_start > 0:
                         cmd.extend(["--comment", f"LoopStart={loop_start}"])
                     if loop_end > 0:
                         cmd.extend(["--comment", f"LoopEnd={loop_end}"])
                     cmd.extend([replacement_path, temp_opus])
-                    
+
                     try:
                         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
                         if result.returncode != 0:
-                            self._log_status(f"Warning: opusenc failed for {original_name}, using raw file")
                             with open(replacement_path, 'rb') as f:
                                 new_data = f.read()
                         else:
@@ -422,25 +428,30 @@ class VoiceExtractorTab(QWidget):
                                 new_data = f.read()
                             os.remove(temp_opus)
                     except FileNotFoundError:
-                        self._log_status("Warning: opusenc not found, using raw file")
                         with open(replacement_path, 'rb') as f:
                             new_data = f.read()
                 else:
                     with open(replacement_path, 'rb') as f:
                         new_data = f.read()
-                
-                # Create new Sound and replace
+
                 new_sound = Sound(
                     name=original_name,
                     data=new_data,
                     loop_start=loop_start,
                     loop_end=loop_end
                 )
-                
+                results.append((original_name, True, "Replaced", new_sound))
+            except Exception as e:
+                results.append((original_name, False, str(e), None))
+
+        return results
+
+    def _on_replacements_complete(self, results):
+        """Handle replacement results on the GUI thread."""
+        for original_name, success, message, new_sound in results:
+            if success and new_sound:
                 if self.current_pck.replace_sound(original_name, new_sound):
                     self._log_status(f"Replaced: {original_name}")
-                    
-                    # Update status in table
                     for row in range(self.sound_table.rowCount()):
                         if self.sound_table.item(row, 0).text() == original_name:
                             status_item = self.sound_table.item(row, 4)
@@ -449,17 +460,28 @@ class VoiceExtractorTab(QWidget):
                             break
                 else:
                     self._log_status(f"Warning: Could not find {original_name} in PCK")
-            
-            # Save modified PCK
+            else:
+                self._log_status(f"Error replacing {original_name}: {message}")
+
+        # Save modified PCK
+        try:
             output_path = self.output_pck_label.text()
             self.current_pck.write(output_path)
-            
             self._log_status(f"Saved modified PCK to: {output_path}")
             self.replacement_queue.clear()
-            
         except Exception as e:
-            self._log_status(f"Error applying replacements: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to apply replacements:\n{e}")
+            self._log_status(f"Error saving PCK: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to save PCK:\n{e}")
+
+        self.apply_btn.setEnabled(True)
+        self.clear_replacements_btn.setEnabled(True)
+
+    def _on_replacements_error(self, error_msg):
+        """Handle replacement worker error."""
+        self._log_status(f"Error applying replacements: {error_msg}")
+        QMessageBox.critical(self, "Error", f"Failed to apply replacements:\n{error_msg}")
+        self.apply_btn.setEnabled(True)
+        self.clear_replacements_btn.setEnabled(True)
 
     def _drag_enter_event(self, event: QDragEnterEvent):
         """Handle drag enter for file drops."""
@@ -496,10 +518,3 @@ class VoiceExtractorTab(QWidget):
                 
                 self._log_status(f"Queued replacement for: {original_name}")
 
-    def closeEvent(self, event):
-        """Clean up worker threads when closing."""
-        for worker in self.workers:
-            if worker.isRunning():
-                worker.quit()
-                worker.wait()
-        event.accept()

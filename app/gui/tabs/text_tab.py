@@ -3,16 +3,17 @@ Text Tools Tab - Redesigned UI for DOKAPON! Sword of Fury
 Features smart text editing with control code protection.
 """
 
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                             QLabel, QFileDialog, QLineEdit, QFrame, QScrollArea,
                             QTableWidget, QTableWidgetItem, QHeaderView, QSplitter,
                             QStackedWidget, QComboBox, QCheckBox, QProgressBar,
                             QSpinBox, QGroupBox, QSizePolicy)
 from PyQt6.QtCore import pyqtSignal, Qt, QSize
 from PyQt6.QtGui import QColor, QFont, QIcon
+from .base_tab import BaseTab
 from ..widgets.worker import WorkerThread
 from ..widgets.smart_text_editor import SmartTextEditorWidget, DokaponSyntaxHighlighter
-from app.core.text_extract_repack import extract_texts, import_texts, analyze_text_patterns
+from app.core.text_extract_repack import extract_texts, extract_texts_to_memory, import_texts, analyze_text_patterns
 import os
 import re
 
@@ -120,7 +121,7 @@ class ActionButton(QPushButton):
 class FileSelector(QFrame):
     """Modern file selector widget"""
     
-    fileSelected = pyqtSignal(str)
+    file_selected = pyqtSignal(str)
     
     def __init__(self, label: str, filter_text: str = "All Files (*)", 
                  is_directory: bool = False, parent=None):
@@ -191,7 +192,7 @@ class FileSelector(QFrame):
         display = path if len(path) < 60 else "..." + path[-57:]
         self.path_label.setText(display)
         self.path_label.setToolTip(path)
-        self.fileSelected.emit(path)
+        self.file_selected.emit(path)
     
     def path(self) -> str:
         return self._path
@@ -209,14 +210,11 @@ def get_text_preview(text: str, max_len: int = 80) -> str:
     return preview.strip()
 
 
-class TextTab(QWidget):
+class TextTab(BaseTab):
     """Redesigned Text Tools tab with smart editor"""
-    
-    status_updated = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
-        self.workers = []
         self.entries = []  # List of (offset, length, text) tuples
         self.current_index = -1
         self._init_ui()
@@ -317,7 +315,7 @@ class TextTab(QWidget):
         
         # EXE selector
         self.exe_selector = FileSelector("Game EXE", "Executable (*.exe);;All Files (*)")
-        self.exe_selector.fileSelected.connect(self._on_exe_selected)
+        self.exe_selector.file_selected.connect(self._on_exe_selected)
         layout.addWidget(self.exe_selector)
         
         # Output directory
@@ -563,7 +561,7 @@ class TextTab(QWidget):
         
         # Smart editor widget
         self.smart_editor = SmartTextEditorWidget()
-        self.smart_editor.textChanged.connect(self._on_editor_text_changed)
+        self.smart_editor.text_changed.connect(self._on_editor_text_changed)
         layout.addWidget(self.smart_editor, stretch=1)
         
         # Bottom info bar
@@ -584,10 +582,6 @@ class TextTab(QWidget):
         
         return panel
     
-    def _log_status(self, message: str):
-        """Emit status update"""
-        self.status_updated.emit(message)
-
     def _on_exe_selected(self, path: str):
         """Handle EXE file selection"""
         has_file = bool(path)
@@ -606,45 +600,18 @@ class TextTab(QWidget):
 
         self._log_status(f"Loading text from {os.path.basename(exe_path)}...")
         self.load_btn.setEnabled(False)
-        
-        # Create temp files for extraction
-        temp_dir = os.path.join(os.path.dirname(exe_path), ".temp_extract")
-        os.makedirs(temp_dir, exist_ok=True)
-        
-        text_file = os.path.join(temp_dir, "texts.txt")
-        offset_file = os.path.join(temp_dir, "offsets.txt")
-        
-        def do_extract():
-            return extract_texts(exe_path, text_file, offset_file)
-        
-        worker = WorkerThread(do_extract)
-        worker.finished.connect(lambda: self._on_load_complete(text_file, offset_file, temp_dir))
+
+        worker = WorkerThread(extract_texts_to_memory, [exe_path])
+        worker.result.connect(self._on_load_complete_memory)
         worker.error.connect(lambda e: self._on_load_error(e))
         self.workers.append(worker)
         worker.start()
-    
-    def _on_load_complete(self, text_file: str, offset_file: str, temp_dir: str):
-        """Handle successful load"""
+
+    def _on_load_complete_memory(self, results):
+        """Handle successful in-memory load"""
         try:
-            # Read data
-            with open(text_file, 'r', encoding='utf-8') as f:
-                texts = f.readlines()
-            with open(offset_file, 'r', encoding='utf-8') as f:
-                offsets = f.readlines()
-            
-            # Parse entries
             self.entries = []
-            for text_line, offset_line in zip(texts, offsets):
-                text = text_line.rstrip('\n')
-                offset_line = offset_line.strip()
-                
-                if ':' in offset_line:
-                    offset, length = offset_line.split(':', 1)
-                    length = int(length)
-                else:
-                    offset = offset_line
-                    length = len(text.encode('utf-8'))
-                
+            for text, offset, length in results:
                 self.entries.append({
                     'offset': offset,
                     'length': length,
@@ -652,18 +619,11 @@ class TextTab(QWidget):
                     'current_text': text,
                     'modified': False
                 })
-            
-            # Update UI
+
             self._populate_list()
             self._update_stats()
             self.save_btn.setEnabled(True)
             self._log_status(f"Loaded {len(self.entries)} text entries")
-            
-            # Cleanup temp files
-            os.remove(text_file)
-            os.remove(offset_file)
-            os.rmdir(temp_dir)
-            
         except Exception as e:
             self._log_status(f"Error loading: {str(e)}")
         finally:
@@ -944,10 +904,3 @@ class TextTab(QWidget):
         self._log_status(f"Average length: {stats['avg_length']:.1f} chars")
         self._log_status("=" * 50)
 
-    def closeEvent(self, event):
-        """Clean up workers"""
-        for worker in self.workers:
-            if worker.isRunning():
-                worker.quit()
-                worker.wait()
-        event.accept() 

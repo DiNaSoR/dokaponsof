@@ -14,3 +14,10 @@ __pycache__/
 
 # Build output
 build/
+dist/
+
+# Egg info
+*.egg-info/
+
+# Test output
+test/doka/out/

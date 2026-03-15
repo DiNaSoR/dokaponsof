@@ -11,9 +11,6 @@ Repository: https://github.com/DiNaSoR/dokaponsof
 import sys
 import os
 
-# Add the parent directory to Python path so it can find the app package
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtCore import Qt
@@ -32,7 +29,7 @@ def main():
     
     # Set application metadata
     app.setApplicationName("Dokapon SoF Tools")
-    app.setApplicationVersion("0.3.0")
+    app.setApplicationVersion("0.4.0")
     app.setOrganizationName("DiNaSoR")
     app.setDesktopFileName("dokapon-sof-tools")
     

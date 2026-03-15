@@ -268,9 +268,9 @@ def repack_png(json_path: str, modified_png_path: str, output_path: str) -> bool
         if len(stripped_png) < length:
             stripped_png += b'\x00' * (length - len(stripped_png))
         elif len(stripped_png) > length:
-            print(f"Warning: Stripped PNG still larger than original ({len(stripped_png)} > {length} bytes)")
-            print("The file will be truncated, which may cause corruption")
-            stripped_png = stripped_png[:length]
+            raise ValueError(
+                f"Modified PNG ({len(stripped_png)} bytes) exceeds original size ({length} bytes)"
+            )
             
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         

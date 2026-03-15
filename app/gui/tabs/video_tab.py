@@ -4,13 +4,14 @@ Provides video conversion and replacement for game cutscenes.
 """
 
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QFileDialog, QTableWidget, QTableWidgetItem, QHeaderView,
     QGroupBox, QComboBox, QProgressBar, QMessageBox,
     QAbstractItemView, QSplitter, QSpinBox, QCheckBox
 )
-from PyQt6.QtCore import pyqtSignal, Qt, QThread
+from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent
+from .base_tab import BaseTab
 from ..widgets.worker import WorkerThread
 from app.core.video_converter import (
     VideoConverter, VideoInfo, ConversionSettings,
@@ -21,39 +22,13 @@ from ..styles import COLORS
 import os
 
 
-class VideoConversionWorker(QThread):
-    """Worker thread for video conversion."""
-    progress = pyqtSignal(float)
-    finished = pyqtSignal(bool, str)
-    
-    def __init__(self, converter, input_path, output_path, settings):
-        super().__init__()
-        self.converter = converter
-        self.input_path = input_path
-        self.output_path = output_path
-        self.settings = settings
-    
-    def run(self):
-        try:
-            success, message = self.converter.convert_to_game_format(
-                self.input_path,
-                self.output_path,
-                self.settings,
-                progress_callback=self.progress.emit
-            )
-            self.finished.emit(success, message)
-        except Exception as e:
-            self.finished.emit(False, str(e))
-
-
-class VideoTab(QWidget):
+class VideoTab(BaseTab):
     """Video Tools tab for cutscene replacement."""
-    
-    status_updated = pyqtSignal(str)
+
+    _conversion_progress = pyqtSignal(float)
 
     def __init__(self):
         super().__init__()
-        self.workers = []
         self.game_videos = []       # List of found game OGV files
         self.replacement_queue = {} # {ogv_path: mp4_path}
         self.converter = None
@@ -404,25 +379,34 @@ class VideoTab(QWidget):
         if self.current_conversion_index >= len(self.conversion_queue):
             self._on_all_conversions_complete()
             return
-        
+
         target, source = self.conversion_queue[self.current_conversion_index]
         settings = self._get_settings()
-        
-        # Update status
+
         self._update_row_status(self.current_conversion_index, "Converting...", COLORS['accent_primary'])
         self._log_status(f"Converting: {os.path.basename(source)} -> {os.path.basename(target)}")
-        
-        # Backup if enabled
+
         if self.backup_checkbox.isChecked():
             backup_video(target)
-        
-        # Start worker
-        worker = VideoConversionWorker(self.converter, source, target, settings)
-        worker.progress.connect(lambda p: self._on_progress(p, self.current_conversion_index))
-        worker.finished.connect(self._on_video_complete)
-        
+
+        def _do_convert():
+            return self.converter.convert_to_game_format(
+                source, target, settings,
+                progress_callback=lambda p: self._conversion_progress.emit(p)
+            )
+
+        worker = WorkerThread(_do_convert)
+        self._conversion_progress.connect(lambda p: self._on_progress(p, self.current_conversion_index))
+        worker.result.connect(self._on_video_result)
+        worker.error.connect(lambda msg: self._on_video_complete(False, msg))
+
         self.workers.append(worker)
         worker.start()
+
+    def _on_video_result(self, result):
+        """Handle video conversion result tuple."""
+        success, message = result
+        self._on_video_complete(success, message)
 
     def _on_progress(self, progress: float, row: int):
         """Handle conversion progress update."""
@@ -496,15 +480,7 @@ class VideoTab(QWidget):
             self._log_status(f"Queued replacement for: {os.path.basename(target_path)}")
 
     def _log_status(self, message: str):
-        """Emit status update."""
-        self.status_updated.emit(message)
+        """Emit status update and refresh the local status label."""
+        super()._log_status(message)
         self.status_label.setText(message)
-
-    def closeEvent(self, event):
-        """Clean up worker threads when closing."""
-        for worker in self.workers:
-            if worker.isRunning():
-                worker.quit()
-                worker.wait()
-        event.accept()
 

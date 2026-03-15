@@ -1,19 +1,18 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
+from PyQt6.QtWidgets import (QVBoxLayout, QHBoxLayout, QPushButton,
                             QLabel, QComboBox, QSplitter, QFileDialog, QMessageBox)
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt
+from .base_tab import BaseTab
 from ..widgets.file_browser import FileBrowserWidget
-from ..preview_widget import PreviewWidget
+from ..widgets.preview_widget import PreviewWidget
 from ..widgets.worker import WorkerThread
 from app.core.dokapon_extract import process_file
 import os
 
-class AssetExtractorTab(QWidget):
-    status_updated = pyqtSignal(str)  # Add status signal
+class AssetExtractorTab(BaseTab):
 
     def __init__(self):
         super().__init__()
         self._init_ui()
-        self.workers = []
         self.results = {'success': [], 'failed': [], 'raw_bin': []}
         
     def _init_ui(self):
@@ -100,10 +99,6 @@ class AssetExtractorTab(QWidget):
         path = QFileDialog.getExistingDirectory(self, "Select Output Directory")
         if path:
             self.output_path.setText(path)
-
-    def _log_status(self, message):
-        """Helper to emit status updates"""
-        self.status_updated.emit(message)
 
     def _start_extraction(self):
         output_base = self.output_path.text()
@@ -240,14 +235,6 @@ class AssetExtractorTab(QWidget):
         report += f"\n{'='*50}\n"
         self._log_status(report)
         self.workers.clear()
-
-    def closeEvent(self, event):
-        """Clean up worker threads when closing"""
-        for worker in self.workers:
-            if worker.isRunning():
-                worker.quit()
-                worker.wait()
-        event.accept()
 
     def _extract_single_file(self, file_path):
         """Extract a single file from the archive"""

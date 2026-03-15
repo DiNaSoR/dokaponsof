@@ -4,13 +4,14 @@ Provides binary patch management for game executable modifications.
 """
 
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QFileDialog, QTableWidget, QTableWidgetItem, QHeaderView,
     QGroupBox, QCheckBox, QMessageBox, QAbstractItemView,
     QSplitter, QListWidget, QListWidgetItem
 )
-from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QDragEnterEvent, QDropEvent
+from .base_tab import BaseTab
 from ..widgets.worker import WorkerThread
 from app.core.hex_editor import (
     HexPatch, PatchConflict, parse_hex_file, parse_hex_files,
@@ -20,14 +21,11 @@ from ..styles import COLORS
 import os
 
 
-class HexEditorTab(QWidget):
+class HexEditorTab(BaseTab):
     """Hex Editor tab for applying binary patches to executables."""
-    
-    status_updated = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
-        self.workers = []
         self.hex_files = []  # List of loaded hex file paths
         self.patches = []    # List of parsed HexPatch objects
         self.conflicts = []  # List of detected conflicts
@@ -402,15 +400,4 @@ class HexEditorTab(QWidget):
         if paths:
             self._load_hex_files(paths)
 
-    def _log_status(self, message: str):
-        """Emit status update."""
-        self.status_updated.emit(message)
-
-    def closeEvent(self, event):
-        """Clean up worker threads when closing."""
-        for worker in self.workers:
-            if worker.isRunning():
-                worker.quit()
-                worker.wait()
-        event.accept()
 

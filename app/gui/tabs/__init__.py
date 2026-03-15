@@ -4,6 +4,7 @@ from .voice_tab import VoiceExtractorTab
 from .text_tab import TextTab
 from .hex_tab import HexEditorTab
 from .video_tab import VideoTab
+from .map_tab import MapExplorerTab
 
 __all__ = [
     'AssetExtractorTab',
@@ -11,4 +12,5 @@ __all__ = [
     'TextTab',
     'HexEditorTab',
     'VideoTab',
+    'MapExplorerTab',
 ] 

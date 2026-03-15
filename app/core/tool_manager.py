@@ -99,7 +99,7 @@ class ToolManager:
                 )
                 if result.returncode == 0:
                     return result.stdout.strip()
-        except:
+        except (OSError, subprocess.SubprocessError):
             pass
         return None
     
@@ -151,7 +151,7 @@ class ToolManager:
                     if result.returncode == 0:
                         version_line = result.stdout.strip().split('\n')[0]
                         return True, version_line
-                except:
+                except (OSError, subprocess.SubprocessError):
                     continue
             
             return False, f"Tool '{tool_name}' found but not responding"

@@ -1,3 +1,29 @@
+# 🎮 DokaponSoFTools v0.4.0 Release
+
+## 🔄 Changes from v0.3.0
+
+### ✨ New Features
+
+- 🗺️ **Map Explorer Tab**: Atlas view with map rendering, record/parts tables, and scan reports
+- 🗜️ **Unified LZ77 Decompression Module**: Supports flag-byte, token-stream, and cell variants
+- 📦 **Integrated Research Modules**: Cell parser, texture parser, game scanner, map renderer, and report generator from dokapon_explorer
+
+### 🔧 Improvements
+
+- ⚡ **Async Thumbnail Loading**: File browser thumbnails now load asynchronously (no more GUI freezes)
+- 🎤 **Voice Processing Off-Thread**: Voice replacement processing moved off the GUI thread
+- 🧩 **BaseTab Base Class**: Consistent tab behavior across all tabs
+- 💾 **In-Memory Text Extraction**: No more temp files needed during text extraction
+- 🐍 **Signal Naming Convention**: Standardized pyqtSignal names to snake_case
+
+### 🧹 Cleanup
+
+- 🗑️ **Dead Code Removed**: Removed FileTreeWidget and voice_pck_extractor
+- 📂 **Research Files Reorganized**: Research files organized into topical subdirectories (text/, spranm/samples/)
+- 📝 **Annotated Superseded Code**: Research LZ77 decompressors annotated as reference-only
+
+---
+
 # 🎮 DokaponSoFTools v0.3.0 Release
 
 ## 🌟 Overview
