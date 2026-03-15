@@ -904,3 +904,9 @@ class TextTab(BaseTab):
         self._log_status(f"Average length: {stats['avg_length']:.1f} chars")
         self._log_status("=" * 50)
 
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        exe = os.path.join(path, "DOKAPON! Sword of Fury.exe")
+        if os.path.isfile(exe):
+            self.exe_selector.setPath(exe)
+

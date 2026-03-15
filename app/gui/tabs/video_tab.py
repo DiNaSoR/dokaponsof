@@ -484,3 +484,8 @@ class VideoTab(BaseTab):
         super()._log_status(message)
         self.status_label.setText(message)
 
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        if os.path.isdir(path):
+            self._load_game_dir(path)
+

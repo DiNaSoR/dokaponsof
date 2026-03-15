@@ -288,4 +288,12 @@ class AssetExtractorTab(BaseTab):
             worker.start()
             
         except Exception as e:
-            self._log_status(f"Error extracting file: {str(e)}") 
+            self._log_status(f"Error extracting file: {str(e)}")
+
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        game_data = os.path.join(path, "GameData", "app")
+        if os.path.isdir(game_data):
+            self.input_path.setText(game_data)
+            self.file_browser.populate_tree(game_data)
+            self._log_status(f"Asset browser loaded: {game_data}") 

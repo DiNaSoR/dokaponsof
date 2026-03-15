@@ -810,3 +810,12 @@ class MapExplorerTab(BaseTab):
             self._log_status("Report generated successfully.")
         except Exception as exc:
             self._log_status(f"Error generating report: {exc}")
+
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        game_dir = Path(path)
+        if game_dir.is_dir():
+            self._game_dir = game_dir
+            self.dir_label.setText(str(game_dir))
+            self.scan_btn.setEnabled(True)
+            self._populate_file_list()

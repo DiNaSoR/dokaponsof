@@ -400,4 +400,13 @@ class HexEditorTab(BaseTab):
         if paths:
             self._load_hex_files(paths)
 
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        exe = os.path.join(path, "DOKAPON! Sword of Fury.exe")
+        if os.path.isfile(exe):
+            self.exe_path_label.setText(exe)
+            base, ext = os.path.splitext(exe)
+            self.output_path_label.setText(f"{base}_patched{ext}")
+            self._update_apply_button()
+
 

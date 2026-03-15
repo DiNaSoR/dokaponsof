@@ -518,3 +518,13 @@ class VoiceExtractorTab(BaseTab):
                 
                 self._log_status(f"Queued replacement for: {original_name}")
 
+    def set_game_path(self, path: str) -> None:
+        super().set_game_path(path)
+        sound_dir = os.path.join(path, "GameData", "app", "Sound")
+        if os.path.isdir(sound_dir):
+            # Auto-load the first PCK file found
+            for f in os.listdir(sound_dir):
+                if f.lower().endswith('.pck'):
+                    self._load_pck(os.path.join(sound_dir, f))
+                    break
+

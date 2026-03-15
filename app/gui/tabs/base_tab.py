@@ -9,9 +9,21 @@ class BaseTab(QWidget):
     def __init__(self):
         super().__init__()
         self.workers: list[QThread] = []
+        self._game_path: str = ""
 
     def _log_status(self, message: str) -> None:
         self.status_updated.emit(message)
+
+    def set_game_path(self, path: str) -> None:
+        """Called by the main window when the global game directory changes.
+
+        Subclasses override this to auto-populate their path fields.
+        """
+        self._game_path = path
+
+    @property
+    def game_path(self) -> str:
+        return self._game_path
 
     def closeEvent(self, event):
         for w in self.workers:
