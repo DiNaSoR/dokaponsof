@@ -1,0 +1,327 @@
+{
+  "source_path": "D:\\Program Files (x86)\\Steam\\steamapps\\common\\DOKAPON ~Sword of Fury~\\GameData\\app\\Field\\Map\\F_24_MD_01.mpd",
+  "is_lz77": true,
+  "lz77": {
+    "raw_size": 4752,
+    "token_count": 2286,
+    "data_offset": 302,
+    "flags_end": 302,
+    "data_end": 2888,
+    "out_len": 4752
+  },
+  "header": {
+    "table_offset": 176,
+    "entry_count": 12,
+    "grid_width": 24,
+    "grid_height": 24,
+    "grid_cells": 576
+  },
+  "records": {
+    "record_count": 12,
+    "unique_value_a": 12,
+    "unique_value_b": 1,
+    "unique_value_c": 1,
+    "first_records": [
+      {
+        "index": 0,
+        "value_a": 0,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 1,
+        "value_a": 1,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 2,
+        "value_a": 2,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 3,
+        "value_a": 3,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 4,
+        "value_a": 4,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 5,
+        "value_a": 5,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 6,
+        "value_a": 6,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 7,
+        "value_a": 7,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 8,
+        "value_a": 8,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 9,
+        "value_a": 9,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 10,
+        "value_a": 10,
+        "value_b": 0,
+        "value_c": 196608
+      },
+      {
+        "index": 11,
+        "value_a": 11,
+        "value_b": 0,
+        "value_c": 196608
+      }
+    ]
+  },
+  "record_decoding": {
+    "records_with_value_a_high16": 0,
+    "records_with_nonzero_value_b": 0,
+    "records_with_nondefault_value_c": 12,
+    "value_a_high16_top": [
+      {
+        "value": 0,
+        "hex": "0x00000000",
+        "count": 12
+      }
+    ],
+    "value_b_top": [
+      {
+        "value": 0,
+        "hex": "0x00000000",
+        "count": 12
+      }
+    ],
+    "value_c_top": [
+      {
+        "value": 196608,
+        "hex": "0x00030000",
+        "count": 12
+      }
+    ],
+    "first_decoded_records": [
+      {
+        "index": 0,
+        "value_a_hex": "0x00000000",
+        "value_a_low16": 0,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 1,
+        "value_a_hex": "0x00000001",
+        "value_a_low16": 1,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 2,
+        "value_a_hex": "0x00000002",
+        "value_a_low16": 2,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 3,
+        "value_a_hex": "0x00000003",
+        "value_a_low16": 3,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 4,
+        "value_a_hex": "0x00000004",
+        "value_a_low16": 4,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 5,
+        "value_a_hex": "0x00000005",
+        "value_a_low16": 5,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 6,
+        "value_a_hex": "0x00000006",
+        "value_a_low16": 6,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 7,
+        "value_a_hex": "0x00000007",
+        "value_a_low16": 7,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 8,
+        "value_a_hex": "0x00000008",
+        "value_a_low16": 8,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 9,
+        "value_a_hex": "0x00000009",
+        "value_a_low16": 9,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 10,
+        "value_a_hex": "0x0000000A",
+        "value_a_low16": 10,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      },
+      {
+        "index": 11,
+        "value_a_hex": "0x0000000B",
+        "value_a_low16": 11,
+        "value_a_high16": 0,
+        "value_b_hex": "0x00000000",
+        "value_b_low16": 0,
+        "value_b_high16": 0,
+        "value_c_hex": "0x00030000",
+        "value_c_low16": 0,
+        "value_c_high16": 3
+      }
+    ]
+  },
+  "map": {
+    "width": 14,
+    "height": 10,
+    "cell_count": 140,
+    "unique_values": 1,
+    "top_values": [
+      {
+        "value": 0,
+        "hex": "0x00000000",
+        "count": 140,
+        "low16": 0,
+        "high16": 0
+      }
+    ],
+    "values_with_zero_high16": 140,
+    "values_with_nonzero_high16": 0,
+    "low16_within_entry_count": 140,
+    "low16_outside_entry_count": 0,
+    "referenced_record_count": 1,
+    "top_record_refs": [
+      {
+        "record_index": 0,
+        "count": 140
+      }
+    ]
+  },
+  "chunks": [
+    {
+      "name": "TextureParts",
+      "offset": 176,
+      "size_total": 2888,
+      "payload_offset": 200,
+      "payload_size": 2864
+    },
+    {
+      "name": "Palette",
+      "offset": 3064,
+      "size_total": 1052,
+      "payload_offset": 3088,
+      "payload_size": 1028
+    },
+    {
+      "name": "Map",
+      "offset": 4120,
+      "size_total": 588,
+      "payload_offset": 4144,
+      "payload_size": 564
+    },
+    {
+      "name": "ConvertInfo",
+      "offset": 4712,
+      "size_total": 28,
+      "payload_offset": 4736,
+      "payload_size": 4
+    }
+  ]
+}

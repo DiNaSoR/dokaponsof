@@ -1,0 +1,914 @@
+# Dokapon Reverse-Engineering Report
+
+## Debug
+- Executable: `D:\Program Files (x86)\Steam\steamapps\common\DOKAPON ~Sword of Fury~\DOKAPON! Sword of Fury.exe`
+- Backup: `D:\Program Files (x86)\Steam\steamapps\common\DOKAPON ~Sword of Fury~\DOKAPON! Sword of Fury.exe.bak`
+- Debug assets present: `True`
+- Debug assets: `GameData\app\Debug\DebugFontAscii.fnt`, `GameData\app\Debug\DebugFontZenkaku.fnt`
+- Internal markers:
+  - `DebugPlayBattle`: `True`
+  - `DEBUGPLAY`: `True`
+  - `Load Field Map Thread`: `True`
+  - `DebugMode`: `True`
+  - `X%3d Y%3d P%3d`: `True`
+  - `X%3d Y%3d A%3d`: `True`
+- Offset snapshots:
+  - `0x2DAE8` current=`00 C7 85 7C 3C 00 00 03` backup=`74 0B 49 83 C2 18 4D 3B` backup_matches_expected=`True`
+  - `0x968930` current=`BC E2 10 00 01 00 00 00` backup=`00 00 00 00 00 00 00 00` backup_matches_expected=`True`
+
+## Maps
+- Groups found: `35`
+- Map IDs: `00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, chizu`
+- Extensions:
+  - `.mdl`: `6`
+  - `.mpd`: `74`
+  - `.spranm`: `66`
+
+## Group Details
+### Group `00`
+- `GameData\app\Field\Map\en\F_00_RD_01.spranm` sig=`Sequence` size=`48160` pngs=`1`
+- `GameData\app\Field\Map\en\F_00_RD_28.spranm` sig=`LZ77` size=`2759` pngs=`0` raw=`4320` tokens=`2172` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_MD_00.mpd` sig=`LZ77` size=`150584` pngs=`0` raw=`202640` tokens=`121702` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`283` unique_record_a=`278` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`128x128` unique_values=`393` low16_in_range=`16384/16384` high16_nonzero=`2080`
+  - map top values: `0x00000044->7133, 0x00000000->577, 0x00000032->407, 0x00010001->266, 0x000000AA->222, 0x00010004->209`
+  - map top record refs: `68->7134, 0->592, 50->407, 1->266, 4->230, 170->227`
+  - record flags: a_high16=`186` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `2->99, 0->97, 1->87`
+  - record value_b top: `0x00000000->283`
+  - record value_c top: `0xFFFF0000->283`
+  - texture atlas=`416x496` storage=`indexed_lz77` parts=`278` palettes=`3`
+- `GameData\app\Field\Map\F_00_MD_00.spranm` sig=`Sequence` size=`20688` pngs=`0`
+- `GameData\app\Field\Map\F_00_MD_01.mpd` sig=`LZ77` size=`2431` pngs=`0` raw=`3400` tokens=`1861` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`13` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`13x10` unique_values=`13` low16_in_range=`130/130` high16_nonzero=`0`
+  - map top values: `0x00000000->82, 0x0000000C->15, 0x00000001->4, 0x00000003->4, 0x00000004->4, 0x00000005->4`
+  - map top record refs: `0->82, 12->15, 1->4, 3->4, 4->4, 5->4`
+  - record flags: a_high16=`0` nonzero_b=`9` nondefault_c=`3`
+  - record a_high16 top: `0->13`
+  - record value_b top: `0x00000010->9, 0x00000000->4`
+  - record value_c top: `0xFFFF0000->10, 0x00010000->3`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`10` palettes=`1`
+- `GameData\app\Field\Map\F_00_MD_01.spranm` sig=`LZ77` size=`17199` pngs=`0` raw=`18256` tokens=`14432` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_00.mdl` sig=`LZ77` size=`5395` pngs=`0` raw=`20368` tokens=`3533` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_00.spranm` sig=`LZ77` size=`3327` pngs=`0` raw=`5728` tokens=`2580` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_01.mdl` sig=`LZ77` size=`5652` pngs=`0` raw=`20888` tokens=`3728` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_01.spranm` sig=`Sequence` size=`50632` pngs=`1`
+- `GameData\app\Field\Map\F_00_RD_02.mdl` sig=`LZ77` size=`869` pngs=`0` raw=`3144` tokens=`577` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_02.spranm` sig=`LZ77` size=`4020` pngs=`0` raw=`9288` tokens=`3060` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_03.mdl` sig=`LZ77` size=`734` pngs=`0` raw=`2608` tokens=`485` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_03.spranm` sig=`LZ77` size=`5042` pngs=`0` raw=`6896` tokens=`4097` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_04.mdl` sig=`LZ77` size=`748` pngs=`0` raw=`2720` tokens=`496` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_04.spranm` sig=`LZ77` size=`4369` pngs=`0` raw=`6160` tokens=`3526` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_05.mdl` sig=`LZ77` size=`956` pngs=`0` raw=`3304` tokens=`634` decomp_sig=`Unknown`
+- `GameData\app\Field\Map\F_00_RD_05.spranm` sig=`LZ77` size=`4252` pngs=`0` raw=`6040` tokens=`3429` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_06.spranm` sig=`LZ77` size=`2411` pngs=`0` raw=`3528` tokens=`1908` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_07.spranm` sig=`LZ77` size=`6394` pngs=`0` raw=`8432` tokens=`5125` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_08.spranm` sig=`LZ77` size=`1559` pngs=`0` raw=`3272` tokens=`1142` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_27.spranm` sig=`LZ77` size=`29288` pngs=`0` raw=`41640` tokens=`23398` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_28.spranm` sig=`LZ77` size=`2362` pngs=`0` raw=`4320` tokens=`1850` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_00_RD_29.spranm` sig=`LZ77` size=`24908` pngs=`0` raw=`31368` tokens=`20545` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\ko\F_00_RD_01.spranm` sig=`Sequence` size=`43256` pngs=`1`
+- `GameData\app\Field\Map\ko\F_00_RD_28.spranm` sig=`LZ77` size=`2854` pngs=`0` raw=`4376` tokens=`2263` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\zh_Hans\F_00_RD_01.spranm` sig=`Sequence` size=`51192` pngs=`1`
+- `GameData\app\Field\Map\zh_Hans\F_00_RD_28.spranm` sig=`LZ77` size=`2860` pngs=`0` raw=`4368` tokens=`2268` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\zh_Hant\F_00_RD_01.spranm` sig=`Sequence` size=`49968` pngs=`1`
+- `GameData\app\Field\Map\zh_Hant\F_00_RD_28.spranm` sig=`LZ77` size=`2860` pngs=`0` raw=`4368` tokens=`2268` decomp_sig=`Sequence`
+
+### Group `01`
+- `GameData\app\Field\Map\F_01_MD_00.mpd` sig=`LZ77` size=`150577` pngs=`0` raw=`202680` tokens=`121663` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`283` unique_record_a=`278` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`128x128` unique_values=`393` low16_in_range=`16384/16384` high16_nonzero=`2080`
+  - map top values: `0x00000044->7133, 0x00000000->577, 0x00000032->407, 0x00010001->266, 0x000000AA->222, 0x00010004->209`
+  - map top record refs: `68->7134, 0->592, 50->407, 1->266, 4->230, 170->227`
+  - record flags: a_high16=`186` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `2->99, 0->97, 1->87`
+  - record value_b top: `0x00000000->283`
+  - record value_c top: `0xFFFF0000->283`
+  - texture atlas=`416x496` storage=`indexed_lz77` parts=`278` palettes=`3`
+- `GameData\app\Field\Map\F_01_MD_00.spranm` sig=`Sequence` size=`20688` pngs=`0`
+- `GameData\app\Field\Map\F_01_MD_01.mpd` sig=`LZ77` size=`2431` pngs=`0` raw=`3400` tokens=`1861` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`13` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`13x10` unique_values=`13` low16_in_range=`130/130` high16_nonzero=`0`
+  - map top values: `0x00000000->82, 0x0000000C->15, 0x00000001->4, 0x00000003->4, 0x00000004->4, 0x00000005->4`
+  - map top record refs: `0->82, 12->15, 1->4, 3->4, 4->4, 5->4`
+  - record flags: a_high16=`0` nonzero_b=`9` nondefault_c=`3`
+  - record a_high16 top: `0->13`
+  - record value_b top: `0x00000010->9, 0x00000000->4`
+  - record value_c top: `0xFFFF0000->10, 0x00010000->3`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`10` palettes=`1`
+- `GameData\app\Field\Map\F_01_MD_01.spranm` sig=`LZ77` size=`17199` pngs=`0` raw=`18256` tokens=`14432` decomp_sig=`Sequence`
+
+### Group `02`
+- `GameData\app\Field\Map\F_02_MD_00.mpd` sig=`LZ77` size=`150498` pngs=`0` raw=`202656` tokens=`121585` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`283` unique_record_a=`278` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`128x128` unique_values=`393` low16_in_range=`16384/16384` high16_nonzero=`2080`
+  - map top values: `0x00000044->7133, 0x00000000->577, 0x00000032->407, 0x00010001->266, 0x000000AA->222, 0x00010004->209`
+  - map top record refs: `68->7134, 0->592, 50->407, 1->266, 4->230, 170->227`
+  - record flags: a_high16=`186` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `2->99, 0->97, 1->87`
+  - record value_b top: `0x00000000->283`
+  - record value_c top: `0xFFFF0000->283`
+  - texture atlas=`416x496` storage=`indexed_lz77` parts=`278` palettes=`3`
+- `GameData\app\Field\Map\F_02_MD_00.spranm` sig=`Sequence` size=`20688` pngs=`0`
+- `GameData\app\Field\Map\F_02_MD_01.mpd` sig=`LZ77` size=`2114` pngs=`0` raw=`3080` tokens=`1598` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`12` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`13x10` unique_values=`12` low16_in_range=`130/130` high16_nonzero=`0`
+  - map top values: `0x00000000->89, 0x0000000B->11, 0x00000003->7, 0x00000001->5, 0x00000002->4, 0x00000004->4`
+  - map top record refs: `0->89, 11->11, 3->7, 1->5, 2->4, 4->4`
+  - record flags: a_high16=`0` nonzero_b=`8` nondefault_c=`12`
+  - record a_high16 top: `0->12`
+  - record value_b top: `0x00000010->8, 0x00000000->4`
+  - record value_c top: `0x00010000->12`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+- `GameData\app\Field\Map\F_02_MD_01.spranm` sig=`LZ77` size=`17199` pngs=`0` raw=`18256` tokens=`14432` decomp_sig=`Sequence`
+
+### Group `03`
+- `GameData\app\Field\Map\F_03_MD_00.mpd` sig=`LZ77` size=`150542` pngs=`0` raw=`202648` tokens=`121641` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`283` unique_record_a=`278` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`128x128` unique_values=`393` low16_in_range=`16384/16384` high16_nonzero=`2080`
+  - map top values: `0x00000044->7133, 0x00000000->577, 0x00000032->407, 0x00010001->266, 0x000000AA->222, 0x00010004->209`
+  - map top record refs: `68->7134, 0->592, 50->407, 1->266, 4->230, 170->227`
+  - record flags: a_high16=`186` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `2->99, 0->97, 1->87`
+  - record value_b top: `0x00000000->283`
+  - record value_c top: `0xFFFF0000->283`
+  - texture atlas=`416x496` storage=`indexed_lz77` parts=`278` palettes=`3`
+- `GameData\app\Field\Map\F_03_MD_00.spranm` sig=`Sequence` size=`20688` pngs=`0`
+- `GameData\app\Field\Map\F_03_MD_01.mpd` sig=`LZ77` size=`2196` pngs=`0` raw=`3184` tokens=`1624` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`13` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`13x10` unique_values=`13` low16_in_range=`130/130` high16_nonzero=`0`
+  - map top values: `0x00000000->55, 0x00000001->11, 0x00000005->10, 0x0000000A->10, 0x0000000C->9, 0x00000002->8`
+  - map top record refs: `0->55, 1->11, 5->10, 10->10, 12->9, 2->8`
+  - record flags: a_high16=`0` nonzero_b=`9` nondefault_c=`12`
+  - record a_high16 top: `0->13`
+  - record value_b top: `0x00000010->9, 0x00000000->4`
+  - record value_c top: `0x00010000->12, 0xFFFF0000->1`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`10` palettes=`1`
+- `GameData\app\Field\Map\F_03_MD_01.spranm` sig=`LZ77` size=`17199` pngs=`0` raw=`18256` tokens=`14432` decomp_sig=`Sequence`
+
+### Group `04`
+- `GameData\app\Field\Map\F_04_MD_00.mpd` sig=`LZ77` size=`33082` pngs=`0` raw=`40952` tokens=`27005` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`84` unique_record_a=`84` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x28` unique_values=`84` low16_in_range=`1120/1120` high16_nonzero=`148`
+  - map top values: `0x00000000->436, 0x00000024->82, 0x0001002E->52, 0x00010025->51, 0x00000033->18, 0x00000004->17`
+  - map top record refs: `0->436, 36->82, 46->52, 37->51, 51->18, 4->17`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->84`
+  - record value_b top: `0x00000000->84`
+  - record value_c top: `0xFFFF0000->84`
+  - texture atlas=`288x236` storage=`indexed_lz77` parts=`84` palettes=`1`
+- `GameData\app\Field\Map\F_04_MD_00.spranm` sig=`LZ77` size=`2066` pngs=`0` raw=`3416` tokens=`1701` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_04_MD_01.mpd` sig=`LZ77` size=`2682` pngs=`0` raw=`4416` tokens=`2231` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`9` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->20, 0x00000001->20, 0x00000002->20, 0x00000003->20, 0x00000004->20, 0x00000005->20`
+  - map top record refs: `0->20, 1->20, 2->20, 3->20, 4->20, 5->20`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00020000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+- `GameData\app\Field\Map\F_04_MD_01.spranm` sig=`LZ77` size=`6382` pngs=`0` raw=`6520` tokens=`5415` decomp_sig=`Sequence`
+
+### Group `05`
+- `GameData\app\Field\Map\F_05_MD_00.mpd` sig=`LZ77` size=`50379` pngs=`0` raw=`64392` tokens=`41244` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`151` unique_record_a=`151` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`158` low16_in_range=`1520/1520` high16_nonzero=`106`
+  - map top values: `0x00000040->814, 0x00000012->22, 0x00000051->21, 0x00000058->21, 0x00000001->18, 0x0000006C->18`
+  - map top record refs: `64->814, 18->22, 81->21, 88->21, 1->18, 108->18`
+  - record flags: a_high16=`62` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->89, 1->62`
+  - record value_b top: `0x00000000->151`
+  - record value_c top: `0xFFFF0000->151`
+  - texture atlas=`288x418` storage=`indexed_lz77` parts=`151` palettes=`2`
+- `GameData\app\Field\Map\F_05_MD_01.mpd` sig=`LZ77` size=`1144` pngs=`0` raw=`2968` tokens=`924` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`4` unique_record_a=`4` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`4` low16_in_range=`192/192` high16_nonzero=`0`
+  - map top values: `0x00000000->48, 0x00000001->48, 0x00000002->48, 0x00000003->48`
+  - map top record refs: `0->48, 1->48, 2->48, 3->48`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`4`
+  - record a_high16 top: `0->4`
+  - record value_b top: `0x00000000->4`
+  - record value_c top: `0x00010000->4`
+  - texture atlas=`160x28` storage=`indexed_lz77` parts=`4` palettes=`1`
+
+### Group `06`
+- `GameData\app\Field\Map\F_06_MD_00.mpd` sig=`LZ77` size=`43917` pngs=`0` raw=`56640` tokens=`35602` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`137` unique_record_a=`137` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`27x40` unique_values=`138` low16_in_range=`1080/1080` high16_nonzero=`50`
+  - map top values: `0x0000001F->245, 0x00000001->75, 0x0000001A->60, 0x00000000->54, 0x00000015->35, 0x0000007C->31`
+  - map top record refs: `31->245, 1->75, 26->60, 0->54, 21->35, 124->31`
+  - record flags: a_high16=`67` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->70, 1->67`
+  - record value_b top: `0x00000000->137`
+  - record value_c top: `0xFFFF0000->137`
+  - texture atlas=`288x366` storage=`indexed_lz77` parts=`137` palettes=`2`
+- `GameData\app\Field\Map\F_06_MD_00.spranm` sig=`LZ77` size=`12178` pngs=`0` raw=`15808` tokens=`10080` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_06_MD_01.mpd` sig=`LZ77` size=`2511` pngs=`0` raw=`3352` tokens=`1935` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`33` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`10x8` unique_values=`33` low16_in_range=`80/80` high16_nonzero=`0`
+  - map top values: `0x0000000D->33, 0x00000009->7, 0x00000008->6, 0x0000000E->2, 0x0000000F->2, 0x00000012->2`
+  - map top record refs: `13->33, 9->7, 8->6, 14->2, 15->2, 18->2`
+  - record flags: a_high16=`0` nonzero_b=`24` nondefault_c=`33`
+  - record a_high16 top: `0->33`
+  - record value_b top: `0x00000000->9, 0x00010000->8, 0x00020000->8, 0x00030000->8`
+  - record value_c top: `0x00020000->33`
+  - texture atlas=`168x104` storage=`indexed_lz77` parts=`9` palettes=`1`
+
+### Group `07`
+- `GameData\app\Field\Map\F_07_MD_00.mpd` sig=`LZ77` size=`25369` pngs=`0` raw=`32824` tokens=`20541` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`57` unique_record_a=`57` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`62` low16_in_range=`1520/1520` high16_nonzero=`208`
+  - map top values: `0x00000019->570, 0x00000000->249, 0x00010002->69, 0x00010003->56, 0x00000021->52, 0x0000001E->50`
+  - map top record refs: `25->570, 0->249, 2->69, 3->56, 33->52, 30->50`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`30`
+  - record a_high16 top: `0->57`
+  - record value_b top: `0x00000000->57`
+  - record value_c top: `0x00000000->30, 0xFFFF0000->27`
+  - texture atlas=`288x158` storage=`indexed_lz77` parts=`57` palettes=`1`
+- `GameData\app\Field\Map\F_07_MD_00.spranm` sig=`Sequence` size=`20688` pngs=`0`
+- `GameData\app\Field\Map\F_07_MD_01.mpd` sig=`LZ77` size=`3101` pngs=`0` raw=`4976` tokens=`2473` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`22` unique_record_a=`22` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`13x10` unique_values=`22` low16_in_range=`130/130` high16_nonzero=`0`
+  - map top values: `0x0000000D->18, 0x00000003->8, 0x00000004->8, 0x00000002->7, 0x00000006->7, 0x0000000E->7`
+  - map top record refs: `13->18, 3->8, 4->8, 2->7, 6->7, 14->7`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`22`
+  - record a_high16 top: `0->22`
+  - record value_b top: `0x00000000->22`
+  - record value_c top: `0x00020000->22`
+  - texture atlas=`160x132` storage=`indexed_lz77` parts=`22` palettes=`1`
+- `GameData\app\Field\Map\F_07_MD_01.spranm` sig=`LZ77` size=`17199` pngs=`0` raw=`18256` tokens=`14432` decomp_sig=`Sequence`
+
+### Group `08`
+- `GameData\app\Field\Map\F_08_MD_00.mpd` sig=`LZ77` size=`28590` pngs=`0` raw=`42488` tokens=`22534` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`94` unique_record_a=`94` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`96` low16_in_range=`1520/1520` high16_nonzero=`122`
+  - map top values: `0x00000000->714, 0x00000004->80, 0x00000005->79, 0x00000045->53, 0x00000003->27, 0x00000007->27`
+  - map top record refs: `0->714, 4->80, 5->79, 69->53, 3->27, 7->27`
+  - record flags: a_high16=`42` nonzero_b=`0` nondefault_c=`5`
+  - record a_high16 top: `0->52, 1->42`
+  - record value_b top: `0x00000000->94`
+  - record value_c top: `0xFFFF0000->89, 0x00020000->5`
+  - texture atlas=`288x262` storage=`indexed_lz77` parts=`94` palettes=`2`
+- `GameData\app\Field\Map\F_08_MD_00.spranm` sig=`LZ77` size=`9121` pngs=`0` raw=`16512` tokens=`7103` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_08_MD_01.mpd` sig=`LZ77` size=`2920` pngs=`0` raw=`4752` tokens=`2292` decomp_sig=`Cell`
+  - cell grid=`64x64` entries=`10` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`5x4` unique_values=`10` low16_in_range=`20/20` high16_nonzero=`0`
+  - map top values: `0x00000003->11, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000004->1, 0x00000005->1`
+  - map top record refs: `3->11, 0->1, 1->1, 2->1, 4->1, 5->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`10`
+  - record a_high16 top: `0->10`
+  - record value_b top: `0x00000000->10`
+  - record value_c top: `0x00020000->10`
+  - texture atlas=`200x332` storage=`indexed_lz77` parts=`10` palettes=`1`
+
+### Group `09`
+- `GameData\app\Field\Map\F_09_MD_00.mpd` sig=`LZ77` size=`27142` pngs=`0` raw=`37544` tokens=`21552` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`86` unique_record_a=`86` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`32x28` unique_values=`87` low16_in_range=`896/896` high16_nonzero=`78`
+  - map top values: `0x00000000->459, 0x00000028->68, 0x00000004->28, 0x00000003->26, 0x00000009->25, 0x0001002F->24`
+  - map top record refs: `0->459, 40->68, 4->28, 3->26, 9->25, 47->24`
+  - record flags: a_high16=`30` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `0->56, 1->30`
+  - record value_b top: `0x00000000->86`
+  - record value_c top: `0xFFFF0000->85, 0x00020000->1`
+  - texture atlas=`288x236` storage=`indexed_lz77` parts=`86` palettes=`2`
+- `GameData\app\Field\Map\F_09_MD_00.spranm` sig=`LZ77` size=`9121` pngs=`0` raw=`16512` tokens=`7103` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_09_MD_01.mpd` sig=`LZ77` size=`2920` pngs=`0` raw=`4752` tokens=`2292` decomp_sig=`Cell`
+  - cell grid=`64x64` entries=`10` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`5x4` unique_values=`10` low16_in_range=`20/20` high16_nonzero=`0`
+  - map top values: `0x00000003->11, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000004->1, 0x00000005->1`
+  - map top record refs: `3->11, 0->1, 1->1, 2->1, 4->1, 5->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`10`
+  - record a_high16 top: `0->10`
+  - record value_b top: `0x00000000->10`
+  - record value_c top: `0x00020000->10`
+  - texture atlas=`200x332` storage=`indexed_lz77` parts=`10` palettes=`1`
+
+### Group `10`
+- `GameData\app\Field\Map\F_10_MD_00.mpd` sig=`LZ77` size=`22005` pngs=`0` raw=`32072` tokens=`17321` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`69` unique_record_a=`69` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`32x28` unique_values=`70` low16_in_range=`896/896` high16_nonzero=`38`
+  - map top values: `0x00000000->502, 0x0000002B->101, 0x00000006->29, 0x00000005->27, 0x00000004->20, 0x0000000B->18`
+  - map top record refs: `0->502, 43->101, 6->29, 5->27, 4->20, 11->18`
+  - record flags: a_high16=`16` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `0->53, 1->16`
+  - record value_b top: `0x00000000->69`
+  - record value_c top: `0xFFFF0000->68, 0x00020000->1`
+  - texture atlas=`288x184` storage=`indexed_lz77` parts=`69` palettes=`2`
+- `GameData\app\Field\Map\F_10_MD_00.spranm` sig=`LZ77` size=`9121` pngs=`0` raw=`16512` tokens=`7103` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_10_MD_01.mpd` sig=`LZ77` size=`2920` pngs=`0` raw=`4752` tokens=`2292` decomp_sig=`Cell`
+  - cell grid=`64x64` entries=`10` unique_record_a=`10` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`5x4` unique_values=`10` low16_in_range=`20/20` high16_nonzero=`0`
+  - map top values: `0x00000003->11, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000004->1, 0x00000005->1`
+  - map top record refs: `3->11, 0->1, 1->1, 2->1, 4->1, 5->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`10`
+  - record a_high16 top: `0->10`
+  - record value_b top: `0x00000000->10`
+  - record value_c top: `0x00020000->10`
+  - texture atlas=`200x332` storage=`indexed_lz77` parts=`10` palettes=`1`
+
+### Group `11`
+- `GameData\app\Field\Map\F_11_MD_00.mpd` sig=`LZ77` size=`44658` pngs=`0` raw=`55896` tokens=`36525` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`112` unique_record_a=`112` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`115` low16_in_range=`1520/1520` high16_nonzero=`152`
+  - map top values: `0x00000000->527, 0x0000000D->85, 0x00000008->78, 0x0000000C->63, 0x00000007->47, 0x00000027->31`
+  - map top record refs: `0->527, 13->86, 8->82, 12->63, 7->50, 39->31`
+  - record flags: a_high16=`51` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->61, 1->51`
+  - record value_b top: `0x00000000->112`
+  - record value_c top: `0xFFFF0000->112`
+  - texture atlas=`288x314` storage=`indexed_lz77` parts=`112` palettes=`2`
+- `GameData\app\Field\Map\F_11_MD_00.spranm` sig=`LZ77` size=`2609` pngs=`0` raw=`4784` tokens=`2128` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_11_MD_01.mpd` sig=`LZ77` size=`3214` pngs=`0` raw=`5472` tokens=`2501` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`17` unique_record_a=`17` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`17` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000010->124, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1`
+  - map top record refs: `16->124, 0->1, 1->1, 2->1, 3->1, 4->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`17`
+  - record a_high16 top: `0->17`
+  - record value_b top: `0x00000000->17`
+  - record value_c top: `0x00020000->17`
+  - texture atlas=`168x172` storage=`indexed_lz77` parts=`17` palettes=`1`
+- `GameData\app\Field\Map\F_11_MD_01.spranm` sig=`LZ77` size=`5434` pngs=`0` raw=`8848` tokens=`4245` decomp_sig=`Sequence`
+
+### Group `12`
+- `GameData\app\Field\Map\F_12_MD_00.mpd` sig=`LZ77` size=`35375` pngs=`0` raw=`44376` tokens=`29011` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`94` unique_record_a=`94` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`32x29` unique_values=`94` low16_in_range=`928/928` high16_nonzero=`107`
+  - map top values: `0x00000000->435, 0x00000007->40, 0x00000008->34, 0x0000000D->27, 0x0000000E->24, 0x00000002->19`
+  - map top record refs: `0->435, 7->40, 8->34, 13->27, 14->24, 2->19`
+  - record flags: a_high16=`38` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->56, 1->38`
+  - record value_b top: `0x00000000->94`
+  - record value_c top: `0xFFFF0000->94`
+  - texture atlas=`288x262` storage=`indexed_lz77` parts=`94` palettes=`2`
+- `GameData\app\Field\Map\F_12_MD_00.spranm` sig=`LZ77` size=`3285` pngs=`0` raw=`5992` tokens=`2546` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_12_MD_01.mpd` sig=`LZ77` size=`3214` pngs=`0` raw=`5472` tokens=`2501` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`17` unique_record_a=`17` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`17` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000010->124, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1`
+  - map top record refs: `16->124, 0->1, 1->1, 2->1, 3->1, 4->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`17`
+  - record a_high16 top: `0->17`
+  - record value_b top: `0x00000000->17`
+  - record value_c top: `0x00020000->17`
+  - texture atlas=`168x172` storage=`indexed_lz77` parts=`17` palettes=`1`
+
+### Group `13`
+- `GameData\app\Field\Map\F_13_MD_00.mpd` sig=`LZ77` size=`29207` pngs=`0` raw=`40080` tokens=`23321` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`115` unique_record_a=`115` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`23x20` unique_values=`115` low16_in_range=`460/460` high16_nonzero=`35`
+  - map top values: `0x0000005C->200, 0x0000001C->28, 0x0001005F->10, 0x0013005E->9, 0x00000014->8, 0x00000026->8`
+  - map top record refs: `92->200, 28->28, 95->10, 94->9, 20->8, 38->8`
+  - record flags: a_high16=`21` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->94, 1->21`
+  - record value_b top: `0x00000000->115`
+  - record value_c top: `0xFFFF0000->115`
+  - texture atlas=`288x314` storage=`indexed_lz77` parts=`115` palettes=`2`
+- `GameData\app\Field\Map\F_13_MD_01.mpd` sig=`LZ77` size=`516` pngs=`0` raw=`2312` tokens=`393` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`1` unique_record_a=`1` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`1` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->180`
+  - map top record refs: `0->180`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `0->1`
+  - record value_b top: `0x00000000->1`
+  - record value_c top: `0x00020000->1`
+  - texture atlas=`32x28` storage=`indexed_lz77` parts=`1` palettes=`1`
+
+### Group `14`
+- `GameData\app\Field\Map\F_14_MD_00.mpd` sig=`LZ77` size=`12462` pngs=`0` raw=`18152` tokens=`10217` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`40` unique_record_a=`40` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`25x44` unique_values=`42` low16_in_range=`1100/1100` high16_nonzero=`79`
+  - map top values: `0x00000002->614, 0x00000001->153, 0x00000005->28, 0x0000000A->28, 0x0000000C->28, 0x00010004->27`
+  - map top record refs: `2->614, 1->153, 9->31, 5->28, 10->28, 12->28`
+  - record flags: a_high16=`39` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `1->39, 0->1`
+  - record value_b top: `0x00000000->40`
+  - record value_c top: `0xFFFF0000->39, 0x00020000->1`
+  - texture atlas=`160x210` storage=`indexed_lz77` parts=`40` palettes=`2`
+- `GameData\app\Field\Map\F_14_MD_01.mpd` sig=`LZ77` size=`516` pngs=`0` raw=`2312` tokens=`393` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`1` unique_record_a=`1` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`1` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->180`
+  - map top record refs: `0->180`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `0->1`
+  - record value_b top: `0x00000000->1`
+  - record value_c top: `0x00020000->1`
+  - texture atlas=`32x28` storage=`indexed_lz77` parts=`1` palettes=`1`
+
+### Group `15`
+- `GameData\app\Field\Map\F_15_MD_00.mpd` sig=`LZ77` size=`17998` pngs=`0` raw=`24104` tokens=`14783` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`54` unique_record_a=`54` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`55` low16_in_range=`1520/1520` high16_nonzero=`153`
+  - map top values: `0x00000001->567, 0x00000000->265, 0x00000005->77, 0x00010009->73, 0x0000000C->59, 0x0000000B->58`
+  - map top record refs: `1->567, 0->265, 5->77, 9->73, 12->59, 11->58`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->54`
+  - record value_b top: `0x00000000->54`
+  - record value_c top: `0xFFFF0000->54`
+  - texture atlas=`160x288` storage=`indexed_lz77` parts=`54` palettes=`1`
+- `GameData\app\Field\Map\F_15_MD_01.mpd` sig=`LZ77` size=`516` pngs=`0` raw=`2312` tokens=`393` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`1` unique_record_a=`1` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`1` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->180`
+  - map top record refs: `0->180`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`1`
+  - record a_high16 top: `0->1`
+  - record value_b top: `0x00000000->1`
+  - record value_c top: `0x00020000->1`
+  - texture atlas=`32x28` storage=`indexed_lz77` parts=`1` palettes=`1`
+
+### Group `16`
+- `GameData\app\Field\Map\F_16_MD_00.mpd` sig=`LZ77` size=`26749` pngs=`0` raw=`34928` tokens=`21645` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`59` unique_record_a=`59` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`59` low16_in_range=`1520/1520` high16_nonzero=`159`
+  - map top values: `0x00000017->543, 0x00000000->266, 0x0001000D->59, 0x00010003->54, 0x001A0004->37, 0x00000007->32`
+  - map top record refs: `23->543, 0->266, 13->59, 3->54, 4->37, 7->32`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->59`
+  - record value_b top: `0x00000000->59`
+  - record value_c top: `0xFFFF0000->59`
+  - texture atlas=`288x158` storage=`indexed_lz77` parts=`59` palettes=`1`
+- `GameData\app\Field\Map\F_16_MD_00.spranm` sig=`LZ77` size=`2349` pngs=`0` raw=`4336` tokens=`1761` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_16_MD_01.mpd` sig=`LZ77` size=`3488` pngs=`0` raw=`5088` tokens=`2904` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`9` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->20, 0x00000001->20, 0x00000002->20, 0x00000003->20, 0x00000004->20, 0x00000005->20`
+  - map top record refs: `0->20, 1->20, 2->20, 3->20, 4->20, 5->20`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00010000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+
+### Group `17`
+- `GameData\app\Field\Map\F_17_MD_00.mpd` sig=`LZ77` size=`26690` pngs=`0` raw=`34856` tokens=`21584` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`59` unique_record_a=`59` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`60` low16_in_range=`1520/1520` high16_nonzero=`181`
+  - map top values: `0x00000017->520, 0x00000000->235, 0x00010003->69, 0x0001000D->62, 0x001A0004->36, 0x0000000B->31`
+  - map top record refs: `23->520, 0->235, 3->69, 13->62, 4->36, 11->31`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->59`
+  - record value_b top: `0x00000000->59`
+  - record value_c top: `0xFFFF0000->59`
+  - texture atlas=`288x158` storage=`indexed_lz77` parts=`59` palettes=`1`
+- `GameData\app\Field\Map\F_17_MD_00.spranm` sig=`LZ77` size=`2349` pngs=`0` raw=`4336` tokens=`1761` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_17_MD_01.mpd` sig=`LZ77` size=`3488` pngs=`0` raw=`5088` tokens=`2904` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`9` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->20, 0x00000001->20, 0x00000002->20, 0x00000003->20, 0x00000004->20, 0x00000005->20`
+  - map top record refs: `0->20, 1->20, 2->20, 3->20, 4->20, 5->20`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00010000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+
+### Group `18`
+- `GameData\app\Field\Map\F_18_MD_00.mpd` sig=`LZ77` size=`22995` pngs=`0` raw=`26184` tokens=`19250` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`52` unique_record_a=`52` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`30x28` unique_values=`53` low16_in_range=`840/840` high16_nonzero=`54`
+  - map top values: `0x00000013->417, 0x00000000->70, 0x0001000B->21, 0x001A0004->16, 0x00000006->14, 0x0000000D->13`
+  - map top record refs: `19->417, 0->70, 11->21, 4->16, 6->14, 13->13`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->52`
+  - record value_b top: `0x00000000->52`
+  - record value_c top: `0xFFFF0000->52`
+  - texture atlas=`160x288` storage=`indexed_lz77` parts=`52` palettes=`1`
+- `GameData\app\Field\Map\F_18_MD_00.spranm` sig=`LZ77` size=`2349` pngs=`0` raw=`4336` tokens=`1761` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_18_MD_01.mpd` sig=`LZ77` size=`3488` pngs=`0` raw=`5088` tokens=`2904` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`9` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->20, 0x00000001->20, 0x00000002->20, 0x00000003->20, 0x00000004->20, 0x00000005->20`
+  - map top record refs: `0->20, 1->20, 2->20, 3->20, 4->20, 5->20`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00010000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+- `GameData\app\Field\Map\F_18_MD_01.spranm` sig=`LZ77` size=`6625` pngs=`0` raw=`10512` tokens=`5305` decomp_sig=`Sequence`
+
+### Group `19`
+- `GameData\app\Field\Map\F_19_MD_00.mpd` sig=`LZ77` size=`37585` pngs=`0` raw=`49408` tokens=`30404` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`88` unique_record_a=`88` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`48x48` unique_values=`91` low16_in_range=`2304/2304` high16_nonzero=`299`
+  - map top values: `0x00000000->992, 0x00000002->208, 0x0000000A->131, 0x0000001B->97, 0x0000001C->95, 0x0001000B->90`
+  - map top record refs: `0->992, 2->208, 10->131, 27->97, 28->95, 11->90`
+  - record flags: a_high16=`25` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->63, 1->25`
+  - record value_b top: `0x00000000->88`
+  - record value_c top: `0xFFFF0000->88`
+  - texture atlas=`288x236` storage=`indexed_lz77` parts=`88` palettes=`2`
+- `GameData\app\Field\Map\F_19_MD_00.spranm` sig=`LZ77` size=`2210` pngs=`0` raw=`3216` tokens=`1807` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_19_MD_01.mpd` sig=`LZ77` size=`7352` pngs=`0` raw=`8760` tokens=`6186` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`16` unique_record_a=`16` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`16` low16_in_range=`192/192` high16_nonzero=`192`
+  - map top values: `0x00280000->12, 0x00280001->12, 0x00280002->12, 0x00280003->12, 0x00280004->12, 0x00280005->12`
+  - map top record refs: `0->12, 1->12, 2->12, 3->12, 4->12, 5->12`
+  - record flags: a_high16=`0` nonzero_b=`16` nondefault_c=`0`
+  - record a_high16 top: `0->16`
+  - record value_b top: `0x00000030->16`
+  - record value_c top: `0xFFFF0000->16`
+  - texture atlas=`160x106` storage=`indexed_lz77` parts=`16` palettes=`1`
+
+### Group `20`
+- `GameData\app\Field\Map\F_20_MD_00.mpd` sig=`LZ77` size=`44751` pngs=`0` raw=`58888` tokens=`36005` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`104` unique_record_a=`104` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x68` unique_values=`104` low16_in_range=`2720/2720` high16_nonzero=`212`
+  - map top values: `0x00000000->541, 0x00000042->471, 0x0000003C->183, 0x00000039->148, 0x00000003->120, 0x0000002E->80`
+  - map top record refs: `0->541, 66->471, 60->183, 57->148, 3->120, 46->80`
+  - record flags: a_high16=`67` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `1->67, 0->37`
+  - record value_b top: `0x00000000->104`
+  - record value_c top: `0xFFFF0000->104`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`104` palettes=`2`
+- `GameData\app\Field\Map\F_20_MD_00.spranm` sig=`LZ77` size=`2210` pngs=`0` raw=`3216` tokens=`1807` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_20_MD_01.mpd` sig=`LZ77` size=`7352` pngs=`0` raw=`8760` tokens=`6186` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`16` unique_record_a=`16` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`16` low16_in_range=`192/192` high16_nonzero=`192`
+  - map top values: `0x00280000->12, 0x00280001->12, 0x00280002->12, 0x00280003->12, 0x00280004->12, 0x00280005->12`
+  - map top record refs: `0->12, 1->12, 2->12, 3->12, 4->12, 5->12`
+  - record flags: a_high16=`0` nonzero_b=`16` nondefault_c=`0`
+  - record a_high16 top: `0->16`
+  - record value_b top: `0x00000030->16`
+  - record value_c top: `0xFFFF0000->16`
+  - texture atlas=`160x106` storage=`indexed_lz77` parts=`16` palettes=`1`
+- `GameData\app\Field\Map\F_20_MD_01.spranm` sig=`LZ77` size=`21400` pngs=`0` raw=`31784` tokens=`16839` decomp_sig=`Sequence`
+
+### Group `21`
+- `GameData\app\Field\Map\F_21_MD_00.mpd` sig=`LZ77` size=`42849` pngs=`0` raw=`53616` tokens=`34678` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`108` unique_record_a=`108` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`108` low16_in_range=`1520/1520` high16_nonzero=`145`
+  - map top values: `0x00000024->478, 0x00000030->167, 0x00000036->52, 0x0000002A->49, 0x00010017->31, 0x0000000A->29`
+  - map top record refs: `36->478, 48->167, 54->52, 42->49, 23->31, 10->29`
+  - record flags: a_high16=`40` nonzero_b=`0` nondefault_c=`3`
+  - record a_high16 top: `0->68, 1->40`
+  - record value_b top: `0x00000000->108`
+  - record value_c top: `0xFFFF0000->105, 0x00020000->3`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`108` palettes=`2`
+- `GameData\app\Field\Map\F_21_MD_01.mpd` sig=`LZ77` size=`3267` pngs=`0` raw=`5008` tokens=`2737` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`15x12` unique_values=`9` low16_in_range=`180/180` high16_nonzero=`0`
+  - map top values: `0x00000000->20, 0x00000001->20, 0x00000002->20, 0x00000003->20, 0x00000004->20, 0x00000005->20`
+  - map top record refs: `0->20, 1->20, 2->20, 3->20, 4->20, 5->20`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00020000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+
+### Group `22`
+- `GameData\app\Field\Map\F_22_MD_00.mpd` sig=`LZ77` size=`36521` pngs=`0` raw=`47664` tokens=`29702` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`105` unique_record_a=`105` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`106` low16_in_range=`1520/1520` high16_nonzero=`168`
+  - map top values: `0x00000000->529, 0x00000007->198, 0x00010008->54, 0x0001000F->40, 0x001E000E->36, 0x00000050->32`
+  - map top record refs: `0->529, 7->198, 8->54, 15->40, 14->36, 80->32`
+  - record flags: a_high16=`25` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->80, 1->25`
+  - record value_b top: `0x00000000->105`
+  - record value_c top: `0xFFFF0000->105`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`105` palettes=`2`
+- `GameData\app\Field\Map\F_22_MD_01.mpd` sig=`LZ77` size=`3506` pngs=`0` raw=`5944` tokens=`2731` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`26` unique_record_a=`26` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`26` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000000->115, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1, 0x00000005->1`
+  - map top record refs: `0->115, 1->1, 2->1, 3->1, 4->1, 5->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`26`
+  - record a_high16 top: `0->26`
+  - record value_b top: `0x00000000->26`
+  - record value_c top: `0x00020000->26`
+  - texture atlas=`160x158` storage=`indexed_lz77` parts=`26` palettes=`1`
+
+### Group `23`
+- `GameData\app\Field\Map\F_23_MD_00.mpd` sig=`LZ77` size=`34973` pngs=`0` raw=`45784` tokens=`28409` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`97` unique_record_a=`97` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`98` low16_in_range=`1520/1520` high16_nonzero=`207`
+  - map top values: `0x00000000->471, 0x00000003->338, 0x0000000E->39, 0x001E0008->37, 0x0000000F->34, 0x00010009->31`
+  - map top record refs: `0->471, 3->338, 14->39, 8->37, 15->34, 9->31`
+  - record flags: a_high16=`37` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->60, 1->37`
+  - record value_b top: `0x00000000->97`
+  - record value_c top: `0xFFFF0000->88, 0x00010000->9`
+  - texture atlas=`288x262` storage=`indexed_lz77` parts=`97` palettes=`2`
+- `GameData\app\Field\Map\F_23_MD_00.spranm` sig=`LZ77` size=`7158` pngs=`0` raw=`10936` tokens=`5815` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_23_MD_01.mpd` sig=`LZ77` size=`3506` pngs=`0` raw=`5944` tokens=`2731` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`26` unique_record_a=`26` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`26` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000000->115, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1, 0x00000005->1`
+  - map top record refs: `0->115, 1->1, 2->1, 3->1, 4->1, 5->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`26`
+  - record a_high16 top: `0->26`
+  - record value_b top: `0x00000000->26`
+  - record value_c top: `0x00020000->26`
+  - texture atlas=`160x158` storage=`indexed_lz77` parts=`26` palettes=`1`
+
+### Group `24`
+- `GameData\app\Field\Map\F_24_MD_00.mpd` sig=`LZ77` size=`46888` pngs=`0` raw=`59104` tokens=`38046` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`119` unique_record_a=`119` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`124` low16_in_range=`1520/1520` high16_nonzero=`137`
+  - map top values: `0x0000005D->486, 0x00000008->94, 0x00000009->78, 0x00000012->70, 0x00000013->65, 0x0000005F->23`
+  - map top record refs: `93->486, 8->94, 9->78, 18->70, 19->65, 95->23`
+  - record flags: a_high16=`52` nonzero_b=`0` nondefault_c=`8`
+  - record a_high16 top: `0->67, 1->52`
+  - record value_b top: `0x00000000->119`
+  - record value_c top: `0xFFFF0000->111, 0x00010000->8`
+  - texture atlas=`288x314` storage=`indexed_lz77` parts=`119` palettes=`2`
+- `GameData\app\Field\Map\F_24_MD_00.spranm` sig=`LZ77` size=`4320` pngs=`0` raw=`6960` tokens=`3434` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_24_MD_01.mpd` sig=`LZ77` size=`2888` pngs=`0` raw=`4752` tokens=`2286` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`12` unique_record_a=`12` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`1` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000000->140`
+  - map top record refs: `0->140`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`12`
+  - record a_high16 top: `0->12`
+  - record value_b top: `0x00000000->12`
+  - record value_c top: `0x00030000->12`
+  - texture atlas=`160x80` storage=`indexed_lz77` parts=`12` palettes=`1`
+
+### Group `25`
+- `GameData\app\Field\Map\F_25_MD_00.mpd` sig=`LZ77` size=`46270` pngs=`0` raw=`59640` tokens=`37372` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`125` unique_record_a=`125` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`133` low16_in_range=`1520/1520` high16_nonzero=`235`
+  - map top values: `0x00000062->298, 0x00000004->122, 0x0000000E->120, 0x00000005->119, 0x0000000D->105, 0x00010023->26`
+  - map top record refs: `98->298, 4->122, 14->120, 5->119, 13->105, 35->26`
+  - record flags: a_high16=`55` nonzero_b=`0` nondefault_c=`10`
+  - record a_high16 top: `0->70, 1->55`
+  - record value_b top: `0x00000000->125`
+  - record value_c top: `0xFFFF0000->115, 0x00010000->10`
+  - texture atlas=`288x340` storage=`indexed_lz77` parts=`125` palettes=`2`
+- `GameData\app\Field\Map\F_25_MD_00.spranm` sig=`LZ77` size=`4320` pngs=`0` raw=`6960` tokens=`3434` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_25_MD_01.mpd` sig=`LZ77` size=`2888` pngs=`0` raw=`4752` tokens=`2286` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`12` unique_record_a=`12` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`1` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000000->140`
+  - map top record refs: `0->140`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`12`
+  - record a_high16 top: `0->12`
+  - record value_b top: `0x00000000->12`
+  - record value_c top: `0x00030000->12`
+  - texture atlas=`160x80` storage=`indexed_lz77` parts=`12` palettes=`1`
+- `GameData\app\Field\Map\F_25_MD_01.spranm` sig=`LZ77` size=`13760` pngs=`0` raw=`24784` tokens=`10415` decomp_sig=`Sequence`
+
+### Group `26`
+- `GameData\app\Field\Map\F_26_MD_00.mpd` sig=`LZ77` size=`41766` pngs=`0` raw=`53432` tokens=`34001` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`107` unique_record_a=`107` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`108` low16_in_range=`1520/1520` high16_nonzero=`140`
+  - map top values: `0x00000011->541, 0x00000003->210, 0x00000041->59, 0x00010002->55, 0x00000005->47, 0x00010001->44`
+  - map top record refs: `17->541, 3->210, 65->59, 2->55, 5->47, 1->44`
+  - record flags: a_high16=`49` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->58, 1->49`
+  - record value_b top: `0x00000000->107`
+  - record value_c top: `0xFFFF0000->107`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`107` palettes=`2`
+- `GameData\app\Field\Map\F_26_MD_00.spranm` sig=`LZ77` size=`3131` pngs=`0` raw=`8616` tokens=`2331` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_26_MD_01.mpd` sig=`LZ77` size=`1774` pngs=`0` raw=`3488` tokens=`1453` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`4` unique_record_a=`4` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`4` low16_in_range=`192/192` high16_nonzero=`0`
+  - map top values: `0x00000000->48, 0x00000001->48, 0x00000002->48, 0x00000003->48`
+  - map top record refs: `0->48, 1->48, 2->48, 3->48`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->4`
+  - record value_b top: `0x00000000->4`
+  - record value_c top: `0xFFFF0000->4`
+  - texture atlas=`160x28` storage=`indexed_lz77` parts=`4` palettes=`1`
+- `GameData\app\Field\Map\F_26_MD_01.spranm` sig=`LZ77` size=`3153` pngs=`0` raw=`8592` tokens=`2368` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_26_MD_02.spranm` sig=`LZ77` size=`2205` pngs=`0` raw=`2856` tokens=`1829` decomp_sig=`Sequence`
+
+### Group `27`
+- `GameData\app\Field\Map\F_27_MD_00.mpd` sig=`LZ77` size=`38917` pngs=`0` raw=`50576` tokens=`31551` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`104` unique_record_a=`104` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`104` low16_in_range=`1520/1520` high16_nonzero=`142`
+  - map top values: `0x0000000E->433, 0x00000003->260, 0x00010001->59, 0x00000044->46, 0x00010002->45, 0x00000004->36`
+  - map top record refs: `14->433, 3->260, 1->59, 68->46, 2->45, 4->36`
+  - record flags: a_high16=`43` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->61, 1->43`
+  - record value_b top: `0x00000000->104`
+  - record value_c top: `0xFFFF0000->104`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`104` palettes=`2`
+- `GameData\app\Field\Map\F_27_MD_00.spranm` sig=`LZ77` size=`3131` pngs=`0` raw=`8616` tokens=`2331` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_27_MD_01.mpd` sig=`LZ77` size=`1774` pngs=`0` raw=`3488` tokens=`1453` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`4` unique_record_a=`4` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`4` low16_in_range=`192/192` high16_nonzero=`0`
+  - map top values: `0x00000000->48, 0x00000001->48, 0x00000002->48, 0x00000003->48`
+  - map top record refs: `0->48, 1->48, 2->48, 3->48`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->4`
+  - record value_b top: `0x00000000->4`
+  - record value_c top: `0xFFFF0000->4`
+  - texture atlas=`160x28` storage=`indexed_lz77` parts=`4` palettes=`1`
+- `GameData\app\Field\Map\F_27_MD_01.spranm` sig=`LZ77` size=`3153` pngs=`0` raw=`8592` tokens=`2368` decomp_sig=`Sequence`
+
+### Group `28`
+- `GameData\app\Field\Map\F_28_MD_00.mpd` sig=`LZ77` size=`39999` pngs=`0` raw=`50776` tokens=`32440` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`104` unique_record_a=`104` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`23x60` unique_values=`104` low16_in_range=`1380/1380` high16_nonzero=`103`
+  - map top values: `0x00000004->211, 0x00000000->194, 0x0000003C->98, 0x00000037->45, 0x00000043->43, 0x00000010->42`
+  - map top record refs: `4->211, 0->194, 60->98, 55->45, 67->43, 16->42`
+  - record flags: a_high16=`49` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->55, 1->49`
+  - record value_b top: `0x00000000->104`
+  - record value_c top: `0xFFFF0000->104`
+  - texture atlas=`288x288` storage=`indexed_lz77` parts=`104` palettes=`2`
+- `GameData\app\Field\Map\F_28_MD_00.spranm` sig=`LZ77` size=`3131` pngs=`0` raw=`8616` tokens=`2331` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_28_MD_01.mpd` sig=`LZ77` size=`1774` pngs=`0` raw=`3488` tokens=`1453` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`4` unique_record_a=`4` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`4` low16_in_range=`192/192` high16_nonzero=`0`
+  - map top values: `0x00000000->48, 0x00000001->48, 0x00000002->48, 0x00000003->48`
+  - map top record refs: `0->48, 1->48, 2->48, 3->48`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->4`
+  - record value_b top: `0x00000000->4`
+  - record value_c top: `0xFFFF0000->4`
+  - texture atlas=`160x28` storage=`indexed_lz77` parts=`4` palettes=`1`
+- `GameData\app\Field\Map\F_28_MD_01.spranm` sig=`LZ77` size=`3153` pngs=`0` raw=`8592` tokens=`2368` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_28_MD_02.spranm` sig=`LZ77` size=`2205` pngs=`0` raw=`2856` tokens=`1829` decomp_sig=`Sequence`
+
+### Group `29`
+- `GameData\app\Field\Map\F_29_MD_00.mpd` sig=`LZ77` size=`33098` pngs=`0` raw=`40680` tokens=`27122` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`87` unique_record_a=`87` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`31x28` unique_values=`87` low16_in_range=`868/868` high16_nonzero=`56`
+  - map top values: `0x00000004->249, 0x00000000->195, 0x00000005->42, 0x00000006->30, 0x0000000B->21, 0x0000004B->16`
+  - map top record refs: `4->249, 0->195, 5->42, 6->30, 11->21, 75->16`
+  - record flags: a_high16=`37` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->50, 1->37`
+  - record value_b top: `0x00000000->87`
+  - record value_c top: `0xFFFF0000->87`
+  - texture atlas=`288x236` storage=`indexed_lz77` parts=`87` palettes=`2`
+- `GameData\app\Field\Map\F_29_MD_00.spranm` sig=`LZ77` size=`3131` pngs=`0` raw=`8616` tokens=`2331` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_29_MD_01.mpd` sig=`LZ77` size=`1774` pngs=`0` raw=`3488` tokens=`1453` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`4` unique_record_a=`4` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`16x12` unique_values=`4` low16_in_range=`192/192` high16_nonzero=`0`
+  - map top values: `0x00000000->48, 0x00000001->48, 0x00000002->48, 0x00000003->48`
+  - map top record refs: `0->48, 1->48, 2->48, 3->48`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->4`
+  - record value_b top: `0x00000000->4`
+  - record value_c top: `0xFFFF0000->4`
+  - texture atlas=`160x28` storage=`indexed_lz77` parts=`4` palettes=`1`
+- `GameData\app\Field\Map\F_29_MD_01.spranm` sig=`LZ77` size=`3153` pngs=`0` raw=`8592` tokens=`2368` decomp_sig=`Sequence`
+
+### Group `30`
+- `GameData\app\Field\Map\F_30_MD_00.mpd` sig=`LZ77` size=`38387` pngs=`0` raw=`47680` tokens=`31271` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`87` unique_record_a=`83` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`42x38` unique_values=`76` low16_in_range=`1596/1596` high16_nonzero=`190`
+  - map top values: `0x00000028->686, 0x0000003D->105, 0x0000002E->74, 0x00000021->33, 0x00010029->32, 0x00000003->30`
+  - map top record refs: `40->686, 61->105, 46->74, 33->33, 41->32, 3->30`
+  - record flags: a_high16=`29` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->58, 1->21, 2->8`
+  - record value_b top: `0x00000000->87`
+  - record value_c top: `0xFFFF0000->87`
+  - texture atlas=`288x236` storage=`indexed_lz77` parts=`83` palettes=`3`
+- `GameData\app\Field\Map\F_30_MD_00.spranm` sig=`LZ77` size=`757` pngs=`0` raw=`2192` tokens=`551` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_30_MD_01.mpd` sig=`LZ77` size=`3442` pngs=`0` raw=`5376` tokens=`2887` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`9` unique_record_a=`9` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`18x14` unique_values=`9` low16_in_range=`252/252` high16_nonzero=`0`
+  - map top values: `0x00000000->30, 0x00000001->30, 0x00000002->30, 0x00000003->30, 0x00000004->30, 0x00000005->30`
+  - map top record refs: `0->30, 1->30, 2->30, 3->30, 4->30, 5->30`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`9`
+  - record a_high16 top: `0->9`
+  - record value_b top: `0x00000000->9`
+  - record value_c top: `0x00020000->9`
+  - texture atlas=`160x54` storage=`indexed_lz77` parts=`9` palettes=`1`
+
+### Group `31`
+- `GameData\app\Field\Map\F_31_MD_00.mpd` sig=`LZ77` size=`34993` pngs=`0` raw=`45480` tokens=`28613` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`96` unique_record_a=`96` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`40x38` unique_values=`97` low16_in_range=`1520/1520` high16_nonzero=`169`
+  - map top values: `0x0000000C->351, 0x00000004->203, 0x00000024->88, 0x00010032->61, 0x00010033->56, 0x00000002->32`
+  - map top record refs: `12->351, 4->203, 36->88, 50->61, 51->56, 2->32`
+  - record flags: a_high16=`34` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->62, 1->34`
+  - record value_b top: `0x00000000->96`
+  - record value_c top: `0xFFFF0000->96`
+  - texture atlas=`288x262` storage=`indexed_lz77` parts=`96` palettes=`2`
+- `GameData\app\Field\Map\F_31_MD_00.spranm` sig=`LZ77` size=`2076` pngs=`0` raw=`3416` tokens=`1709` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_31_MD_01.mpd` sig=`LZ77` size=`3214` pngs=`0` raw=`5472` tokens=`2503` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`17` unique_record_a=`17` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`17` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000010->124, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1`
+  - map top record refs: `16->124, 0->1, 1->1, 2->1, 3->1, 4->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`17`
+  - record a_high16 top: `0->17`
+  - record value_b top: `0x00000000->17`
+  - record value_c top: `0x00020000->17`
+  - texture atlas=`168x172` storage=`indexed_lz77` parts=`17` palettes=`1`
+
+### Group `32`
+- `GameData\app\Field\Map\F_32_MD_00.mpd` sig=`LZ77` size=`36806` pngs=`0` raw=`47392` tokens=`30109` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`98` unique_record_a=`98` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`39x40` unique_values=`99` low16_in_range=`1560/1560` high16_nonzero=`159`
+  - map top values: `0x0000000B->521, 0x00000003->192, 0x00010033->73, 0x0000002F->46, 0x00010032->44, 0x0000002E->42`
+  - map top record refs: `11->521, 3->192, 51->73, 47->46, 50->44, 46->42`
+  - record flags: a_high16=`35` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->63, 1->35`
+  - record value_b top: `0x00000000->98`
+  - record value_c top: `0xFFFF0000->98`
+  - texture atlas=`288x262` storage=`indexed_lz77` parts=`98` palettes=`2`
+- `GameData\app\Field\Map\F_32_MD_00.spranm` sig=`LZ77` size=`2076` pngs=`0` raw=`3416` tokens=`1709` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_32_MD_01.mpd` sig=`LZ77` size=`3214` pngs=`0` raw=`5472` tokens=`2503` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`17` unique_record_a=`17` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`17` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000010->124, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1`
+  - map top record refs: `16->124, 0->1, 1->1, 2->1, 3->1, 4->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`17`
+  - record a_high16 top: `0->17`
+  - record value_b top: `0x00000000->17`
+  - record value_c top: `0x00020000->17`
+  - texture atlas=`168x172` storage=`indexed_lz77` parts=`17` palettes=`1`
+
+### Group `33`
+- `GameData\app\Field\Map\F_33_MD_00.mpd` sig=`LZ77` size=`11131` pngs=`0` raw=`13944` tokens=`9232` decomp_sig=`Cell`
+  - cell grid=`24x24` entries=`27` unique_record_a=`27` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`21x28` unique_values=`28` low16_in_range=`588/588` high16_nonzero=`38`
+  - map top values: `0x00000002->249, 0x00000003->126, 0x00000005->72, 0x00010004->12, 0x00000000->11, 0x00000001->8`
+  - map top record refs: `2->249, 3->126, 5->72, 4->12, 0->11, 1->8`
+  - record flags: a_high16=`16` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `1->16, 0->11`
+  - record value_b top: `0x00000000->27`
+  - record value_c top: `0xFFFF0000->27`
+  - texture atlas=`160x158` storage=`indexed_lz77` parts=`27` palettes=`2`
+- `GameData\app\Field\Map\F_33_MD_00.spranm` sig=`LZ77` size=`2076` pngs=`0` raw=`3416` tokens=`1709` decomp_sig=`Sequence`
+- `GameData\app\Field\Map\F_33_MD_01.mpd` sig=`LZ77` size=`3214` pngs=`0` raw=`5472` tokens=`2503` decomp_sig=`Cell`
+  - cell grid=`32x32` entries=`17` unique_record_a=`17` chunks=`TextureParts, Palette, Map, ConvertInfo`
+  - map grid=`14x10` unique_values=`17` low16_in_range=`140/140` high16_nonzero=`0`
+  - map top values: `0x00000010->124, 0x00000000->1, 0x00000001->1, 0x00000002->1, 0x00000003->1, 0x00000004->1`
+  - map top record refs: `16->124, 0->1, 1->1, 2->1, 3->1, 4->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`17`
+  - record a_high16 top: `0->17`
+  - record value_b top: `0x00000000->17`
+  - record value_c top: `0x00020000->17`
+  - texture atlas=`168x172` storage=`indexed_lz77` parts=`17` palettes=`1`
+- `GameData\app\Field\Map\F_33_MD_01.spranm` sig=`LZ77` size=`16651` pngs=`0` raw=`22696` tokens=`13610` decomp_sig=`Sequence`
+
+### Group `chizu`
+- `GameData\app\Field\Chizu\bg\bg_00.mpd` sig=`Cell` size=`304400` pngs=`1`
+  - cell grid=`96x96` entries=`48` unique_record_a=`48` chunks=`TextureParts, Map`
+  - map grid=`10x8` unique_values=`48` low16_in_range=`80/80` high16_nonzero=`0`
+  - map top values: `0x00000024->9, 0x00000025->9, 0x0000002A->9, 0x0000002B->9, 0x00000000->1, 0x00000001->1`
+  - map top record refs: `36->9, 37->9, 42->9, 43->9, 0->1, 1->1`
+  - record flags: a_high16=`0` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->48`
+  - record value_b top: `0x00000000->48`
+  - record value_c top: `0xFFFF0000->48`
+  - texture atlas=`616x786` storage=`png` parts=`48` palettes=`0`
+- `GameData\app\Field\Chizu\CHIZU1_00.mpd` sig=`Cell` size=`458520` pngs=`1`
+  - cell grid=`96x96` entries=`198` unique_record_a=`198` chunks=`TextureParts, Map`
+  - map grid=`20x20` unique_values=`198` low16_in_range=`400/400` high16_nonzero=`0`
+  - map top values: `0x000000C5->188, 0x000000B6->2, 0x000000B7->2, 0x000000B8->2, 0x000000B9->2, 0x000000BA->2`
+  - map top record refs: `197->188, 182->2, 183->2, 184->2, 185->2, 186->2`
+  - record flags: a_high16=`134` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->64, 2->56, 1->48, 3->30`
+  - record value_b top: `0x00000000->198`
+  - record value_c top: `0xFFFF0000->198`
+  - texture atlas=`1000x1962` storage=`png` parts=`198` palettes=`0`
+- `GameData\app\Field\Chizu\CHIZU1_00.spranm` sig=`LZ77` size=`5119` pngs=`0` raw=`9608` tokens=`3963` decomp_sig=`Sequence`
+- `GameData\app\Field\Chizu\en\CHIZU1_00.mpd` sig=`Cell` size=`500544` pngs=`1`
+  - cell grid=`96x96` entries=`198` unique_record_a=`198` chunks=`TextureParts, Map, ConvertInfo`
+  - map grid=`20x20` unique_values=`198` low16_in_range=`400/400` high16_nonzero=`0`
+  - map top values: `0x000000C5->188, 0x000000B6->2, 0x000000B7->2, 0x000000B8->2, 0x000000B9->2, 0x000000BA->2`
+  - map top record refs: `197->188, 182->2, 183->2, 184->2, 185->2, 186->2`
+  - record flags: a_high16=`134` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->64, 2->56, 1->48, 3->30`
+  - record value_b top: `0x00000000->198`
+  - record value_c top: `0xFFFF0000->198`
+  - texture atlas=`1000x1962` storage=`png` parts=`198` palettes=`0`
+- `GameData\app\Field\Chizu\ko\CHIZU1_00.mpd` sig=`Cell` size=`483024` pngs=`1`
+  - cell grid=`96x96` entries=`198` unique_record_a=`198` chunks=`TextureParts, Map, ConvertInfo`
+  - map grid=`20x20` unique_values=`198` low16_in_range=`400/400` high16_nonzero=`0`
+  - map top values: `0x000000C5->188, 0x000000B6->2, 0x000000B7->2, 0x000000B8->2, 0x000000B9->2, 0x000000BA->2`
+  - map top record refs: `197->188, 182->2, 183->2, 184->2, 185->2, 186->2`
+  - record flags: a_high16=`134` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->64, 2->56, 1->48, 3->30`
+  - record value_b top: `0x00000000->198`
+  - record value_c top: `0xFFFF0000->198`
+  - texture atlas=`1000x1962` storage=`png` parts=`198` palettes=`0`
+- `GameData\app\Field\Chizu\zh_Hans\CHIZU1_00.mpd` sig=`Cell` size=`458552` pngs=`1`
+  - cell grid=`96x96` entries=`198` unique_record_a=`198` chunks=`TextureParts, Map, ConvertInfo`
+  - map grid=`20x20` unique_values=`198` low16_in_range=`400/400` high16_nonzero=`0`
+  - map top values: `0x000000C5->188, 0x000000B6->2, 0x000000B7->2, 0x000000B8->2, 0x000000B9->2, 0x000000BA->2`
+  - map top record refs: `197->188, 182->2, 183->2, 184->2, 185->2, 186->2`
+  - record flags: a_high16=`134` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->64, 2->56, 1->48, 3->30`
+  - record value_b top: `0x00000000->198`
+  - record value_c top: `0xFFFF0000->198`
+  - texture atlas=`1000x1962` storage=`png` parts=`198` palettes=`0`
+- `GameData\app\Field\Chizu\zh_Hant\CHIZU1_00.mpd` sig=`Cell` size=`458552` pngs=`1`
+  - cell grid=`96x96` entries=`198` unique_record_a=`198` chunks=`TextureParts, Map, ConvertInfo`
+  - map grid=`20x20` unique_values=`198` low16_in_range=`400/400` high16_nonzero=`0`
+  - map top values: `0x000000C5->188, 0x000000B6->2, 0x000000B7->2, 0x000000B8->2, 0x000000B9->2, 0x000000BA->2`
+  - map top record refs: `197->188, 182->2, 183->2, 184->2, 185->2, 186->2`
+  - record flags: a_high16=`134` nonzero_b=`0` nondefault_c=`0`
+  - record a_high16 top: `0->64, 2->56, 1->48, 3->30`
+  - record value_b top: `0x00000000->198`
+  - record value_c top: `0xFFFF0000->198`
+  - texture atlas=`1000x1962` storage=`png` parts=`198` palettes=`0`
+
+## Next Targets
+- Decode decompressed `F_xx_MD_00.mpd` structures after LZ77.
+- Compare `Field/Map` vs `Field/Chizu` to separate visual and logical map layers.
+- Fingerprint executable builds before any future debug patching.
+- Locate gameplay parameter tables after text tables are mapped.
