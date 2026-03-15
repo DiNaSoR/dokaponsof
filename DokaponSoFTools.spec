@@ -2,11 +2,11 @@
 
 
 a = Analysis(
-    ['F:\\Projects\\Dokapon\\dokaponsof\\app\\main.py'],
+    ['f:\\Projects\\Dokapon\\dokaponsof\\app\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('F:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\bgm.mp3', 'resources'), ('F:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\icon.ico', 'resources')],
-    hiddenimports=['PIL', 'numpy', 'PyQt6.QtMultimedia', 'app.core.lz77', 'app.core.cell_parser', 'app.core.texture_parser', 'app.core.game_scanner', 'app.core.map_renderer', 'app.core.report_generator'],
+    datas=[('f:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\bgm.mp3', 'resources'), ('f:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\icon.ico', 'resources')],
+    hiddenimports=['PIL', 'numpy', 'PyQt6.QtMultimedia'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -35,5 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['F:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\icon.ico'],
+    icon=['f:\\Projects\\Dokapon\\dokaponsof\\app\\resources\\icon.ico'],
 )
