@@ -40,6 +40,9 @@
         <DataTemplate DataType="{x:Type vm:AnimationViewerViewModel}">
             <views:AnimationViewerView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:GameScannerViewModel}">
+            <views:GameScannerView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:AboutViewModel}">
             <views:AboutView/>
         </DataTemplate>

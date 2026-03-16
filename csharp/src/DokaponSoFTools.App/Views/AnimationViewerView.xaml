@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:DokaponSoFTools.App.Converters"
              Background="{StaticResource BackgroundBrush}"
-             Foreground="{StaticResource ForegroundBrush}">
+             Foreground="{StaticResource ForegroundBrush}"
+             Focusable="True"
+             PreviewKeyDown="OnPreviewKeyDown">
 
     <UserControl.Resources>
         <converters:InverseBoolConverter x:Key="InverseBool"/>
@@ -16,9 +18,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left: File list -->
+        <!-- Left: File list with search -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -36,7 +39,18 @@
                 </StackPanel>
             </Border>
 
-            <ListBox Grid.Row="1"
+            <!-- Search box -->
+            <Border Grid.Row="1"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="8,4">
+                <TextBox Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Search animations..."
+                         VerticalAlignment="Center"/>
+            </Border>
+
+            <ListBox Grid.Row="2"
                      ItemsSource="{Binding Files}"
                      SelectedItem="{Binding SelectedFile, Mode=TwoWay}"
                      Background="{StaticResource BackgroundBrush}"
@@ -74,24 +88,44 @@
         <!-- Right: Animation display -->
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Export toolbar -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="8,4">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Export GIF" Command="{Binding ExportGifCommand}"
+                            Style="{StaticResource SecondaryButton}"
+                            MinWidth="0" MinHeight="0" Padding="10,4" Margin="0,0,4,0"/>
+                    <Button Content="Export Atlas" Command="{Binding ExportAtlasCommand}"
+                            Style="{StaticResource SecondaryButton}"
+                            MinWidth="0" MinHeight="0" Padding="10,4" Margin="0,0,4,0"/>
+                    <Button Content="Copy Frame" Command="{Binding CopyFrameToClipboardCommand}"
+                            Style="{StaticResource SecondaryButton}"
+                            MinWidth="0" MinHeight="0" Padding="10,4"/>
+                </StackPanel>
+            </Border>
+
             <!-- Frame display -->
-            <Border Grid.Row="0" Background="#FF111111" Margin="8,8,8,0">
+            <Border Grid.Row="1" Background="#FF111111" Margin="8,4,8,0">
                 <Image Source="{Binding CurrentFrame}"
                        Stretch="Uniform"
                        RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             </Border>
 
             <!-- Playback controls -->
-            <Border Grid.Row="1"
+            <Border Grid.Row="2"
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
                     BorderThickness="0,1,0,0"
-                    Margin="8,0" Padding="12,8">
+                    Margin="8,0" Padding="12,6">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -99,32 +133,20 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Buttons -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
                         <Button Content="Prev" Command="{Binding PreviousFrameCommand}"
                                 Style="{StaticResource SecondaryButton}"
-                                MinWidth="50" MinHeight="0" Padding="8,4" Margin="0,0,4,0"/>
-                        <Button Command="{Binding PlayCommand}"
-                                MinWidth="60" MinHeight="0" Padding="8,4" Margin="0,0,4,0">
+                                MinWidth="50" MinHeight="0" Padding="8,4" Margin="0,0,4,0"
+                                ToolTip="Previous frame (Left arrow)"/>
+                        <Button Command="{Binding TogglePlayStopCommand}"
+                                MinWidth="60" MinHeight="0" Padding="8,4" Margin="0,0,4,0"
+                                ToolTip="Play/Stop (Space)">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
                                     <Setter Property="Content" Value="Play"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Button Content="Stop" Command="{Binding StopCommand}"
-                                MinWidth="60" MinHeight="0" Padding="8,4" Margin="0,0,4,0">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Setter Property="Content" Value="Stop"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -132,10 +154,10 @@
                         </Button>
                         <Button Content="Next" Command="{Binding NextFrameCommand}"
                                 Style="{StaticResource SecondaryButton}"
-                                MinWidth="50" MinHeight="0" Padding="8,4"/>
+                                MinWidth="50" MinHeight="0" Padding="8,4"
+                                ToolTip="Next frame (Right arrow)"/>
                     </StackPanel>
 
-                    <!-- Frame indicator -->
                     <TextBlock Grid.Column="1"
                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                Foreground="{StaticResource ForegroundMutedBrush}" FontSize="12">
@@ -146,7 +168,6 @@
                         <Run Text="{Binding SequenceCount, Mode=OneWay}"/>
                     </TextBlock>
 
-                    <!-- FPS -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="FPS:" Foreground="{StaticResource ForegroundMutedBrush}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
@@ -161,7 +182,7 @@
             </Border>
 
             <!-- Info -->
-            <Border Grid.Row="2" Padding="12,4,12,6">
+            <Border Grid.Row="3" Padding="12,4,12,6">
                 <TextBlock Text="{Binding AnimInfo}"
                            Foreground="{StaticResource ForegroundMutedBrush}"
                            FontSize="11" TextWrapping="Wrap"/>

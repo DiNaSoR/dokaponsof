@@ -78,7 +78,7 @@
                         SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}"
                         Background="{StaticResource BackgroundBrush}">
 
-                <TabItem Header="All">
+                <TabItem Header="{Binding AllTabHeader}">
                     <ListView ItemsSource="{Binding AllFiles}"
                               SelectedItem="{Binding SelectedFile}">
                         <ListView.View>
@@ -91,7 +91,7 @@
                     </ListView>
                 </TabItem>
 
-                <TabItem Header="Textures (.tex)">
+                <TabItem Header="{Binding TexTabHeader}">
                     <ListView ItemsSource="{Binding TexFiles}"
                               SelectedItem="{Binding SelectedFile}">
                         <ListView.View>
@@ -103,7 +103,7 @@
                     </ListView>
                 </TabItem>
 
-                <TabItem Header="Sprites (.spranm)">
+                <TabItem Header="{Binding SpranmTabHeader}">
                     <ListView ItemsSource="{Binding SpranmFiles}"
                               SelectedItem="{Binding SelectedFile}">
                         <ListView.View>
@@ -115,7 +115,7 @@
                     </ListView>
                 </TabItem>
 
-                <TabItem Header="Fonts (.fnt)">
+                <TabItem Header="{Binding FntTabHeader}">
                     <ListView ItemsSource="{Binding FntFiles}"
                               SelectedItem="{Binding SelectedFile}">
                         <ListView.View>
@@ -127,7 +127,7 @@
                     </ListView>
                 </TabItem>
 
-                <TabItem Header="Maps (.mpd)">
+                <TabItem Header="{Binding MpdTabHeader}">
                     <ListView ItemsSource="{Binding MpdFiles}"
                               SelectedItem="{Binding SelectedFile}">
                         <ListView.View>

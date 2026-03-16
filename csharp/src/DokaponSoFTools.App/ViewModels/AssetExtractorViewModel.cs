@@ -23,6 +23,12 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
     [ObservableProperty] private FileItem? _selectedFile;
     [ObservableProperty] private int _selectedTabIndex;
 
+    [ObservableProperty] private string _allTabHeader = "All";
+    [ObservableProperty] private string _texTabHeader = "Textures (.tex)";
+    [ObservableProperty] private string _spranmTabHeader = "Sprites (.spranm)";
+    [ObservableProperty] private string _fntTabHeader = "Fonts (.fnt)";
+    [ObservableProperty] private string _mpdTabHeader = "Maps (.mpd)";
+
     public ObservableCollection<FileItem> AllFiles { get; } = [];
     public ObservableCollection<FileItem> TexFiles { get; } = [];
     public ObservableCollection<FileItem> SpranmFiles { get; } = [];
@@ -104,8 +110,21 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
             }
         }
 
+        AllTabHeader = $"All ({AllFiles.Count}, {FormatSize(AllFiles.Sum(f => f.Size))})";
+        TexTabHeader = $"Textures ({TexFiles.Count}, {FormatSize(TexFiles.Sum(f => f.Size))})";
+        SpranmTabHeader = $"Sprites ({SpranmFiles.Count}, {FormatSize(SpranmFiles.Sum(f => f.Size))})";
+        FntTabHeader = $"Fonts ({FntFiles.Count}, {FormatSize(FntFiles.Sum(f => f.Size))})";
+        MpdTabHeader = $"Maps ({MpdFiles.Count}, {FormatSize(MpdFiles.Sum(f => f.Size))})";
+
         Log.Info($"Found {AllFiles.Count} files ({TexFiles.Count} tex, {SpranmFiles.Count} spranm, {FntFiles.Count} fnt, {MpdFiles.Count} mpd)");
     }
+
+    private static string FormatSize(long bytes) => bytes switch
+    {
+        < 1024 => $"{bytes} B",
+        < 1024 * 1024 => $"{bytes / 1024.0:F1} KB",
+        _ => $"{bytes / (1024.0 * 1024):F1} MB"
+    };
 
     partial void OnSelectedFileChanged(FileItem? value)
     {

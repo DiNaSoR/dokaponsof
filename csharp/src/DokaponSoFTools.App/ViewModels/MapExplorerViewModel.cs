@@ -143,6 +143,50 @@ public sealed partial class MapExplorerViewModel : ObservableObject, IGamePathAw
         if (path is not null) File.WriteAllText(path, ReportText);
     }
 
+    [RelayCommand]
+    private void ExportMapImage()
+    {
+        if (_document is null) return;
+        string? path = DialogService.SaveFile("Export Map Image", "PNG|*.png",
+            System.IO.Path.GetFileNameWithoutExtension(_document.SourcePath) + "_map.png");
+        if (path is null) return;
+
+        try
+        {
+            using var map = MapRenderer.RenderMapImage(_document, SelectedPalette, 4096);
+            if (map is null) { Log.Warning("No map image to export"); return; }
+
+            using var img = SKImage.FromBitmap(map);
+            using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+            using var fs = File.Create(path);
+            data.SaveTo(fs);
+            Log.Success($"Map exported: {System.IO.Path.GetFileName(path)}");
+        }
+        catch (Exception ex) { Log.Error($"Export failed: {ex.Message}"); }
+    }
+
+    [RelayCommand]
+    private void ExportAtlasImage()
+    {
+        if (_document is null) return;
+        string? path = DialogService.SaveFile("Export Atlas Image", "PNG|*.png",
+            System.IO.Path.GetFileNameWithoutExtension(_document.SourcePath) + "_atlas.png");
+        if (path is null) return;
+
+        try
+        {
+            using var atlas = MapRenderer.BuildAtlasForDocument(_document, SelectedPalette);
+            if (atlas is null) { Log.Warning("No atlas image to export"); return; }
+
+            using var img = SKImage.FromBitmap(atlas);
+            using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+            using var fs = File.Create(path);
+            data.SaveTo(fs);
+            Log.Success($"Atlas exported: {System.IO.Path.GetFileName(path)}");
+        }
+        catch (Exception ex) { Log.Error($"Export failed: {ex.Message}"); }
+    }
+
     private static BitmapImage SkBitmapToWpf(SKBitmap bitmap)
     {
         using var image = SKImage.FromBitmap(bitmap);

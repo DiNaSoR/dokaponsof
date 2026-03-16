@@ -27,6 +27,7 @@ public sealed partial class MainViewModel : ObservableObject
         new("Video Tools", "\U0001F3AC", "video"),
         new("Map Explorer", "\U0001F5FA", "map"),
         new("Animations", "\U0001F3AC", "anim"),
+        new("Game Scanner", "\U0001F50D", "scanner"),
         new("About", "\U00002139", "about")
     ];
 
@@ -66,6 +67,7 @@ public sealed partial class MainViewModel : ObservableObject
                 "video" => new VideoToolsViewModel(),
                 "map" => new MapExplorerViewModel(),
                 "anim" => new AnimationViewerViewModel(),
+                "scanner" => new GameScannerViewModel(),
                 "about" => new AboutViewModel(),
                 _ => throw new ArgumentException($"Unknown nav key: {key}")
             };
@@ -85,14 +87,25 @@ public sealed partial class MainViewModel : ObservableObject
         string? path = DialogService.BrowseFolder("Select Game Directory");
         if (path is null) return;
 
+        SetGamePath(path);
+    }
+
+    public void SetGamePath(string path)
+    {
         GamePath = path;
         SettingsService.Instance.GamePath = path;
+        SettingsService.Instance.AddRecentPath(path);
         StatusLog.Success($"Game path set: {path}");
 
-        // Propagate to current view
-        if (CurrentView is IGamePathAware aware)
-            aware.GamePath = path;
+        // Propagate to ALL created views
+        foreach (var vm in _viewModels.Values)
+        {
+            if (vm is IGamePathAware aware)
+                aware.GamePath = path;
+        }
     }
+
+    public List<string> RecentPaths => SettingsService.Instance.RecentPaths;
 
     [RelayCommand]
     private void ClearLog() => StatusLog.Clear();
