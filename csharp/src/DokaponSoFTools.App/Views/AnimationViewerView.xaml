@@ -1,0 +1,171 @@
+<UserControl x:Class="DokaponSoFTools.App.Views.AnimationViewerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:DokaponSoFTools.App.Converters"
+             Background="{StaticResource BackgroundBrush}"
+             Foreground="{StaticResource ForegroundBrush}">
+
+    <UserControl.Resources>
+        <converters:InverseBoolConverter x:Key="InverseBool"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: File list -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="8,6">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Animations"
+                               Foreground="{StaticResource ForegroundMutedBrush}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <Button Content="Scan" Command="{Binding ScanFilesCommand}" MinWidth="50" Padding="8,3"/>
+                </StackPanel>
+            </Border>
+
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding Files}"
+                     SelectedItem="{Binding SelectedFile, Mode=TwoWay}"
+                     Background="{StaticResource BackgroundBrush}"
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" Padding="8,3"
+                                   Foreground="{StaticResource ForegroundBrush}" FontSize="12"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource InputBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SelectionBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </Grid>
+
+        <!-- Splitter -->
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
+                      Background="{StaticResource BorderBrush}"/>
+
+        <!-- Right: Animation display -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Frame display -->
+            <Border Grid.Row="0" Background="#FF111111" Margin="8,8,8,0">
+                <Image Source="{Binding CurrentFrame}"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            </Border>
+
+            <!-- Playback controls -->
+            <Border Grid.Row="1"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Margin="8,0" Padding="12,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Buttons -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button Content="Prev" Command="{Binding PreviousFrameCommand}"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="50" MinHeight="0" Padding="8,4" Margin="0,0,4,0"/>
+                        <Button Command="{Binding PlayCommand}"
+                                MinWidth="60" MinHeight="0" Padding="8,4" Margin="0,0,4,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                                    <Setter Property="Content" Value="Play"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Stop" Command="{Binding StopCommand}"
+                                MinWidth="60" MinHeight="0" Padding="8,4" Margin="0,0,4,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Next" Command="{Binding NextFrameCommand}"
+                                Style="{StaticResource SecondaryButton}"
+                                MinWidth="50" MinHeight="0" Padding="8,4"/>
+                    </StackPanel>
+
+                    <!-- Frame indicator -->
+                    <TextBlock Grid.Column="1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{StaticResource ForegroundMutedBrush}" FontSize="12">
+                        <Run Text="Frame "/>
+                        <Run Text="{Binding CurrentSequenceIndex, Mode=OneWay}"
+                             Foreground="{StaticResource ForegroundBrush}"/>
+                        <Run Text=" / "/>
+                        <Run Text="{Binding SequenceCount, Mode=OneWay}"/>
+                    </TextBlock>
+
+                    <!-- FPS -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="FPS:" Foreground="{StaticResource ForegroundMutedBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <Slider Minimum="1" Maximum="30" Value="{Binding Fps, Mode=TwoWay}"
+                                Width="80" VerticalAlignment="Center"
+                                IsSnapToTickEnabled="True" TickFrequency="1"/>
+                        <TextBlock Text="{Binding Fps}" VerticalAlignment="Center"
+                                   Foreground="{StaticResource ForegroundBrush}"
+                                   Margin="6,0,0,0" Width="20"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Info -->
+            <Border Grid.Row="2" Padding="12,4,12,6">
+                <TextBlock Text="{Binding AnimInfo}"
+                           Foreground="{StaticResource ForegroundMutedBrush}"
+                           FontSize="11" TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

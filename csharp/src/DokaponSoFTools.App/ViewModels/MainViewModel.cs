@@ -26,6 +26,7 @@ public sealed partial class MainViewModel : ObservableObject
         new("Hex Editor", "\U0001F527", "hex"),
         new("Video Tools", "\U0001F3AC", "video"),
         new("Map Explorer", "\U0001F5FA", "map"),
+        new("Animations", "\U0001F3AC", "anim"),
         new("About", "\U00002139", "about")
     ];
 
@@ -64,6 +65,7 @@ public sealed partial class MainViewModel : ObservableObject
                 "hex" => new HexEditorViewModel(),
                 "video" => new VideoToolsViewModel(),
                 "map" => new MapExplorerViewModel(),
+                "anim" => new AnimationViewerViewModel(),
                 "about" => new AboutViewModel(),
                 _ => throw new ArgumentException($"Unknown nav key: {key}")
             };
