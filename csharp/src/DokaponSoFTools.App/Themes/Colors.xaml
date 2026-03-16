@@ -1,0 +1,98 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =====================================================================
+         Color Resources
+         ===================================================================== -->
+
+    <!-- Background / Surface -->
+    <Color x:Key="BackgroundColor">#FF1E1E1E</Color>
+    <Color x:Key="SurfaceColor">#FF252526</Color>
+    <Color x:Key="SidebarColor">#FF333333</Color>
+
+    <!-- Foreground -->
+    <Color x:Key="ForegroundColor">#FFCCCCCC</Color>
+    <Color x:Key="ForegroundMutedColor">#FF858585</Color>
+
+    <!-- Accent / Primary -->
+    <Color x:Key="AccentColor">#FF007ACC</Color>
+    <Color x:Key="AccentHoverColor">#FF1C97EA</Color>
+    <Color x:Key="AccentPressedColor">#FF005F9E</Color>
+
+    <!-- Border -->
+    <Color x:Key="BorderColor">#FF3C3C3C</Color>
+    <Color x:Key="BorderFocusColor">#FF007ACC</Color>
+
+    <!-- Selection -->
+    <Color x:Key="SelectionColor">#FF264F78</Color>
+
+    <!-- Input -->
+    <Color x:Key="InputColor">#FF3C3C3C</Color>
+
+    <!-- Disabled -->
+    <Color x:Key="DisabledColor">#FF555555</Color>
+    <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+
+    <!-- Scrollbar -->
+    <Color x:Key="ScrollBarColor">#FF424242</Color>
+    <Color x:Key="ScrollBarHoverColor">#FF4F4F4F</Color>
+
+    <!-- Status Log -->
+    <Color x:Key="InfoColor">#FFCCCCCC</Color>
+    <Color x:Key="SuccessColor">#FF4EC9B0</Color>
+    <Color x:Key="WarningColor">#FFDCDCAA</Color>
+    <Color x:Key="ErrorColor">#FFF14C4C</Color>
+
+    <!-- Alternating row -->
+    <Color x:Key="AlternateRowColor">#FF2A2A2B</Color>
+
+    <!-- =====================================================================
+         SolidColorBrush Resources
+         ===================================================================== -->
+
+    <!-- Background / Surface -->
+    <SolidColorBrush x:Key="BackgroundBrush"   Color="{StaticResource BackgroundColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush"      Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="SidebarBrush"      Color="{StaticResource SidebarColor}" />
+
+    <!-- Foreground -->
+    <SolidColorBrush x:Key="ForegroundBrush"       Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="ForegroundMutedBrush"  Color="{StaticResource ForegroundMutedColor}" />
+
+    <!-- Accent / Primary -->
+    <SolidColorBrush x:Key="AccentBrush"        Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentHoverBrush"   Color="{StaticResource AccentHoverColor}" />
+    <SolidColorBrush x:Key="AccentPressedBrush" Color="{StaticResource AccentPressedColor}" />
+
+    <!-- Border -->
+    <SolidColorBrush x:Key="BorderBrush"        Color="{StaticResource BorderColor}" />
+    <SolidColorBrush x:Key="BorderFocusBrush"   Color="{StaticResource BorderFocusColor}" />
+
+    <!-- Selection -->
+    <SolidColorBrush x:Key="SelectionBrush"     Color="{StaticResource SelectionColor}" />
+
+    <!-- Input -->
+    <SolidColorBrush x:Key="InputBrush"         Color="{StaticResource InputColor}" />
+
+    <!-- Disabled -->
+    <SolidColorBrush x:Key="DisabledBrush"           Color="{StaticResource DisabledColor}" />
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{StaticResource DisabledForegroundColor}" />
+
+    <!-- Scrollbar -->
+    <SolidColorBrush x:Key="ScrollBarBrush"      Color="{StaticResource ScrollBarColor}" />
+    <SolidColorBrush x:Key="ScrollBarHoverBrush" Color="{StaticResource ScrollBarHoverColor}" />
+
+    <!-- Status Log -->
+    <SolidColorBrush x:Key="InfoBrush"    Color="{StaticResource InfoColor}" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="ErrorBrush"   Color="{StaticResource ErrorColor}" />
+
+    <!-- Alternating row -->
+    <SolidColorBrush x:Key="AlternateRowBrush" Color="{StaticResource AlternateRowColor}" />
+
+    <!-- Transparent helper -->
+    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
+
+</ResourceDictionary>

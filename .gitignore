@@ -1,16 +1,8 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.pyw
-*.pyz
-*.pywz
-*.pyzw
-*.pyzwz
-*.pyzwzw
-*.pyzwzwzw
-*.pyzwzwzwzw
-*.pyzwzwzwzwzw
 
 # Build output
 build/
@@ -21,3 +13,32 @@ dist/
 
 # Test output
 test/doka/out/
+
+# C# / .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+.vs/
+*.DotSettings.user
+packages/
+*.nupkg
+project.lock.json
+
+# Publish output
+publish/
+
+# NuGet
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

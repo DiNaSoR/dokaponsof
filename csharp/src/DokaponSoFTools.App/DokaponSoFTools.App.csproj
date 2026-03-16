@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>DokaponSoFTools.App</RootNamespace>
+    <!-- <ApplicationIcon>Resources\icon.ico</ApplicationIcon> -->
+    <AssemblyTitle>DOKAPON! Sword of Fury Tools</AssemblyTitle>
+    <Version>0.4.0</Version>
+    <Authors>DiNaSoR</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DokaponSoFTools.Core\DokaponSoFTools.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+    <PackageReference Include="LibVLCSharp.WPF" Version="3.9.6" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.*" />
+    <PackageReference Include="NAudio" Version="2.*" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\**" />
+  </ItemGroup>
+
+</Project>

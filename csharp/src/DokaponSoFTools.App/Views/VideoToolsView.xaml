@@ -1,0 +1,135 @@
+<UserControl x:Class="DokaponSoFTools.App.Views.VideoToolsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:DokaponSoFTools.App.Converters"
+             Background="{StaticResource BackgroundBrush}"
+             Foreground="{StaticResource ForegroundBrush}">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:InverseBoolConverter x:Key="InverseBool"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top: FFmpeg status + settings -->
+        <Border Grid.Row="0"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="12,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Text="FFmpeg: "
+                               Foreground="{StaticResource ForegroundMutedBrush}"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding FfmpegStatus}"
+                               Foreground="{StaticResource ForegroundBrush}"
+                               VerticalAlignment="Center"/>
+                    <Border Width="8" Height="8"
+                            CornerRadius="4"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#4EC9B0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FfmpegAvailable}" Value="False">
+                                        <Setter Property="Background" Value="#F14C4C"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                </StackPanel>
+
+                <WrapPanel Grid.Row="2" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                        <TextBlock Text="Width:" Foreground="{StaticResource ForegroundMutedBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" VerticalAlignment="Center"/>
+                        <TextBlock Text="x" Foreground="{StaticResource ForegroundMutedBrush}" VerticalAlignment="Center" Margin="6,0"/>
+                        <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Center">
+                        <TextBlock Text="Video Quality:" Foreground="{StaticResource ForegroundMutedBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <Slider Minimum="1" Maximum="10" Value="{Binding VideoQuality, Mode=TwoWay}" Width="120" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"/>
+                        <TextBlock Text="{Binding VideoQuality}" Foreground="{StaticResource ForegroundBrush}" VerticalAlignment="Center" Margin="6,0,0,0" Width="16"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Audio Quality:" Foreground="{StaticResource ForegroundMutedBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <Slider Minimum="1" Maximum="10" Value="{Binding AudioQuality, Mode=TwoWay}" Width="120" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1"/>
+                        <TextBlock Text="{Binding AudioQuality}" Foreground="{StaticResource ForegroundBrush}" VerticalAlignment="Center" Margin="6,0,0,0" Width="16"/>
+                    </StackPanel>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <!-- Middle: Game Videos DataGrid -->
+        <Grid Grid.Row="1" Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                <TextBlock Text="Game Videos (double-click to play)"
+                           Foreground="{StaticResource ForegroundMutedBrush}"
+                           FontSize="11"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"/>
+                <Button Content="Scan"
+                        Command="{Binding ScanGameVideosCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                        MinWidth="60"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1"
+                      x:Name="videosGrid"
+                      ItemsSource="{Binding GameVideos}"
+                      MouseDoubleClick="VideosGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name"       Binding="{Binding Name}"       Width="*"/>
+                    <DataGridTextColumn Header="Resolution" Binding="{Binding Resolution}" Width="100"/>
+                    <DataGridTextColumn Header="Duration"   Binding="{Binding Duration}"   Width="80"/>
+                    <DataGridTextColumn Header="Size"       Binding="{Binding Size}"       Width="80"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Replacements header -->
+        <Border Grid.Row="2"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,1,0,1"
+                Padding="12,6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Replacements" Foreground="{StaticResource ForegroundMutedBrush}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <Button Content="Add Replacement" Style="{StaticResource SecondaryButton}" Command="{Binding AddReplacementCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}" Margin="0,0,6,0"/>
+                <Button Content="Process All" Command="{Binding ProcessReplacementsCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"/>
+            </StackPanel>
+        </Border>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding Replacements}" MaxHeight="160" Margin="8,0,8,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Target" Binding="{Binding TargetName}" Width="*"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding SourcePath}" Width="2*"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"     Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="4" Height="8"/>
+    </Grid>
+</UserControl>
