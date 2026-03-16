@@ -1,176 +1,183 @@
-# 🎮 DokaponSoFTools v0.4.0 Release
+# ⚔️ DokaponSoFTools v0.4.0 — C# Rewrite Release
 
-## 🔄 Changes from v0.3.0
+## 🔥 Major: Complete C#/.NET 8 Rewrite
 
-### ✨ New Features
+The entire toolkit has been rewritten from Python/PyQt6 to **C#/.NET 8 WPF**. Single self-contained executable, no Python or runtime dependencies needed.
 
-- 🗺️ **Map Explorer Tab**: Atlas view with map rendering, record/parts tables, and scan reports
-- 🗜️ **Unified LZ77 Decompression Module**: Supports flag-byte, token-stream, and cell variants
-- 📦 **Integrated Research Modules**: Cell parser, texture parser, game scanner, map renderer, and report generator from dokapon_explorer
-
-### 🔧 Improvements
-
-- ⚡ **Async Thumbnail Loading**: File browser thumbnails now load asynchronously (no more GUI freezes)
-- 🎤 **Voice Processing Off-Thread**: Voice replacement processing moved off the GUI thread
-- 🧩 **BaseTab Base Class**: Consistent tab behavior across all tabs
-- 💾 **In-Memory Text Extraction**: No more temp files needed during text extraction
-- 🐍 **Signal Naming Convention**: Standardized pyqtSignal names to snake_case
-
-### 🧹 Cleanup
-
-- 🗑️ **Dead Code Removed**: Removed FileTreeWidget and voice_pck_extractor
-- 📂 **Research Files Reorganized**: Research files organized into topical subdirectories (text/, spranm/samples/)
-- 📝 **Annotated Superseded Code**: Research LZ77 decompressors annotated as reference-only
+**Build Date:** 2026-03-16
+**Platform:** Windows 10/11 (64-bit)
+**Framework:** .NET 8, WPF, self-contained single-file EXE (~165 MB)
+**License:** GNU General Public License v3.0
 
 ---
 
-# 🎮 DokaponSoFTools v0.3.0 Release
+## ✨ New Tools & Features
 
-## 🌟 Overview
+### 🎭 Animation Viewer (NEW)
+- Full **spranm sprite animation** parser and renderer
+- Parses all sections: Sequence, Sprite, SpriteGp, TextureParts
+- LZ77 decompression for compressed animation files
+- **Bottom-right positioning** model (reverse-engineered from EXE)
+- Playback with Play/Stop, frame stepping, FPS slider (1-30)
+- **GIF export** with LZW encoding
+- **PNG sequence export** for individual frames
+- **Atlas PNG export** for raw texture atlas
+- Keyboard shortcuts: Space (play/stop), arrows (frame step), Ctrl+C (copy)
+- Search/filter across 850+ animation files
+- Auto-classifies: Self-contained vs Runtime/Player assets
 
-DokaponSoFTools is a comprehensive modding toolkit for DOKAPON! Sword of Fury (PC Version), providing an easy-to-use GUI interface for extracting and managing game assets.
+### 📝 Smart Text Tools (REWRITTEN)
+- **Control code decoding**: `\p`, `\k`, `\z`, `\n`, `\h`, `\r`, `\m`, `\C`, `%Nc` colors, `%s`/`%d` variables, `%Nx`/`%Ny` positioning, `%NM` button icons
+- **Auto-categorization** of 5107 entries: Dialog, Labels, HUD/Stats, System
+- Category tabs with counts
+- **Decoded preview** (human-readable) + Raw preview (binary-safe)
+- Search across decoded AND raw text
+- Export as **TXT** (binary-safe reimport), **CSV**, or **JSON**
+- Usage % column showing bytes used vs max allocation
+- **100% binary-safe import** — Core GameText unchanged
 
-This release focuses on documentation improvements, enhanced text extraction capabilities, and UI refinements.
+### 🎙️ Voice Tools (ENHANCED)
+- **4 PCK category tabs**: BGM (47 tracks), Sound Effects, Voice (JP), Voice (EN)
+- Auto-discovers all PCK files from game directory
+- **In-app Opus audio playback** via Concentus decoder
+- Double-click any sound to play
+- Play/Stop controls with "Now Playing" indicator
+- Extract all, replace individual sounds, save modified PCK
+
+### 🔍 Game Scanner (NEW)
+- Full directory analysis with file type stats
+- Directory listing with file counts and sizes
+- Key game file validation checklist
+- Exportable scan reports
+
+### 📦 Asset Extractor (ENHANCED)
+- **Category tabs**: All, Textures (.tex), Sprites (.spranm), Fonts (.fnt), Maps (.mpd)
+- **File size totals** in tab headers (e.g. "Textures (185, 42.3 MB)")
+- **MapRenderer preview** for .mpd files (assembled tile maps, not raw atlas)
+- LZ77 decompression for compressed textures
+- Auto-scans when game path is set
+
+### 🗺️ Map Explorer (ENHANCED)
+- Atlas and map rendering with palette switching
+- **Export map as PNG**
+- **Export atlas as PNG**
+- Report generation and export
+
+### 🎬 Video Tools
+- OGV cutscene listing with metadata (resolution, duration, size)
+- Double-click to play in system default player
+- FFmpeg integration for video conversion
+- Replacement queue with batch processing
+
+### 🔧 Hex Editor
+- Binary patch loading with conflict detection
+- Add files or folders of .hex patches
+- Stats: total patches, bytes, source files
+- Backup option before applying
 
 ---
 
-## ✨ Key Features
+## 🎨 UI/UX Improvements
 
-🖼️ **Asset Extractor**: Extract and preview texture files (.tex), sprite animations (.spranm), map data (.mpd), and font files (.fnt)
+### Dark Theme
+- Complete VS Code-inspired dark theme
+- Custom styles for all WPF controls: DataGrid, ListView, TabControl, ScrollBar, ComboBox, CheckBox, etc.
+- Accent color (#007ACC) with hover/pressed states
 
-🎮 **3D Model Viewer**: Interactive 3D preview for MDL model files with mesh visualization
+### Navigation & Layout
+- Sidebar with emoji icons for all 9 tools
+- Game path selector in top bar (right-aligned)
+- Status log panel with Save/Clear
+- GridSplitter between panels
 
-💬 **Text Tool**: Extract and repack game text for translation purposes
+### Quality of Life
+- **Window state persistence** — remembers size, position, maximized
+- **Last nav tab memory** — restores on reopen
+- **Recent game paths** — remembers last 5
+- **Auto game path detection** — finds exe, PCK files, maps automatically
+- **Single source of truth** — set game path once, all tools use it
 
-🎤 **Voice Extractor**: Extract voice files from .pck format to .opus
-
-🔍 **Preview System**: Built-in preview for textures, sprites, animations, and 3D models
-
-🎨 **User-Friendly GUI**: Modern PyQt6-based interface with dark theme
-
-📁 **Batch Processing**: Support for processing multiple files at once
-
-🗜️ **LZ77 Support**: Decompress and compress LZ77 compressed game files
+### About Page
+- Three-column layout: Features, About/Tech, Credits
+- Emoji icons for each tool and section
+- Hero header with project tagline
+- Tech stack and RE knowledge details
+- Press F to pay respects counter
 
 ---
 
-## 🛠️ Technical Details
+## 🔬 Reverse Engineering
 
-**Version:** 0.3.0  
-**Platform:** Windows  
-**Architecture:** 64-bit  
-**Framework:** Python 3.12 with PyQt6
-**Build Date:** 04-12-2025
+### Discoveries
+- **Spranm position = bottom-right corner** of each sprite piece
+- **Texture flags**: 0x4000 = PNG, 0x0080 = indexed/LZ77
+- **TextureParts** container uses 24-byte header (not standard 28)
+- **Player files** (F_C_*, PL_DMG*) are runtime assets with PartsColor, no PNG
+- **Game engine**: dkit / DKFramework (custom native C++)
+- **Steam App ID**: 3077020
+- **Audio**: WinMM 48kHz 16-bit stereo PCM
+- **Text**: UTF-8 with 15+ control codes
 
-### Bundled Dependencies
+### Tools Added
+- Capstone disassembly scripts for EXE analysis
+- Frida runtime tracer for sprite/file loading hooks
+- PE string extraction and xref scanner
 
-- PyQt6 6.10.0 - GUI framework
-- PyVista 0.46.4 - 3D visualization (includes VTK)
-- Pillow 12.0.0 - Image processing
-- NumPy 2.3.4 - Numerical computing
-- All dependencies included - No Python installation required
+---
+
+## 📚 Documentation
+
+- **14 documentation pages** completely rewritten for C#/.NET 8
+- 7 technical reference pages (LZ77, SPRANM, MPD, PCK, Text, HEX formats)
+- 7 tool documentation pages
+- **README.md** fully updated with feature table, build instructions, format knowledge
+- **CONTRIBUTING.md** added with project structure and code guidelines
+- **LICENSE** updated to GNU GPL v3.0
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Framework | C# / .NET 8 / WPF |
+| MVVM | CommunityToolkit.Mvvm |
+| Rendering | SkiaSharp |
+| Audio | NAudio + NAudio.Vorbis + Concentus (Opus) |
+| Build | Single-file self-contained (win-x64) |
+| Theme | Custom dark theme (VS Code-inspired) |
 
 ---
 
 ## 📋 Requirements
 
 - ✅ Windows 10/11 (64-bit)
-- ✅ No additional software required (standalone executable)
-- ✅ Minimum 4GB RAM recommended
-- ✅ ~250MB free disk space
-- ✅ DirectX/OpenGL support for 3D viewer
-
----
-
-## 🔄 Changes from v0.2.0
-
-### ✨ New Features
-
-- 📚 **Comprehensive Documentation Updates**: Major terminology corrections and enhancements across all documentation
-- 🔤 **Enhanced Text Extraction**: Improved text extraction and voice tools functionality
-- 🎨 **UI Improvements**: Banner centered with max-width for better visual presentation
-
-### 🔧 Improvements
-
-- 📝 **Documentation Accuracy**: Updated all game terminology to match official game text:
-  - **Monsters**: Corrected names like "Tamagon" → "Egg'n", "Kinoko Kozo" → "Fungo Kid", "Little Magician" → "Lil' Magician"
-  - **Items**: Updated item names like "Recovery" → "Potion", "Full Recovery" → "Elixir", "Bine" → "Spinner"
-  - **Equipment**: Renamed weapons and armor for consistency (e.g., "Cheap Sword" → "Shabby Sword", "Ken's Dagger" → "Ken's Knife")
-  - **Magic**: Updated spell names (e.g., "Meteor" → "Magma", "Zeni Get" → "Money Get", "Sabir" → "Rust")
-  - **Treasures**: Corrected treasure names (e.g., "Heart of Flea" → "Flea's Heart", "Magic Belt" → "Magical Belt")
-  - **Special Skills**: Updated skill terminology (e.g., "Scoop" → "Scop", "Head Strike" → "Decapitation")
-- 🎯 **Better Consistency**: Ensured consistent formatting and terminology throughout all documentation
-- 📖 **Improved Readability**: Enhanced documentation structure for better user understanding
-
-### 📦 Research Tools
-
-- 🧹 **Text Cleaning Tool**: Added `clean_text.py` for processing extracted game text
-- 📊 **Name Extraction**: Created comprehensive name extraction from game text files
-- 📄 **Translation CSV**: Generated translation-ready CSV files for extracted texts
-
----
-
-## 🐛 Known Issues
-
-- ⚠️ **File Size**: Executable is larger (~229MB) due to bundled 3D libraries (PyVista/VTK)
-- ⚠️ **Large Files**: Very large files may take longer to preview
-- ⚠️ **Memory Usage**: 3D model previews may use significant memory
-- ⚠️ **Graphics Drivers**: 3D viewer requires up-to-date graphics drivers
-
----
-
-## 📝 Notes
-
-- 💾 **Backup First**: Please make sure to backup your game files before using the tools
-- 🎮 **Modding Only**: For modding purposes only - please support the original game developers
-- 💬 **Support**: Join our Discord for support and updates
-- 📖 **Documentation**: Check out the comprehensive documentation at [dinasor.github.io/dokaponsof](https://dinasor.github.io/dokaponsof/)
-
----
-
-## 🚀 Usage
-
-1. Download `DokaponSoFTools.exe` from the build folder
-2. Place the executable in your desired location
-3. Double-click to launch (no installation needed)
-4. Use the file browser to navigate to game files
-5. Select the appropriate tab (Asset/Text/Voice)
-6. Choose extraction/repacking options and process files
-
-### Supported File Types
-
-- **`.tex`** - Texture files (PNG extraction/repacking)
-- **`.mdl`** - 3D model files (mesh extraction, OBJ export)
-- **`.spranm`** - Sprite animation files
-- **`.mpd`** - Map/cell data files
-- **`.fnt`** - Font files
-- **`.pck`** - Voice/audio package files
+- ✅ No additional software required (self-contained)
+- ✅ DOKAPON! Sword of Fury (Steam)
+- ✅ ~165 MB disk space
 
 ---
 
 ## 🙏 Credits
 
-**Tool Development:** DiNaSoR  
-**Repository:** https://github.com/DiNaSoR/dokaponsof  
-**Special Thanks:** Discord Community and Contributors
+**Created by:** DiNaSoR
+**Repository:** https://github.com/DiNaSoR/dokaponsof
 
-### Technologies Used
-
-- PyQt6 - Modern GUI framework
-- PyVista - 3D visualization
-- Pillow - Image processing
-- NumPy - Numerical computing
-- PyInstaller - Executable packaging
+**Special Thanks:**
+- ⭐ q8fft2 — Original text extraction research
+- ⭐ NewDoc — PCK/Hex format documentation
+- ⭐ Dokapon Discord — Community support and testing
+- ⭐ Sting Entertainment — For creating DOKAPON! Sword of Fury
+- 🤖 Claude — AI-assisted development and reverse engineering
 
 ---
 
-## 📜 License
+## 📄 License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0)
+GNU General Public License v3.0
 
 ---
 
-## 💖 If you find this tool helpful, consider supporting the development
-
-
-**Note:** This is a standalone executable. No Python installation or additional dependencies are required to run the application.
+<p align="center">
+  Made with ❤️ by <strong>DiNaSoR</strong>
+</p>
