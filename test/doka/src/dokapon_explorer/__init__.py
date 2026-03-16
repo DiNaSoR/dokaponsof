@@ -1,2 +1,0 @@
-"""Dokapon reverse-engineering helpers."""
-
