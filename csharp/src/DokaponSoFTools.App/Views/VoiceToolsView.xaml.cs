@@ -2,9 +2,10 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Concentus.Structs;
+using Concentus.Oggfile;
 using DokaponSoFTools.App.Services;
 using DokaponSoFTools.App.ViewModels;
-using NAudio.Vorbis;
 using NAudio.Wave;
 
 namespace DokaponSoFTools.App.Views;
@@ -12,8 +13,7 @@ namespace DokaponSoFTools.App.Views;
 public partial class VoiceToolsView : UserControl
 {
     private WaveOutEvent? _waveOut;
-    private VorbisWaveReader? _vorbisReader;
-    private string? _tempFile;
+    private IWaveProvider? _waveProvider;
 
     public VoiceToolsView()
     {
@@ -23,10 +23,8 @@ public partial class VoiceToolsView : UserControl
 
     private void SoundsGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (soundsGrid.SelectedItem is SoundItem item && DataContext is VoiceToolsViewModel vm)
-        {
+        if (sender is DataGrid grid && grid.SelectedItem is SoundItem item && DataContext is VoiceToolsViewModel vm)
             PlaySound(item, vm);
-        }
     }
 
     private void BtnPlay_Click(object sender, RoutedEventArgs e)
@@ -37,8 +35,13 @@ public partial class VoiceToolsView : UserControl
             return;
         }
 
-        if (soundsGrid.SelectedItem is SoundItem item && DataContext is VoiceToolsViewModel vm)
-            PlaySound(item, vm);
+        // Find selected sound from the active tab's grid
+        SoundItem? item = null;
+        if (DataContext is VoiceToolsViewModel vm)
+        {
+            item = vm.SelectedSound;
+            if (item is not null) PlaySound(item, vm);
+        }
     }
 
     private void BtnStop_Click(object sender, RoutedEventArgs e) => StopAndCleanup();
@@ -49,28 +52,49 @@ public partial class VoiceToolsView : UserControl
 
         try
         {
-            // Get the raw sound data from the archive via reflection-free approach:
-            // The archive stores sounds by name, we can access it through the ViewModel's bound data.
-            // We need to extract the sound data. The simplest way: extract to temp file.
-            var archiveField = typeof(VoiceToolsViewModel).GetField("_archive",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var archive = archiveField?.GetValue(vm) as DokaponSoFTools.Core.Formats.PckArchive;
-
+            var archive = vm.CurrentArchive;
             if (archive is null) return;
 
             var sound = archive.Sounds.FirstOrDefault(s => s.Name == item.Name);
             if (sound is null) return;
 
-            _tempFile = Path.Combine(Path.GetTempPath(), $"dokapon_preview_{Guid.NewGuid():N}.ogg");
-            File.WriteAllBytes(_tempFile, sound.Data);
-
-            _vorbisReader = new VorbisWaveReader(_tempFile);
-            _waveOut = new WaveOutEvent();
-            _waveOut.Init(_vorbisReader);
-            _waveOut.PlaybackStopped += (_, _) =>
+            if (sound.IsOpus)
             {
+                // Decode Ogg Opus to PCM using Concentus
+                using var oggStream = new MemoryStream(sound.Data);
+                var opusDecoder = new OpusDecoder(48000, 2);
+                var oggReader = new OpusOggReadStream(opusDecoder, oggStream);
+
+                var pcmSamples = new List<short>();
+                while (oggReader.HasNextPacket)
+                {
+                    short[]? packet = oggReader.DecodeNextPacket();
+                    if (packet is not null)
+                        pcmSamples.AddRange(packet);
+                }
+
+                byte[] pcmBytes = new byte[pcmSamples.Count * 2];
+                for (int i = 0; i < pcmSamples.Count; i++)
+                {
+                    pcmBytes[i * 2] = (byte)(pcmSamples[i] & 0xFF);
+                    pcmBytes[i * 2 + 1] = (byte)((pcmSamples[i] >> 8) & 0xFF);
+                }
+
+                var waveFormat = new WaveFormat(48000, 16, 2);
+                var ms = new MemoryStream(pcmBytes);
+                _waveProvider = new RawSourceWaveStream(ms, waveFormat);
+            }
+            else
+            {
+                var tempFile = Path.Combine(Path.GetTempPath(), $"dokapon_{Guid.NewGuid():N}.ogg");
+                File.WriteAllBytes(tempFile, sound.Data);
+                _waveProvider = new NAudio.Vorbis.VorbisWaveReader(tempFile);
+            }
+
+            _waveOut = new WaveOutEvent();
+            _waveOut.Init(_waveProvider);
+            _waveOut.PlaybackStopped += (_, _) =>
                 Dispatcher.Invoke(() => nowPlayingText.Text = "");
-            };
             _waveOut.Play();
             nowPlayingText.Text = $"Playing: {item.Name}";
         }
@@ -86,14 +110,9 @@ public partial class VoiceToolsView : UserControl
         try { _waveOut?.Stop(); } catch { }
         _waveOut?.Dispose();
         _waveOut = null;
-        _vorbisReader?.Dispose();
-        _vorbisReader = null;
 
-        if (_tempFile is not null && File.Exists(_tempFile))
-        {
-            try { File.Delete(_tempFile); } catch { }
-            _tempFile = null;
-        }
+        if (_waveProvider is IDisposable d) d.Dispose();
+        _waveProvider = null;
 
         nowPlayingText.Text = "";
     }

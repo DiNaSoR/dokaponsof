@@ -12,41 +12,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Top: PCK path -->
-        <Border Grid.Row="0"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="12,8">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="PCK File:"
-                           VerticalAlignment="Center"
-                           Foreground="{StaticResource ForegroundMutedBrush}"
-                           Margin="0,0,8,0"/>
-                <TextBox Grid.Column="1"
-                         Text="{Binding PckPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
-                         VerticalAlignment="Center"/>
-                <Button Grid.Column="2" Content="Browse..."
-                        Style="{StaticResource SecondaryButton}"
-                        Command="{Binding BrowsePckCommand}"
-                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
-                        Margin="8,0,0,0"/>
-            </Grid>
-        </Border>
-
         <!-- Toolbar -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="0"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0,0,0,1"
@@ -64,27 +35,79 @@
                 <Button Content="Save PCK"
                         Style="{StaticResource SecondaryButton}"
                         Command="{Binding SavePckCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                        Margin="0,0,6,0"/>
+                <Button Content="Browse PCK..."
+                        Style="{StaticResource SecondaryButton}"
+                        Command="{Binding BrowsePckCommand}"
                         IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"/>
             </StackPanel>
         </Border>
 
-        <!-- Sounds list (double-click to play) -->
-        <DataGrid Grid.Row="2"
-                  x:Name="soundsGrid"
-                  ItemsSource="{Binding Sounds}"
-                  SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
-                  MouseDoubleClick="SoundsGrid_MouseDoubleClick"
-                  Margin="8">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="#"      Binding="{Binding Index}"   Width="45"/>
-                <DataGridTextColumn Header="Name"   Binding="{Binding Name}"    Width="*"/>
-                <DataGridTextColumn Header="Format" Binding="{Binding Format}"  Width="70"/>
-                <DataGridTextColumn Header="Size"   Binding="{Binding SizeStr}" Width="85"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Category tabs -->
+        <TabControl Grid.Row="1"
+                    SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}"
+                    Background="{StaticResource BackgroundBrush}">
+
+            <TabItem Header="BGM">
+                <DataGrid x:Name="bgmGrid"
+                          ItemsSource="{Binding BgmSounds}"
+                          SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                          MouseDoubleClick="SoundsGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#"      Binding="{Binding Index}"   Width="45"/>
+                        <DataGridTextColumn Header="Name"   Binding="{Binding Name}"    Width="*"/>
+                        <DataGridTextColumn Header="Format" Binding="{Binding Format}"  Width="70"/>
+                        <DataGridTextColumn Header="Size"   Binding="{Binding SizeStr}" Width="85"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Sound Effects">
+                <DataGrid x:Name="seGrid"
+                          ItemsSource="{Binding SeSounds}"
+                          SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                          MouseDoubleClick="SoundsGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#"      Binding="{Binding Index}"   Width="45"/>
+                        <DataGridTextColumn Header="Name"   Binding="{Binding Name}"    Width="*"/>
+                        <DataGridTextColumn Header="Format" Binding="{Binding Format}"  Width="70"/>
+                        <DataGridTextColumn Header="Size"   Binding="{Binding SizeStr}" Width="85"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Voice (JP)">
+                <DataGrid x:Name="voiceGrid"
+                          ItemsSource="{Binding VoiceSounds}"
+                          SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                          MouseDoubleClick="SoundsGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#"      Binding="{Binding Index}"   Width="45"/>
+                        <DataGridTextColumn Header="Name"   Binding="{Binding Name}"    Width="*"/>
+                        <DataGridTextColumn Header="Format" Binding="{Binding Format}"  Width="70"/>
+                        <DataGridTextColumn Header="Size"   Binding="{Binding SizeStr}" Width="85"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Voice (EN)">
+                <DataGrid x:Name="voiceEnGrid"
+                          ItemsSource="{Binding VoiceEnSounds}"
+                          SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                          MouseDoubleClick="SoundsGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#"      Binding="{Binding Index}"   Width="45"/>
+                        <DataGridTextColumn Header="Name"   Binding="{Binding Name}"    Width="*"/>
+                        <DataGridTextColumn Header="Format" Binding="{Binding Format}"  Width="70"/>
+                        <DataGridTextColumn Header="Size"   Binding="{Binding SizeStr}" Width="85"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
 
         <!-- Audio controls -->
-        <Border Grid.Row="3"
+        <Border Grid.Row="2"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0,1,0,0"
@@ -96,8 +119,7 @@
                 <Button x:Name="btnStop" Content="Stop" Click="BtnStop_Click"
                         Style="{StaticResource SecondaryButton}"
                         MinWidth="60" MinHeight="0" Padding="10,4" Margin="0,0,16,0"/>
-                <TextBlock x:Name="nowPlayingText"
-                           Text=""
+                <TextBlock x:Name="nowPlayingText" Text=""
                            Foreground="{StaticResource ForegroundMutedBrush}"
                            VerticalAlignment="Center" FontSize="12"/>
             </StackPanel>

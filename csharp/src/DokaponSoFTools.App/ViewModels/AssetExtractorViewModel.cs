@@ -4,7 +4,9 @@ using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DokaponSoFTools.App.Services;
+using DokaponSoFTools.Core.Imaging;
 using DokaponSoFTools.Core.Tools;
+using SkiaSharp;
 
 namespace DokaponSoFTools.App.ViewModels;
 
@@ -112,32 +114,62 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
 
         try
         {
-            byte[] data = File.ReadAllBytes(value.Path);
-            if (value.Extension is ".tex" or ".mpd" or ".spranm")
+            // For .mpd files, use MapRenderer to get the properly assembled image
+            if (value.Extension == ".mpd")
             {
-                var (success, foundPng, finalData) = value.Extension == ".spranm"
-                    ? AssetExtractor.ExtractSpranm(data)
-                    : (false, false, Array.Empty<byte>());
-
-                if (value.Extension != ".spranm")
+                var doc = MapRenderer.LoadCellDocument(value.Path);
+                using var rendered = MapRenderer.RenderMapImage(doc, 0, 2048);
+                if (rendered is not null)
                 {
-                    int pngIdx = FindPng(data);
-                    if (pngIdx >= 0)
+                    PreviewImage = SkBitmapToWpf(rendered);
+                    return;
+                }
+                // Fall back to atlas if map render fails
+                using var atlas = MapRenderer.BuildAtlasForDocument(doc, 0);
+                if (atlas is not null)
+                {
+                    PreviewImage = SkBitmapToWpf(atlas);
+                    return;
+                }
+            }
+
+            byte[] data = File.ReadAllBytes(value.Path);
+
+            if (value.Extension == ".spranm")
+            {
+                var (_, foundPng, finalData) = AssetExtractor.ExtractSpranm(data);
+                if (foundPng)
+                {
+                    PreviewImage = BytesToBitmapImage(finalData);
+                    return;
+                }
+
+                // Try rendering as Cell document (some spranm are Cell-based)
+                try
+                {
+                    var doc = MapRenderer.LoadCellDocument(value.Path);
+                    using var rendered = MapRenderer.RenderMapImage(doc, 0, 2048)
+                                     ?? MapRenderer.BuildAtlasForDocument(doc, 0);
+                    if (rendered is not null)
                     {
-                        using var ms = new MemoryStream(data, pngIdx, data.Length - pngIdx);
-                        var bmp = new BitmapImage();
-                        bmp.BeginInit();
-                        bmp.CacheOption = BitmapCacheOption.OnLoad;
-                        bmp.StreamSource = ms;
-                        bmp.EndInit();
-                        bmp.Freeze();
-                        PreviewImage = bmp;
+                        PreviewImage = SkBitmapToWpf(rendered);
+                        PreviewInfo += $"\nRecords: {doc.Records.Count}";
                         return;
                     }
                 }
-                else if (foundPng)
+                catch { /* not a Cell document */ }
+
+                PreviewInfo += "\nNo embedded image (raw sprite data)";
+                PreviewImage = null;
+                return;
+            }
+
+            if (value.Extension == ".tex")
+            {
+                int pngIdx = FindPng(data);
+                if (pngIdx >= 0)
                 {
-                    using var ms = new MemoryStream(finalData);
+                    using var ms = new MemoryStream(data, pngIdx, data.Length - pngIdx);
                     var bmp = new BitmapImage();
                     bmp.BeginInit();
                     bmp.CacheOption = BitmapCacheOption.OnLoad;
@@ -147,10 +179,59 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
                     PreviewImage = bmp;
                     return;
                 }
+
+                // Try LZ77 decompression then PNG search
+                if (data.Length >= 4 && data[0] == 'L' && data[1] == 'Z' && data[2] == '7' && data[3] == '7')
+                {
+                    var dec = DokaponSoFTools.Core.Compression.Lz77FlagByte.Decompress(data);
+                    if (dec is not null)
+                    {
+                        int idx = FindPng(dec);
+                        if (idx >= 0)
+                        {
+                            using var ms = new MemoryStream(dec, idx, dec.Length - idx);
+                            var bmp = new BitmapImage();
+                            bmp.BeginInit();
+                            bmp.CacheOption = BitmapCacheOption.OnLoad;
+                            bmp.StreamSource = ms;
+                            bmp.EndInit();
+                            bmp.Freeze();
+                            PreviewImage = bmp;
+                            return;
+                        }
+                    }
+                }
             }
+
             PreviewImage = null;
         }
         catch { PreviewImage = null; }
+    }
+
+    private static BitmapImage SkBitmapToWpf(SKBitmap bitmap)
+    {
+        using var image = SKImage.FromBitmap(bitmap);
+        using var encoded = image.Encode(SKEncodedImageFormat.Png, 100);
+        using var stream = encoded.AsStream();
+        var bmp = new BitmapImage();
+        bmp.BeginInit();
+        bmp.CacheOption = BitmapCacheOption.OnLoad;
+        bmp.StreamSource = stream;
+        bmp.EndInit();
+        bmp.Freeze();
+        return bmp;
+    }
+
+    private static BitmapImage BytesToBitmapImage(byte[] data)
+    {
+        using var ms = new MemoryStream(data);
+        var bmp = new BitmapImage();
+        bmp.BeginInit();
+        bmp.CacheOption = BitmapCacheOption.OnLoad;
+        bmp.StreamSource = ms;
+        bmp.EndInit();
+        bmp.Freeze();
+        return bmp;
     }
 
     [RelayCommand]
