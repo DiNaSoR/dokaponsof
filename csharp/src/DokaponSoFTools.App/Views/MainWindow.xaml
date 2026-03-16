@@ -121,11 +121,14 @@
                            FontSize="16" FontWeight="Bold"
                            Foreground="{DynamicResource AccentBrush}"
                            VerticalAlignment="Center"
-                           DockPanel.Dock="Left"/>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
-                    <TextBlock Text="Game Path:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                           DockPanel.Dock="Left"
+                           Margin="0,0,16,0"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                    <TextBlock Text="Game Path:" VerticalAlignment="Center" Margin="0,0,8,0"
+                               Foreground="{DynamicResource ForegroundMutedBrush}"/>
                     <TextBox Text="{Binding GamePath, Mode=OneWay}"
-                             Width="320" IsReadOnly="True" VerticalAlignment="Center"/>
+                             Width="400" IsReadOnly="True" VerticalAlignment="Center"/>
                     <Button Content="Browse"
                             Command="{Binding BrowseGamePathCommand}"
                             Margin="6,0,0,0" Padding="12,4"/>

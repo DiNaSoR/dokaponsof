@@ -1,137 +1,253 @@
 <UserControl x:Class="DokaponSoFTools.App.Views.AboutView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:DokaponSoFTools.App.Converters"
              Background="{StaticResource BackgroundBrush}"
              Foreground="{StaticResource ForegroundBrush}">
 
-    <UserControl.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
-    </UserControl.Resources>
-
-    <Grid Margin="24,20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Margin="32,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="16"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="16"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title bar spanning full width -->
-        <Border Grid.Row="0" Grid.ColumnSpan="3"
+        <!-- ============ HERO HEADER ============ -->
+        <Border Grid.Row="0"
                 Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="6"
-                Padding="32,20">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Title}"
-                               FontSize="24" FontWeight="Bold"
-                               Foreground="{StaticResource AccentBrush}"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                        <TextBlock Text="{Binding Version}"
-                                   FontSize="14"
-                                   Foreground="{StaticResource ForegroundMutedBrush}"
-                                   Margin="0,0,16,0"/>
-                        <TextBlock Text="{Binding Author, StringFormat='by {0}'}"
-                                   FontSize="14"
-                                   Foreground="{StaticResource ForegroundBrush}"/>
-                    </StackPanel>
+                BorderBrush="{StaticResource AccentBrush}"
+                BorderThickness="0,0,0,2"
+                CornerRadius="8"
+                Padding="40,28">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock FontSize="32" FontWeight="Bold" Foreground="{StaticResource AccentBrush}">
+                        <Run Text="&#x2694;"/> <Run Text="DOKAPON!"/> <Run Text="Sword of Fury Tools"/>
+                    </TextBlock>
+                    <TextBlock FontSize="14" Foreground="{StaticResource ForegroundMutedBrush}" Margin="0,6,0,0">
+                        <Run Text="v0.4.0"/>
+                        <Run Text="  &#x2022;  "/>
+                        <Run Text="The Ultimate Modding Toolkit" FontStyle="Italic"/>
+                    </TextBlock>
                 </StackPanel>
-            </StackPanel>
-        </Border>
 
-        <!-- Left column: Description -->
-        <Border Grid.Row="2" Grid.Column="0"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="6"
-                Padding="20,16">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="About"
-                           FontSize="12" FontWeight="SemiBold"
-                           Foreground="{StaticResource ForegroundMutedBrush}"
-                           Margin="0,0,0,10"/>
-                <TextBlock Grid.Row="1" Text="{Binding Description}"
-                           TextWrapping="Wrap"
-                           Foreground="{StaticResource ForegroundBrush}"
-                           FontSize="13" LineHeight="22"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock FontSize="16" Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right">
+                        <Run Text="Created by "/>
+                        <Run Text="DiNaSoR" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" FontSize="18"/>
+                    </TextBlock>
+                    <TextBlock FontSize="12" Foreground="{StaticResource ForegroundMutedBrush}"
+                               HorizontalAlignment="Right" Margin="0,4,0,0">
+                        <Run Text="&#x1F30D; Open Source  &#x2022;  GNU GPL v3.0"/>
+                    </TextBlock>
+                </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Right column: Credits -->
-        <Border Grid.Row="2" Grid.Column="2"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="6"
-                Padding="20,16">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Credits"
-                           FontSize="12" FontWeight="SemiBold"
-                           Foreground="{StaticResource ForegroundMutedBrush}"
-                           Margin="0,0,0,10"/>
-                <TextBlock Grid.Row="1" Text="{Binding Credits}"
-                           TextWrapping="Wrap"
-                           Foreground="{StaticResource ForegroundBrush}"
-                           FontSize="13" FontFamily="Consolas" LineHeight="22"/>
-            </Grid>
-        </Border>
+        <!-- ============ MAIN CONTENT ============ -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Bottom bar spanning full width: License, Repo, Fun -->
-        <Border Grid.Row="4" Grid.ColumnSpan="3"
+            <!-- LEFT: Features -->
+            <Border Grid.Column="0"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1" CornerRadius="8" Padding="20,16">
+                <StackPanel>
+                    <TextBlock Text="&#x1F6E0;  Features" FontSize="16" FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}" Margin="0,0,0,14"/>
+
+                    <TextBlock Foreground="{StaticResource ForegroundBrush}" FontSize="13" LineHeight="28" TextWrapping="Wrap">
+                        <Run Text="&#x1F4E6;" FontSize="15"/> <Run Text=" Asset Extractor" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     Extract PNG from tex, spranm, mpd, fnt" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F4DD;" FontSize="15"/> <Run Text=" Smart Text Tools" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     Extract, decode, categorize &amp; reimport" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F399;" FontSize="15"/> <Run Text=" Voice Tools" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     BGM, SE, Voice playback &amp; replacement" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F527;" FontSize="15"/> <Run Text=" Hex Editor" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     Apply binary patches to the EXE" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F3AC;" FontSize="15"/> <Run Text=" Video &amp; Animation" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     OGV cutscenes, spranm sprite viewer" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F5FA;" FontSize="15"/> <Run Text=" Map Explorer" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     Tile maps, atlases, cell data analysis" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <LineBreak/><LineBreak/>
+
+                        <Run Text="&#x1F50D;" FontSize="15"/> <Run Text=" Game Scanner" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="     Full directory analysis &amp; report" Foreground="{StaticResource ForegroundMutedBrush}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- MIDDLE: About the project -->
+            <Border Grid.Column="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1" CornerRadius="8" Padding="20,16">
+                <StackPanel>
+                    <TextBlock Text="&#x1F4D6;  About" FontSize="16" FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}" Margin="0,0,0,14"/>
+
+                    <TextBlock TextWrapping="Wrap" FontSize="13" LineHeight="22" Foreground="{StaticResource ForegroundBrush}">
+                        A comprehensive modding toolkit for
+                        <Run FontWeight="Bold" Foreground="{StaticResource AccentBrush}">DOKAPON! Sword of Fury</Run>
+                        (Sting Entertainment, 2025).
+                    </TextBlock>
+
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,14"/>
+
+                    <TextBlock Text="&#x1F3AE;  The Game" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{StaticResource ForegroundBrush}" Margin="0,0,0,8"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="20"
+                               Foreground="{StaticResource ForegroundMutedBrush}">
+                        A remaster of the classic PS2 RPG board game.
+                        Custom dkit engine with D3D11, Steam integration,
+                        and a rich sprite animation system.
+                    </TextBlock>
+
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,14"/>
+
+                    <TextBlock Text="&#x1F4BB;  Tech Stack" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{StaticResource ForegroundBrush}" Margin="0,0,0,8"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="20"
+                               Foreground="{StaticResource ForegroundMutedBrush}">
+                        C# / .NET 8 / WPF with CommunityToolkit.Mvvm.
+                        SkiaSharp for rendering. NAudio + Concentus for
+                        Opus audio. Ported from the original Python/PyQt6 app.
+                    </TextBlock>
+
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,14"/>
+
+                    <TextBlock Text="&#x1F50E;  Reverse Engineering" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{StaticResource ForegroundBrush}" Margin="0,0,0,8"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="20"
+                               Foreground="{StaticResource ForegroundMutedBrush}">
+                        LZ77 decompression, Cell/TextureParts format parsing,
+                        spranm sprite animation decoding, PCK sound archives,
+                        hex patching, OGV video handling, and runtime
+                        tracing with Frida/Capstone.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- RIGHT: Credits & Community -->
+            <Border Grid.Column="4"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1" CornerRadius="8" Padding="20,16">
+                <StackPanel>
+                    <TextBlock Text="&#x2764;  Credits" FontSize="16" FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}" Margin="0,0,0,14"/>
+
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource ForegroundBrush}">
+                        <Run Text="&#x1F451;"/> <Run Text=" DiNaSoR"/>
+                    </TextBlock>
+                    <TextBlock Text="Project creator &amp; lead developer"
+                               FontSize="12" Foreground="{StaticResource ForegroundMutedBrush}" Margin="0,2,0,16"/>
+
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,0,0,14"/>
+
+                    <TextBlock Text="Special Thanks" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource ForegroundBrush}" Margin="0,0,0,10"/>
+
+                    <TextBlock FontSize="12" LineHeight="24" Foreground="{StaticResource ForegroundMutedBrush}" TextWrapping="Wrap">
+                        <Run Text="&#x2B50;" Foreground="#DCDCAA"/> <Run Text=" q8fft2" FontWeight="SemiBold" Foreground="{StaticResource ForegroundBrush}"/>
+                        <Run Text=" — Original text extraction research"/>
+                        <LineBreak/>
+                        <Run Text="&#x2B50;" Foreground="#DCDCAA"/> <Run Text=" NewDoc" FontWeight="SemiBold" Foreground="{StaticResource ForegroundBrush}"/>
+                        <Run Text=" — PCK/Hex format documentation"/>
+                        <LineBreak/>
+                        <Run Text="&#x2B50;" Foreground="#DCDCAA"/> <Run Text=" Dokapon Discord" FontWeight="SemiBold" Foreground="{StaticResource ForegroundBrush}"/>
+                        <Run Text=" — Community support &amp; testing"/>
+                        <LineBreak/>
+                        <Run Text="&#x2B50;" Foreground="#DCDCAA"/> <Run Text=" Sting Entertainment" FontWeight="SemiBold" Foreground="{StaticResource ForegroundBrush}"/>
+                        <Run Text=" — For creating this amazing game"/>
+                    </TextBlock>
+
+                    <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,14"/>
+
+                    <TextBlock Text="&#x1F4CA;  Format Knowledge" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource ForegroundBrush}" Margin="0,0,0,8"/>
+                    <TextBlock FontSize="11" LineHeight="18" Foreground="{StaticResource ForegroundMutedBrush}" TextWrapping="Wrap">
+                        .spranm sprite animations (Sequence/Sprite/SpriteGp/TextureParts),
+                        .pck sound archives (Ogg Opus), .mpd cell maps,
+                        .tex/.fnt textures, LZ77 compression,
+                        UTF-8 game text with 15+ control codes
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ============ FOOTER ============ -->
+        <Border Grid.Row="4"
                 Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="6"
-                Padding="24,12">
+                BorderBrush="{StaticResource AccentBrush}"
+                BorderThickness="0,2,0,0"
+                CornerRadius="8"
+                Padding="24,14">
             <DockPanel>
-                <!-- Left: License + Repo -->
+                <!-- Left: Links -->
                 <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <TextBlock Text="License: " Foreground="{StaticResource ForegroundMutedBrush}" FontSize="13"/>
-                        <TextBlock Text="{Binding License}" Foreground="{StaticResource ForegroundBrush}" FontSize="13"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Repository: " Foreground="{StaticResource ForegroundMutedBrush}" FontSize="13"/>
-                        <TextBlock FontSize="13">
-                            <Hyperlink NavigateUri="{Binding Repository}"
-                                       RequestNavigate="Hyperlink_RequestNavigate"
-                                       Foreground="{StaticResource AccentBrush}">
-                                <TextBlock Text="{Binding Repository}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
+                    <TextBlock FontSize="13">
+                        <Run Text="&#x1F4DC; License: " Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <Run Text="GNU GPL v3.0" Foreground="{StaticResource ForegroundBrush}" FontWeight="SemiBold"/>
+                    </TextBlock>
+                    <TextBlock FontSize="13" Margin="0,4,0,0">
+                        <Run Text="&#x1F517; " Foreground="{StaticResource ForegroundMutedBrush}"/>
+                        <Hyperlink NavigateUri="{Binding Repository}"
+                                   RequestNavigate="Hyperlink_RequestNavigate"
+                                   Foreground="{StaticResource AccentBrush}">
+                            <Run Text="github.com/DiNaSoR/dokaponsof"/>
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
 
                 <!-- Right: Press F -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Command="{Binding PressFCommand}"
-                            Padding="14,6" Margin="0,0,10,0">
-                        <TextBlock Text="Press F to pay respects" FontSize="13"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                    <Button Command="{Binding PressFCommand}" Padding="16,8" Margin="0,0,12,0"
+                            ToolTip="Press F to pay respects &#x1F64F;">
+                        <TextBlock FontSize="14">
+                            <Run Text="&#x1F3AE; Press F" FontWeight="Bold"/>
+                            <Run Text=" to pay respects" Foreground="#CCFFFFFF"/>
+                        </TextBlock>
                     </Button>
-                    <TextBlock VerticalAlignment="Center"
-                               Foreground="{StaticResource ForegroundMutedBrush}" FontSize="12">
-                        <Run Text="Respects: "/>
-                        <Run Text="{Binding FPressCount, Mode=OneWay}"
-                             Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
-                    </TextBlock>
+                    <Border Background="{StaticResource InputBrush}" CornerRadius="6" Padding="12,6"
+                            VerticalAlignment="Center">
+                        <TextBlock FontSize="13" VerticalAlignment="Center">
+                            <Run Text="&#x1F64F; Respects: " Foreground="{StaticResource ForegroundMutedBrush}"/>
+                            <Run Text="{Binding FPressCount, Mode=OneWay}"
+                                 Foreground="{StaticResource AccentBrush}" FontWeight="Bold" FontSize="16"/>
+                        </TextBlock>
+                    </Border>
                 </StackPanel>
             </DockPanel>
         </Border>
