@@ -9,189 +9,131 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
-        <Grid>
-            <Border HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    MaxWidth="560"
-                    Margin="40,40,40,40">
-                <StackPanel>
+    <Grid Margin="24,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                    <!-- Title block -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="32,24"
-                            Margin="0,0,0,16">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Title}"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource AccentBrush}"
-                                       HorizontalAlignment="Center"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center"/>
-                            <TextBlock Text="{Binding Version}"
-                                       FontSize="14"
-                                       Foreground="{StaticResource ForegroundMutedBrush}"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,4,0,0"/>
-                            <TextBlock Text="{Binding Author, StringFormat='by {0}'}"
-                                       FontSize="13"
-                                       Foreground="{StaticResource ForegroundBrush}"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Description -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="20,16"
-                            Margin="0,0,0,12">
-                        <StackPanel>
-                            <TextBlock Text="About"
-                                       FontSize="12"
-                                       FontWeight="SemiBold"
-                                       Foreground="{StaticResource ForegroundMutedBrush}"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding Description}"
-                                       TextWrapping="Wrap"
-                                       Foreground="{StaticResource ForegroundBrush}"
-                                       FontSize="13"
-                                       LineHeight="20"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Credits -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="20,16"
-                            Margin="0,0,0,12">
-                        <StackPanel>
-                            <TextBlock Text="Credits"
-                                       FontSize="12"
-                                       FontWeight="SemiBold"
-                                       Foreground="{StaticResource ForegroundMutedBrush}"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding Credits}"
-                                       TextWrapping="Wrap"
-                                       Foreground="{StaticResource ForegroundBrush}"
-                                       FontSize="13"
-                                       FontFamily="Consolas"
-                                       LineHeight="20"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- License and Repository -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="20,16"
-                            Margin="0,0,0,12">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Text="License:"
-                                           Foreground="{StaticResource ForegroundMutedBrush}"
-                                           FontSize="13"
-                                           Margin="0,0,8,0"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding License}"
-                                           Foreground="{StaticResource ForegroundBrush}"
-                                           FontSize="13"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Repository:"
-                                           Foreground="{StaticResource ForegroundMutedBrush}"
-                                           FontSize="13"
-                                           Margin="0,0,8,0"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock FontSize="13" VerticalAlignment="Center">
-                                    <Hyperlink NavigateUri="{Binding Repository}"
-                                               RequestNavigate="Hyperlink_RequestNavigate"
-                                               Foreground="{StaticResource AccentBrush}">
-                                        <TextBlock Text="{Binding Repository}"/>
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Fun area: Mute + Press F -->
-                    <Border Background="{StaticResource SurfaceBrush}"
-                            BorderBrush="{StaticResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="20,16">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        Margin="0,0,0,12">
-                                <Button Content="{Binding IsMuted, Converter={StaticResource BoolToVisibility}}"
-                                        Command="{Binding ToggleMuteCommand}"
-                                        Style="{StaticResource SecondaryButton}"
-                                        MinWidth="100">
-                                    <Button.ContentTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="Mute"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding DataContext.IsMuted,
-                                                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                                         Value="True">
-                                                                <Setter Property="Text" Value="Unmute"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </Button.ContentTemplate>
-                                </Button>
-                            </StackPanel>
-
-                            <StackPanel HorizontalAlignment="Center"
-                                        Orientation="Vertical">
-                                <Button Command="{Binding PressFCommand}"
-                                        HorizontalAlignment="Center"
-                                        MinWidth="140"
-                                        Padding="16,10">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Press F"
-                                                   FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,8,0"/>
-                                        <TextBlock Text="to pay respects"
-                                                   FontSize="13"
-                                                   Foreground="#CCFFFFFF"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <TextBlock HorizontalAlignment="Center"
-                                           Margin="0,8,0,0"
-                                           Foreground="{StaticResource ForegroundMutedBrush}"
-                                           FontSize="12">
-                                    <Run Text="Respects paid: "/>
-                                    <Run Text="{Binding FPressCount, Mode=OneWay}"
-                                         Foreground="{StaticResource AccentBrush}"
-                                         FontWeight="SemiBold"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
+        <!-- Title bar spanning full width -->
+        <Border Grid.Row="0" Grid.ColumnSpan="3"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="32,20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title}"
+                               FontSize="24" FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="{Binding Version}"
+                                   FontSize="14"
+                                   Foreground="{StaticResource ForegroundMutedBrush}"
+                                   Margin="0,0,16,0"/>
+                        <TextBlock Text="{Binding Author, StringFormat='by {0}'}"
+                                   FontSize="14"
+                                   Foreground="{StaticResource ForegroundBrush}"/>
+                    </StackPanel>
                 </StackPanel>
-            </Border>
-        </Grid>
-    </ScrollViewer>
+            </StackPanel>
+        </Border>
+
+        <!-- Left column: Description -->
+        <Border Grid.Row="2" Grid.Column="0"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="20,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="About"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="{StaticResource ForegroundMutedBrush}"
+                           Margin="0,0,0,10"/>
+                <TextBlock Grid.Row="1" Text="{Binding Description}"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource ForegroundBrush}"
+                           FontSize="13" LineHeight="22"/>
+            </Grid>
+        </Border>
+
+        <!-- Right column: Credits -->
+        <Border Grid.Row="2" Grid.Column="2"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="20,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Credits"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="{StaticResource ForegroundMutedBrush}"
+                           Margin="0,0,0,10"/>
+                <TextBlock Grid.Row="1" Text="{Binding Credits}"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource ForegroundBrush}"
+                           FontSize="13" FontFamily="Consolas" LineHeight="22"/>
+            </Grid>
+        </Border>
+
+        <!-- Bottom bar spanning full width: License, Repo, Fun -->
+        <Border Grid.Row="4" Grid.ColumnSpan="3"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="24,12">
+            <DockPanel>
+                <!-- Left: License + Repo -->
+                <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="License: " Foreground="{StaticResource ForegroundMutedBrush}" FontSize="13"/>
+                        <TextBlock Text="{Binding License}" Foreground="{StaticResource ForegroundBrush}" FontSize="13"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Repository: " Foreground="{StaticResource ForegroundMutedBrush}" FontSize="13"/>
+                        <TextBlock FontSize="13">
+                            <Hyperlink NavigateUri="{Binding Repository}"
+                                       RequestNavigate="Hyperlink_RequestNavigate"
+                                       Foreground="{StaticResource AccentBrush}">
+                                <TextBlock Text="{Binding Repository}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right: Press F -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Command="{Binding PressFCommand}"
+                            Padding="14,6" Margin="0,0,10,0">
+                        <TextBlock Text="Press F to pay respects" FontSize="13"/>
+                    </Button>
+                    <TextBlock VerticalAlignment="Center"
+                               Foreground="{StaticResource ForegroundMutedBrush}" FontSize="12">
+                        <Run Text="Respects: "/>
+                        <Run Text="{Binding FPressCount, Mode=OneWay}"
+                             Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
+                    </TextBlock>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
 </UserControl>

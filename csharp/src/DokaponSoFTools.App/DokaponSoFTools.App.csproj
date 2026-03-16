@@ -26,11 +26,9 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
-    <PackageReference Include="LibVLCSharp.WPF" Version="3.9.6" />
     <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
     <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.*" />
     <PackageReference Include="NAudio" Version="2.*" />
-    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23" />
   </ItemGroup>
 
   <ItemGroup>
