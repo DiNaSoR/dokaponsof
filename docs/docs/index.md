@@ -1,6 +1,6 @@
 ---
 title: Home
-layout: home
+layout: default
 nav_order: 1
 description: "Documentation for DOKAPON! Sword of Fury Modding Tools"
 permalink: /

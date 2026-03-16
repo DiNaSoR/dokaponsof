@@ -1,7 +1,7 @@
 ---
 title: SPRANM Format
 layout: default
-nav_order: 2
+nav_order: 7
 parent: Technical Reference
 ---
 
