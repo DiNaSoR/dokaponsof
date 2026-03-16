@@ -1,14 +1,14 @@
 ---
 title: SPRANM Format
 layout: default
-nav_order: 3
+nav_order: 2
 parent: Technical Reference
 ---
 
 # SPRANM Sprite Animation Format
 {: .no_toc }
 
-Documentation of the sprite animation format used in DOKAPON! Sword of Fury.
+Complete documentation of the sprite animation format used in DOKAPON! Sword of Fury.
 {: .fs-6 .fw-300 }
 
 ## Table of contents
@@ -19,476 +19,331 @@ Documentation of the sprite animation format used in DOKAPON! Sword of Fury.
 
 ## Overview
 
-SPRANM files contain 2D sprite animations used for characters, effects, UI elements, and title screens. The format supports:
-- Animation control sequences
-- Embedded PNG textures
-- Transform matrices
-- Keyframe-based animation
-- State machine control
+SPRANM files define 2D sprite animations used for character portraits, UI overlays, title screen elements, battle effects, and transitions. The format organises animation data as a sequence of named sections that the runtime processes to determine what texture region to display at each frame.
 
-## File Type Variants
+The C# implementation is `DokaponSoFTools.Core.Formats.SpranmDocument` with rendering in `DokaponSoFTools.Core.Imaging.SpranmRenderer`.
 
-SPRANM files come in two distinct formats:
+---
 
-### Type A: Animation Control Files
+## File Variants
 
-Compressed files containing animation logic only:
-- Uses LZ77 compression
-- Small file size (5-13 KB)
-- No embedded PNG data
-- Contains timing and transform data
-- Examples: `CSFIX_00.spranm`, `CSFIX_01.spranm`, `CSFIX_03.spranm`
+### Self-Contained (with PNG)
 
-### Type B: Sprite Resource Files
+The primary variant includes an embedded PNG texture atlas inside the `TextureParts → Texture` sub-section.
 
-Uncompressed files with embedded sprites:
-- No compression
-- Larger file size (43-550 KB)
-- Contains embedded PNG image
-- Includes sprite sheet definitions
-- Examples: `CSFIX_04.spranm`, `TRS001_00.spranm`
+- May or may not be LZ77 compressed (auto-detected from `LZ77` magic)
+- Contains the full `Sequence / Sprite / SpriteGp / TextureParts / ConvertInfo` section tree
+- The `Texture` sub-section embeds the PNG directly at offset `+0x28` from the sub-section start
 
-## Format Detection
+### Runtime / Player (no PNG, PartsColor)
 
-```python
-def detect_spranm_type(data: bytes) -> str:
-    """Detect SPRANM file type."""
-    if data[:4] == b'LZ77':
-        return 'animation_control'  # Type A
-    elif data[:8] == b'Sequence':
-        return 'sprite_resource'    # Type B
-    return 'unknown'
+A lighter variant used at runtime where the texture is provided externally (e.g., a character-specific palette swap).
+
+- The `Texture` sub-section is absent or the PNG field is empty
+- A `PartsColor` section may carry per-part tint/palette data
+- Otherwise identical section structure
+
+---
+
+## LZ77 Compression Layer
+
+Some SPRANM files are wrapped in the **FlagByte** LZ77 variant. Detection:
+
+```
+if file[0..3] == "LZ77"  →  decompress with Lz77FlagByte first
+else                     →  parse sections directly from raw bytes
 ```
 
-## Type A: Animation Control Format
-
-### LZ77 Header
+The 16-byte LZ77 header:
 
 ```
 Offset  Size  Description
 ------  ----  -----------
-0x00    4     Magic: "LZ77"
-0x04    4     Flags (e.g., 0xc83a0000)
-0x08    4     Compressed size (little-endian)
-0x0C    4     Decompressed size (little-endian)
-0x10    var   Compressed data
+0x00    4     Magic "LZ77"
+0x04    4     Reserved / unknown
+0x08    4     Decompressed size (LE int32)
+0x0C    4     Uncompressed tail offset (LE int32, 0 = none)
+0x10    var   FlagByte compressed stream
 ```
 
-### Decompressed Structure
+See [LZ77 Compression — FlagByte Variant](lz77-compression#variant-1-flagbyte) for full decompression details.
 
-After decompression, the data contains control sections:
+---
 
-#### Control Section Types
+## Top-Level Section Structure
 
-| Byte | Type | Description |
-|------|------|-------------|
-| 0x80 | sprite_flags | Animation behavior control |
-| 0x40 | transform_matrix | 2D transformation data |
-| 0x20 | sprite_state | Sprite property control |
-| 0x04 | sprite_index | References to sprite resources |
-
-### Sprite Flags (0x80)
-
-```c
-struct SpriteFlags {
-    uint8_t marker;        // 0x80
-    uint8_t loop : 1;      // Enable looping animation
-    uint8_t reverse : 1;   // Play animation in reverse
-    uint8_t pingpong : 1;  // Play animation back and forth
-    uint8_t reserved : 5;  // Additional flags
-    uint32_t extra_flags;  // Extended flag data
-};
-```
-
-### Transform Matrix (0x40)
-
-```c
-struct TransformMatrix {
-    uint8_t marker;     // 0x40
-    float scale_x;      // Horizontal scaling factor
-    float scale_y;      // Vertical scaling factor
-    float translate_x;  // Horizontal translation
-    float translate_y;  // Vertical translation
-};
-```
-
-### Sprite State (0x20)
-
-```c
-struct SpriteState {
-    uint8_t marker;      // 0x20
-    uint8_t visible : 1; // Sprite visibility flag
-    uint8_t flip_x : 1;  // Horizontal flip flag
-    uint8_t flip_y : 1;  // Vertical flip flag
-    uint8_t active : 1;  // Sprite active state
-    uint8_t reserved : 4;
-    uint32_t state_flags;
-};
-```
-
-### Example Control File
-
-CSFIX_00.spranm:
-```
-Compressed size: 11,013 bytes
-Decompressed size: 1,406 bytes
-Control sections: 40+
-Contains: transformations, state changes
-```
-
-## Type B: Sprite Resource Format
-
-### Section Layout
+After any decompression, the payload is a stream of variable-length sections. Each standard top-level section begins with a **28-byte header**:
 
 ```
-Offset      Section         Description
-------      -------         -----------
-0x000       Sequence        Animation properties header
-0x030-0xBF  Sprite          Transformation matrices
-0x0C0-0x1DF Sprite Data     Sprite properties
-0x1E0-0x23F SpriteGp        Sprite grouping
-0x240+      TextureParts    Texture region definitions
-varies      PNG Data        Embedded PNG image
-after PNG   Parts           Part definitions
-after Parts Anime           Animation keyframes
-end         ConvertInfo     Format conversion data
+Offset  Size  Field
+------  ----  -----
++0x00   20    Name (ASCII, null-padded to 20 bytes)
++0x14    4    TotalSize — total section length in bytes including this header (LE uint32)
++0x18    4    EntryCount — number of entries that follow (LE uint32)
++0x1C   var   Section payload
 ```
 
-### Sequence Header
-
-```c
-struct SequenceHeader {
-    char magic[8];      // "Sequence"
-    uint32_t version;   // Format version
-    uint32_t flags;     // Sequence flags
-    float duration;     // Total animation duration
-    uint32_t frame_count;
-    // ... additional fields
-};
-```
-
-### TextureParts Section
-
-Defines regions within the sprite sheet:
-
-```c
-struct TexturePart {
-    uint16_t x;         // X position in texture
-    uint16_t y;         // Y position in texture
-    uint16_t width;     // Part width
-    uint16_t height;    // Part height
-    uint16_t pivot_x;   // Pivot point X
-    uint16_t pivot_y;   // Pivot point Y
-};
-```
-
-### PNG Data
-
-The PNG is embedded directly:
-```
-[PNG header: 89 50 4E 47 0D 0A 1A 0A]
-[PNG chunks...]
-[IEND chunk]
-```
-
-Example sizes:
-- CSFIX_04.spranm: PNG at 0x280, 42,750 bytes
-- TRS001_00.spranm: PNG at 0xD8, larger image
-
-## Animation System
-
-### Keyframe Structure
-
-```c
-struct Keyframe {
-    uint8_t index;      // Animation state (0-2)
-    uint8_t flags;      // Control flags
-    uint16_t reserved;  // Usually 0
-    float duration;     // Time in frames/units
-};
-```
-
-### State System
-
-| Index | State | Description |
-|-------|-------|-------------|
-| 0 | Base | Default state |
-| 1 | Transition | Between states |
-| 2 | Special | Effect state |
-
-### Control Flags
-
-| Flag | Value | Description |
-|------|-------|-------------|
-| Standard | 0x00 | Normal keyframe |
-| Wait | 0x01 | Wait for completion |
-| Sync | 0x02 | Synchronize with others |
-| Ping-pong | 0x20 | Enable ping-pong |
-| Reverse | 0x40 | Enable reverse |
-| Loop | 0x80 | Enable looping |
-
-## Transform Matrices
-
-### Matrix Types
-
-#### Type A: Basic Transform
-```
-[0.0-1.0, 0.0, 100-1000, 0.0]
-Purpose: Basic element positioning
-```
-
-#### Type B: Scale Effect
-```
-[988416.3, -2.11e+35, -2.00e-12, 2.41e+32]
-Purpose: Dramatic scaling effects
-```
-
-#### Type C: Rotation Control
-```
-[-18152450.0, 0.4, 9.00e-24, -9.07]
-Purpose: Element rotation with scaling
-```
-
-#### Type D: Complex Movement
-```
-[-7.11e-07, 79210504.0, 7.68e-38, 0.127]
-Purpose: Combined transform effects
-```
-
-## Animation Sequence Flow
-
-### Title Screen Example
+Sections are laid out sequentially. After each section's `TotalSize` bytes, the parser advances to the next **8-byte-aligned** boundary:
 
 ```
-Phase 1: Initialization
-├── Sequence 0: Initial translation (768.2 units)
-├── Setup base state
-└── Duration: 2.25 units
-
-Phase 2: Element Introduction (1-33)
-├── Control blocks
-├── Position elements
-├── Set initial states
-└── Prepare for main animation
-
-Phase 3: Main Animation (34-54)
-├── Multiple transform matrices
-├── State transitions
-├── Timing control
-└── Special effects
-
-Phase 4: Finalization (55)
-├── Final positions
-├── State stabilization
-└── Animation completion
+nextPosition = AlignUp(sectionStart + totalSize, 8)
 ```
 
-## Memory Layout
+### Known Top-Level Sections
 
-### Block Alignment
+| Name (20-byte padded) | Header Type | Payload |
+|---|---|---|
+| `Sequence` | Standard 28-byte | `EntryCount` × 20-byte entries |
+| `Sprite` | Standard 28-byte | `EntryCount` × 32-byte entries |
+| `SpriteGp` | Standard 28-byte | Count array + index array (variable) |
+| `TextureParts` | 24-byte (no `EntryCount`) | Sub-sections (Texture, Parts, Anime) |
+| `ConvertInfo` | Standard 28-byte | Metadata; no parsed payload |
 
-```
-16-byte alignment: Matrices
-4-byte alignment:  Keyframes
-2048-byte boundaries: Major sections
-```
+---
 
-### Data Access Pattern
+## Section: Sequence
 
-```
-Block Header (4 bytes)
-    ↓
-Transform Data (16-64 bytes)
-    ↓
-Keyframe Data (variable)
-    ↓
-Padding (alignment)
-```
+Each entry describes one **animation frame** — which group of sprites to display and for how long.
 
-## Timing System
-
-### Duration Control
-
-| Type | Duration | Description |
-|------|----------|-------------|
-| Quick | 0.0 | Instant transition |
-| Standard | 1.0-2.25 | Normal movement |
-| Hold | Large value | Static state |
-| Loop | Negative | Infinite loop |
-
-### Synchronization
-
-```python
-# Wait flag (0x01)
-keyframe.flags & 0x01  # Wait for completion
-
-# Sync flag (0x02)
-keyframe.flags & 0x02  # Sync with other animations
-```
-
-## Extraction Implementation
-
-### Type A Extraction
-
-```python
-def extract_animation_control(data: bytes) -> dict:
-    """Extract animation control data."""
-    if data[:4] != b'LZ77':
-        raise ValueError("Not compressed SPRANM")
-    
-    # Decompress
-    decompressed = decompress_lz77(data)
-    
-    # Parse control sections
-    sections = []
-    pos = 0
-    while pos < len(decompressed):
-        marker = decompressed[pos]
-        if marker == 0x80:
-            sections.append(parse_sprite_flags(decompressed, pos))
-        elif marker == 0x40:
-            sections.append(parse_transform_matrix(decompressed, pos))
-        elif marker == 0x20:
-            sections.append(parse_sprite_state(decompressed, pos))
-        elif marker == 0x04:
-            sections.append(parse_sprite_index(decompressed, pos))
-        pos += 1
-    
-    return {'sections': sections}
-```
-
-### Type B Extraction
-
-```python
-def extract_sprite_resource(data: bytes) -> dict:
-    """Extract sprite resource file."""
-    result = {
-        'sequence': None,
-        'sprites': [],
-        'groups': [],
-        'texture_parts': [],
-        'png_data': None,
-        'animations': []
-    }
-    
-    # Find and extract PNG
-    png_start = data.find(b'\x89PNG\r\n\x1a\n')
-    if png_start >= 0:
-        png_end = find_png_end(data, png_start)
-        result['png_data'] = data[png_start:png_end]
-    
-    # Parse sections
-    result['sequence'] = parse_sequence_header(data)
-    # ... parse other sections
-    
-    return result
-```
-
-## File Examples
-
-### Animation Control Files
-
-| File | Compressed | Decompressed | Sections |
-|------|------------|--------------|----------|
-| CSFIX_00 | 11,013 | 1,406 | 40+ |
-| CSFIX_01 | 5,789 | 740 | Fewer |
-| CSFIX_03 | 7,161 | 912 | Mixed |
-
-### Sprite Resource Files
-
-| File | Size | PNG Size | Sections |
-|------|------|----------|----------|
-| CSFIX_04 | ~43 KB | 42,750 | Full |
-| TRS001_00 | ~550 KB | Large | Compact |
-
-## Relationship Between Files
+**Entry format** (20 bytes = 5 × uint32):
 
 ```
-Animation System
-├── Control Files (Type A)
-│   ├── Define HOW sprites animate
-│   ├── Transform sequences
-│   ├── Timing data
-│   └── State machine
-│
-└── Resource Files (Type B)
-    ├── Define WHAT sprites look like
-    ├── PNG sprite sheets
-    ├── Texture coordinates
-    └── Part definitions
+Offset  Size  Field
+------  ----  -----
++0x00    4    SpriteGroupIndex — index into the SpriteGp table (LE uint32)
++0x04    4    Duration — frame count this sequence entry is held (LE uint32)
++0x08    4    Flags — animation control flags (LE uint32)
++0x0C    4    Unknown1
++0x10    4    Unknown2
 ```
 
-Control files reference resource files via `sprite_index` (0x04) sections.
+`TotalFrames = Sum(entry.Duration for all entries)`
 
-## Usage in Game
+---
 
-### Element Types
-- Logo components
-- Menu items
-- Background elements
-- Special effects
+## Section: Sprite
 
-### Animation Categories
-- Entry animations
-- Idle movements
-- Interactive responses
-- Transition effects
+Each entry describes **one piece** of a composite sprite — which parts entry to sample, which texture to use, where to place it, and how to scale it.
 
-## Implementation Notes
+**Entry format** (32 bytes = 8 fields):
 
-### PNG Extraction
-
-```python
-def extract_png(data: bytes, offset: int) -> bytes:
-    """Extract embedded PNG from SPRANM."""
-    # Find PNG signature
-    png_sig = b'\x89PNG\r\n\x1a\n'
-    start = data.find(png_sig, offset)
-    
-    if start < 0:
-        return None
-    
-    # Find IEND chunk
-    iend = data.find(b'IEND', start)
-    if iend < 0:
-        return None
-    
-    # IEND chunk is 12 bytes (4 length + 4 type + 4 CRC)
-    end = iend + 12
-    
-    return data[start:end]
+```
+Offset  Size  Field
+------  ----  -----
++0x00    4    PartsIndex  — index into the Parts sub-section (LE uint32)
++0x04    4    Unknown
++0x08    4    TextureIndex — index of texture to use (LE uint32)
++0x0C    4    PositionX — bottom-right X coordinate (LE uint32)
++0x10    4    PositionY — bottom-right Y coordinate (LE uint32)
++0x14    4    ScaleX — horizontal scale factor (float32)
++0x18    4    ScaleY — vertical scale factor (float32)
++0x1C    4    Unknown2 (float32)
 ```
 
-### Metadata Generation
+### Position Interpretation: Bottom-Right Corner
 
-```python
-def generate_metadata(spranm_data: bytes, output_path: str):
-    """Generate JSON metadata for SPRANM file."""
-    metadata = {
-        'type': detect_spranm_type(spranm_data),
-        'sections': [],
-        'transforms': [],
-        'keyframes': []
-    }
-    
-    # ... parse and populate
-    
-    with open(output_path, 'w') as f:
-        json.dump(metadata, f, indent=2)
+{: .important }
+`PositionX` and `PositionY` are the **bottom-right corner** of the rendered piece, **not** the top-left origin. The renderer computes the top-left origin as:
+
+```
+destWidth  = part.Width  * sprite.ScaleX
+destHeight = part.Height * sprite.ScaleY
+topLeftX   = sprite.PositionX - destWidth  + part.OffsetX
+topLeftY   = sprite.PositionY - destHeight + part.OffsetY
 ```
 
-## Research Status
+This is confirmed in `SpranmRenderer.RenderSequenceFrame`:
 
-{: .note }
-> The SPRANM format documentation covers the main structural elements. Some areas need additional research:
-> - Complete section enumeration for all file variants
-> - Animation interpolation algorithms
-> - Full transform matrix interpretation
-> - Palette handling for indexed sprites
+```csharp
+float posX = sprite.PositionX - destW + part.OffsetX;
+float posY = sprite.PositionY - destH + part.OffsetY;
+```
+
+---
+
+## Section: SpriteGp
+
+Groups Sprite entries into named sets. Each group is one animation frame's set of pieces.
+
+**Layout** (variable length):
+
+```
+Header (28 bytes):
+  name[20]="SpriteGp", totalSize[4], entryCount[4]
+
+Payload:
+  Count array:   entryCount × uint32  (number of sprites in each group)
+  Index array:   (remaining bytes / 4) × uint32 (flattened sprite indices)
+```
+
+The count array and index array are laid out contiguously. For group `g`, its sprite indices are the slice `[sum(counts[0..g-1]) .. sum(counts[0..g])]` of the index array.
+
+---
+
+## Section: TextureParts
+
+A **container** holding sub-sections. Its header is only **24 bytes** (no `EntryCount` field):
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00   20    Name (ASCII "TextureParts", null-padded)
++0x14    4    TotalSize (LE uint32)
++0x18   var   Sub-sections (parsed until containerStart + totalSize)
+```
+
+The parser seeks to `sectionStart + 24` before reading sub-sections.
+
+Sub-sections are also 8-byte aligned within the container.
+
+### Sub-section: Texture
+
+**Header** (40 bytes total):
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00   20    Name "Texture" (null-padded)
++0x14    4    TotalSize (LE uint32) — includes this header + nested data
++0x18    4    TextureFlags (LE uint32)
+               0x4000 = PNG storage
+               0x0080 = indexed (palette) storage
++0x1C    4    TextureKind (LE uint32)
++0x20    4    NestedSize — size of embedded data bytes (LE uint32)
++0x24    2    Width  (LE uint16)
++0x26    2    Height (LE uint16)
++0x28   var   Embedded data (PNG or LZ77-compressed indexed pixels)
+```
+
+- When `flags & 0x4000`: bytes at `+0x28` are a complete PNG file of length `NestedSize`.
+- When `flags & 0x0080`: bytes at `+0x28` are a Cell-variant LZ77-compressed indexed pixel buffer.
+
+### Sub-section: Parts
+
+Defines UV-mapped regions of the texture atlas. Each part is one rectangular crop that can be placed on screen.
+
+**Header** (28 bytes):
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00   20    Name "Parts" (null-padded)
++0x14    4    TotalSize (LE uint32)
++0x18    4    EntryCount (LE uint32)
+```
+
+**Each entry** (32 bytes = 8 × float32):
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00    4    OffsetX  — X adjustment applied when placing the piece (float32)
++0x04    4    OffsetY  — Y adjustment applied when placing the piece (float32)
++0x08    4    Width    — piece width in pixels (float32)
++0x0C    4    Height   — piece height in pixels (float32)
++0x10    4    U0       — left UV coordinate  [0.0 – 1.0] (float32)
++0x14    4    V0       — top UV coordinate   [0.0 – 1.0] (float32)
++0x18    4    U1       — right UV coordinate [0.0 – 1.0] (float32)
++0x1C    4    V1       — bottom UV coordinate [0.0 – 1.0] (float32)
+```
+
+UV coordinates are normalized (0.0–1.0 relative to atlas dimensions). To get pixel coordinates:
+
+```
+pixelX0 = round(U0 * atlas.Width)
+pixelY0 = round(V0 * atlas.Height)
+pixelX1 = round(U1 * atlas.Width)
+pixelY1 = round(V1 * atlas.Height)
+```
+
+### Sub-section: Anime
+
+Placeholder sub-section read but not parsed. Structure is the standard 28-byte header followed by opaque payload; the parser reads `TotalSize` and skips.
+
+---
+
+## Section: ConvertInfo
+
+A metadata-only section with a standard 28-byte header. No payload is parsed; it records conversion provenance (tool version, source asset path, etc.). The parser advances past it using `TotalSize`.
+
+---
+
+## Rendering Pipeline
+
+The full rendering chain from a tick number to pixels:
+
+```
+tick
+  │
+  ▼  GetSequenceIndexAtTick(doc, tick)
+sequenceIndex
+  │
+  ▼  doc.Sequences[sequenceIndex]
+SequenceEntry { SpriteGroupIndex, Duration, Flags }
+  │
+  ▼  doc.Groups[SpriteGroupIndex]
+SpriteGroup { SpriteIndices[] }
+  │
+  ▼  for each index: doc.Sprites[index]
+SpriteEntry { PartsIndex, TextureIndex, PositionX, PositionY, ScaleX, ScaleY }
+  │
+  ▼  doc.Parts[PartsIndex]
+SpranmPart { OffsetX, OffsetY, Width, Height, U0, V0, U1, V1 }
+  │
+  ▼  Compute src rect from UV × atlas dimensions
+  ▼  Compute dest rect using bottom-right positioning formula
+  │
+  ▼  canvas.DrawBitmap(atlas, srcRect, destRect)
+pixel output
+```
+
+Bounding box of all destination rectangles determines the output canvas size. Each `SpranmRenderer.RenderSequenceFrame` call produces one `SKBitmap`.
+
+---
+
+## Complete Section Header Table
+
+| Section | Header bytes | EntryCount | Entry size | Notes |
+|---|---|---|---|---|
+| `Sequence` | 28 | yes | 20 bytes | 5 × uint32 |
+| `Sprite` | 28 | yes | 32 bytes | 4 × uint32 + 3 × float32 + 1 × float32 unknown |
+| `SpriteGp` | 28 | yes (group count) | variable | counts[] then indices[] |
+| `TextureParts` | 24 | no | — | container for sub-sections |
+| ↳ `Texture` | 40 | no | — | PNG or LZ77 at +0x28 |
+| ↳ `Parts` | 28 | yes | 32 bytes | 8 × float32 |
+| ↳ `Anime` | 28 | yes | opaque | skipped |
+| `ConvertInfo` | 28 | yes | opaque | skipped |
+
+---
+
+## C# Data Model
+
+```csharp
+// Top-level document
+public sealed class SpranmDocument {
+    public List<SequenceEntry> Sequences { get; }
+    public List<SpriteEntry>   Sprites   { get; }
+    public List<SpriteGroup>   Groups    { get; }
+    public List<SpranmPart>    Parts     { get; }
+    public byte[]?             TexturePng     { get; }
+    public int                 TextureWidth   { get; }
+    public int                 TextureHeight  { get; }
+    public int TotalFrames => Sequences.Sum(s => s.Duration);
+}
+
+public record SequenceEntry(int SpriteGroupIndex, int Duration, int Flags);
+public record SpriteEntry(int PartsIndex, int TextureIndex,
+                          int PositionX, int PositionY,
+                          float ScaleX, float ScaleY);
+public record SpriteGroup(int[] SpriteIndices);
+public record SpranmPart(float OffsetX, float OffsetY,
+                         float Width, float Height,
+                         float U0, float V0, float U1, float V1);
+```
+
+---
 
 ## See Also
 
-- [LZ77 Compression](lz77-compression) - Compression format for Type A files
-- [Image Extractor](../tools/image-extractor) - Tool for PNG extraction
-- [Dokapon Extract](../tools/dokapon-extract) - General asset extraction
-
+- [LZ77 Compression](lz77-compression) — FlagByte variant used for compressed SPRANM files
+- [MPD Format](mpd-format) — uses the same `TextureParts` / `Parts` sub-section structures

@@ -1,411 +1,495 @@
 ---
-title: Dokapon Extract
+title: Additional Tools
 layout: default
-nav_order: 5
+nav_order: 8
 parent: Tools
 ---
 
-# Dokapon Extract
+# Additional Tools
 {: .no_toc }
 
-A versatile tool for extracting and repacking various game assets from DOKAPON! Sword of Fury.
+Hex Editor, Video Tools, Map Explorer, Animation Viewer, and Game Scanner.
 {: .fs-6 .fw-300 }
 
-## Table of contents
+## Table of Contents
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
-## Overview
+---
 
-Dokapon Extract is a powerful Python tool that handles multiple file formats used in DOKAPON! Sword of Fury:
+## Hex Editor
+{: #hex-editor }
 
-📦 **Supported Formats**
-- `.tex` - Texture files
-- `.mpd` - Map/Cell data files
-- `.spranm` - Sprite animation files
-- `.fnt` - Font files
+Apply community-made `.hex` patch files to the game executable.
+{: .fs-5 .fw-300 }
 
-🔄 **Key Features**
-- Extract embedded PNG images
-- Handle LZ77 compression
-- Preserve file metadata
-- Repack modified PNGs
-- Maintain directory structure
+### Overview
 
-## Requirements
+The Hex Editor is a patch applier, not a full binary editor. It loads one or more `.hex` files containing byte-level patches, displays all patch entries before you commit, detects conflicts between patch sources, and writes the result to the game executable with an optional automatic backup.
 
-- Python 3.6 or higher
-- PIL (Python Imaging Library)
-- Basic command line knowledge
+### Getting Started
 
-## Installation
+1. Navigate to **Hex Editor** in the left panel.
+2. The exe path is pre-filled from the game directory you set in the main toolbar. Click **Browse...** to override it.
+3. Add patch files using **Add Hex Files** (select individual `.hex` files) or **Add Hex Folder** (load every `.hex` file from a directory).
+4. Review the patch list and conflict list before applying.
+5. Click **Apply Patches**.
 
-1. Download `dokapon_extract.py`
-2. Install required Python packages:
-   ```bash
-   pip install pillow
-   ```
+### The Interface
 
-## Usage
+**Patch List**
 
-### Basic Command Structure
+Each loaded `.hex` file contributes one or more patch entries. The list shows:
 
-```bash
-python dokapon_extract.py [-h] [-i INPUT] [-o OUTPUT] [-t {tex,spranm,fnt,all}] [-v] [--repack]
-```
+| Column | Description |
+|---|---|
+| File | Source `.hex` filename |
+| Offset | Hex offset in the executable where the patch writes |
+| Size | Number of bytes the patch writes |
+| Preview | First 16 bytes of the patch data in hex |
 
-### Arguments
+**Conflict List**
 
-| Argument | Description |
-|----------|-------------|
-| `-i, --input` | Input file/directory (default: current dir) |
-| `-o, --output` | Output directory (default: ./output) |
-| `-t, --type` | File type to process (default: all) |
-| `-v, --verbose` | Show detailed processing information |
-| `--repack` | Repack a modified PNG using metadata |
+Conflicts are detected automatically whenever patch files are added or removed. A conflict is any situation where two patch entries write to overlapping byte ranges in the executable. Each conflict shows:
 
-### Quick Usage in Game Directory
+| Column | Description |
+|---|---|
+| Type | Conflict category (e.g. "Overlap") |
+| File 1 | First conflicting source file |
+| File 2 | Second conflicting source file |
+| Offset | Hex offset where the overlap begins |
 
-If you place `dokapon_extract.py` directly in the game's root folder, you can extract assets without specifying full paths:
+{: .warning }
+Conflicts do not prevent applying patches, but the result may be unpredictable. Resolve conflicts by disabling one of the conflicting patch files before applying.
 
-1. **Copy the Script**
-   ```
-   📁 DOKAPON ~Sword of Fury~
-   ├── 📄 dokapon_extract.py    # Place script here
-   └── 📁 GameData/
-   ```
+**Summary Bar**
 
-2. **Extract All Assets**
-   ```bash
-   python dokapon_extract.py -i "GameData/app" -o "extracted"
-   ```
+Below the toolbar a summary shows: total number of patches loaded, total bytes patched, and number of distinct source files.
 
-3. **Extract Specific Types**
-   ```bash
-   # Extract all UI textures
-   python dokapon_extract.py -i "GameData/app/Field/TXD" -o "extracted/ui" -t tex
+### Enabling / Disabling Patch Files
 
-   # Extract all battle effects
-   python dokapon_extract.py -i "GameData/app/Battle/Effect" -o "extracted/effects" -t spranm
+Each entry in the file list has a checkbox. Unchecked files are excluded from patch parsing — their entries disappear from the patch list and conflict detection runs again on the remaining checked files. Click **Remove Unchecked** to remove disabled files from the list entirely.
 
-   # Extract all fonts
-   python dokapon_extract.py -i "GameData/app/Font" -o "extracted/fonts" -t fnt
-   ```
+### Backup Option
 
-4. **Extract Single Files**
-   ```bash
-   # Extract a specific UI element
-   python dokapon_extract.py -i "GameData/app/Field/TXD/BoxWin.txd" -o "extracted/ui"
+The **Create Backup** checkbox (enabled by default) writes a copy of the original executable to `filename.exe.bak` before applying any patches. Disable this only if you have already made a manual backup.
 
-   # Extract a specific animation
-   python dokapon_extract.py -i "GameData/app/Battle/Effect/EFFECT00_00.spranm" -o "extracted/effects"
-   ```
+### Applying Patches
 
-{: .note }
-Running the script from the game directory makes it easier to use relative paths and maintain your extracted files organization.
+Click **Apply Patches**. The tool:
 
-## Real-World Examples
+1. Reads the current executable into memory.
+2. For each patch entry in offset order, writes the patch bytes at the specified offset.
+3. If **Create Backup** is checked, writes the original to `filename.exe.bak` first.
+4. Writes the patched result over the original executable.
 
-### Game File Structure
+The status log reports: `Applied N/M patches to filename.exe`.
+
+### HEX File Format
+
+`.hex` patch files use a simple line-based format:
 
 ```
-📁 DOKAPON ~Sword of Fury~
-├── 📁 GameData/app/
-│   ├── 📁 Battle/          # Battle animations and effects
-│   │   ├── 📁 Effect/     # Battle effects
-│   │   ├── 📁 Ability/    # Character abilities
-│   │   └── 📁 Magic/      # Magic animations
-│   ├── 📁 Field/          
-│   │   ├── 📁 Face/       # Character face animations
-│   │   ├── 📁 Map/        # Map data and textures
-│   │   ├── 📁 TXD/        # UI textures
-│   │   └── 📁 Guidebook/  # Game guide images
-│   ├── 📁 Font/           # Game fonts
-│   └── 📁 Title/          # Title screen assets
+# Comment lines begin with #
+# Offset (hex) : space-separated hex bytes
+0x1A3F40: 90 90 90 EB 05
+0x1A3F50: 48 8B 0D 12 34 56 78
 ```
 
-### Common Extraction Tasks
+- Offsets are absolute file offsets in the executable, written in hexadecimal with `0x` prefix.
+- Bytes are written as two-digit hex values separated by spaces.
+- Lines beginning with `#` are comments and are ignored.
+- Blank lines are ignored.
 
-1. **Extract Battle Effects**
-   ```bash
-   python dokapon_extract.py -i "GameData/app/Battle/Effect" -o "extracted/effects" -t spranm
-   ```
-   Extracts animation files like:
-   - EFFECT00_00.spranm → EFFECT00_00.png
-   - EFFECT01_00.spranm → EFFECT01_00.png
-   - EFFECT02_00.spranm → EFFECT02_00.png
+### Practical Example: Applying a Community Patch
 
-2. **Extract Character Faces**
-   ```bash
-   python dokapon_extract.py -i "GameData/app/Field/Face" -o "extracted/faces" -t spranm
-   ```
-   Extracts character face animations:
-   - FACE00A_00.spranm → FACE00A_00.png
-   - FACE00B_00.spranm → FACE00B_00.png
-   - H_FACE00A_00.spranm → H_FACE00A_00.png
+Suppose the community has released a `translation_v1.hex` patch:
 
-3. **Extract UI Textures**
-   ```bash
-   python dokapon_extract.py -i "GameData/app/Field/TXD" -o "extracted/ui" -t tex
-   ```
-   Processes UI elements:
-   - BoxWin.txd → BoxWin.png
-   - StatusWin.txd → StatusWin.png
-   - WeekWin.txd → WeekWin.png
+1. Download `translation_v1.hex`.
+2. In Hex Editor, click **Add Hex Files** and select `translation_v1.hex`.
+3. Verify the patch list shows the expected entries. Check the conflict list — if it is empty, there are no issues.
+4. Ensure **Create Backup** is checked.
+5. Click **Apply Patches**.
+6. Launch the game. If something goes wrong, restore from the `.bak` file.
 
-4. **Extract Guidebook Images**
-   ```bash
-   python dokapon_extract.py -i "GameData/app/Field/Guidebook" -o "extracted/guide"
-   ```
-   Extracts all guidebook pages:
-   ```
-   📁 extracted/guide/
-   ├── img.png
-   ├── img2.png
-   ├── img3.png
-   ...
-   └── img34.png
-   ```
+---
 
-### Batch Processing Examples
+## Video Tools
+{: #video-tools }
 
-1. **Extract All Battle Assets**
-   ```bash
-   #!/bin/bash
-   # extract_battle.sh
-   BASE_DIR="GameData/app/Battle"
-   OUT_DIR="extracted/battle"
+Manage and replace cutscene video files in OGV format.
+{: .fs-5 .fw-300 }
 
-   # Extract effects
-   python dokapon_extract.py -i "$BASE_DIR/Effect" -o "$OUT_DIR/effects" -t spranm
+### Overview
 
-   # Extract abilities
-   python dokapon_extract.py -i "$BASE_DIR/Ability" -o "$OUT_DIR/abilities"
+Video Tools scans the game directory for `.ogv` cutscene files, shows metadata for each one, and converts replacement videos from any common format to the OGV format expected by the game. Conversion is delegated to FFmpeg, which must be installed separately.
 
-   # Extract magic
-   python dokapon_extract.py -i "$BASE_DIR/Magic" -o "$OUT_DIR/magic"
-   ```
+### FFmpeg Requirement
 
-2. **Extract All Field Assets**
-   ```bash
-   #!/bin/bash
-   # extract_field.sh
-   BASE_DIR="GameData/app/Field"
-   OUT_DIR="extracted/field"
+Video conversion requires FFmpeg to be available on the system PATH. The tool checks on startup and reports its status in the toolbar:
 
-   # Extract maps
-   python dokapon_extract.py -i "$BASE_DIR/Map" -o "$OUT_DIR/maps" -t mpd
+- `FFmpeg: <version string>` — found and ready
+- `FFmpeg not found` — install FFmpeg and ensure it is on the PATH
 
-   # Extract faces
-   python dokapon_extract.py -i "$BASE_DIR/Face" -o "$OUT_DIR/faces" -t spranm
+Download FFmpeg from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html) and add the `bin` directory to your Windows PATH environment variable.
 
-   # Extract UI
-   python dokapon_extract.py -i "$BASE_DIR/TXD" -o "$OUT_DIR/ui" -t tex
-   ```
+### The Interface
 
-### Language-Specific Content
+**Game Videos List**
 
-The game includes language-specific variants in "en" subdirectories:
+After setting the game directory, the tool scans for all `.ogv` files and displays:
 
-```bash
-python dokapon_extract.py -i "GameData/app/Field/TXD/en" -o "extracted/ui/en"
+| Column | Description |
+|---|---|
+| Name | Filename of the cutscene |
+| Resolution | Width × Height in pixels |
+| Duration | Playback duration |
+| Size | File size on disk |
+
+**Replacements Queue**
+
+The lower panel shows videos queued for replacement, with their status (`Pending`, `Done`, or `Failed`).
+
+**Conversion Settings**
+
+- **Width / Height** — output resolution (default 1280×720)
+- **Video Quality** — OGV Theora quality scale 0–10 (default 8; higher = better quality and larger file)
+- **Audio Quality** — Vorbis quality scale 0–10 (default 4)
+
+### Queuing a Replacement
+
+1. Click **Add Replacement**.
+2. Select a source video file (MP4, AVI, MKV, MOV, WebM, or any format FFmpeg supports).
+3. The tool matches the source filename stem to a game `.ogv` file automatically (e.g. `opening.mp4` → `opening.ogv`). If no match is found, the target name is derived from the source filename.
+4. The replacement appears in the queue with status `Pending`.
+
+Repeat for as many videos as needed before processing.
+
+### Processing Replacements
+
+Click **Process Replacements** to convert all queued videos. For each entry:
+
+1. FFmpeg converts the source video to OGV format using the specified quality settings.
+2. The output is written directly to `GameData/app/<target_name>.ogv` in the game directory.
+3. The status column updates to `Done` or `Failed`.
+
+{: .warning }
+Processing overwrites the original OGV files in the game directory. Back up the originals beforehand if you may want to revert.
+
+Progress for each conversion is shown as a progress bar in the main status log area.
+
+### Practical Example: Replacing the Opening Cutscene
+
+1. Prepare your replacement video as `opening.mp4` (any resolution; the tool will rescale).
+2. In Video Tools, click **Add Replacement** and select `opening.mp4`.
+3. Verify the target name matches `opening.ogv` in the list.
+4. Set your desired output resolution and quality.
+5. Click **Process Replacements**.
+6. Launch the game and watch the opening to confirm the replacement.
+
+---
+
+## Map Explorer
+{: #map-explorer }
+
+Deep-dive viewer for `.mpd` cell-map files with palette switching and PNG export.
+{: .fs-5 .fw-300 }
+
+### Overview
+
+Map Explorer is a dedicated viewer for the game's map and cell-data files (`.mpd`). It loads a file, decodes its internal chunks, renders the texture atlas and the assembled map image, and presents detailed metadata about the file's structure. Multiple colour palettes can be cycled through in real time. Both the atlas and the assembled map can be exported as high-resolution PNG files.
+
+### Getting Started
+
+1. Navigate to **Map Explorer** in the left panel.
+2. Set the game directory (or click **Scan** to refresh the file list).
+3. Click any file in the left list to load it. Loading is asynchronous — a busy indicator appears while the file is parsed.
+
+### The Interface
+
+**File List**
+
+The left panel lists every `.mpd` file found recursively in the game directory. Files load on single click.
+
+**Display Area**
+
+The right panel has two tabs:
+
+- **Atlas** — the raw texture atlas for the selected palette: all tiles laid out in a grid
+- **Map** — the fully assembled map: tiles placed according to the cell-map grid data
+
+Both images support the ZoomPanImage control (scroll to zoom, drag to pan).
+
+**Palette Slider**
+
+If the map file contains multiple colour palettes, a slider appears beneath the display. Dragging the slider switches the palette in real time — both the atlas and the assembled map update immediately. The label shows the current palette index and total count.
+
+**Records and Parts Lists**
+
+Two data grids on the right side show the decoded cell records and texture parts parsed from the file. These are primarily for technical inspection.
+
+**Report Text**
+
+A text panel shows a structured summary of the loaded file:
+
+```
+File: MAP_01.mpd
+Raw Size: 245,760 bytes
+Decompressed: 512,000 bytes
+LZ77: Yes
+Grid: 32x24
+Records: 768
+Chunks: Cell, Palette, Texture, CellMap
+Palettes: 4
+Texture: 512x512 (Embedded PNG)
+Parts: 64
+Map: 32x24
+Unique values: 128
 ```
 
-This extracts English versions of UI elements:
-- F_00_FD_02_txt.txd
-- MARK_00.txd
-- StatusWin.txd
+### Exporting
 
-## File Format Details
+- **Export Map** — saves the assembled map image as PNG at up to 4096×4096 pixels. A save dialog appears with the map filename pre-filled.
+- **Export Atlas** — saves the raw texture atlas as PNG.
+- **Export Report** — saves the text report as a `.txt` or `.md` file.
 
-### Texture Files (.tex)
-{: .d-inline-block }
+### How Rendering Works
 
-PNG Container
-{: .label .label-green }
+The MapRenderer processes the file in three stages:
 
-Structure:
+1. **Load** — reads the raw bytes, detects and performs LZ77 decompression if the `LZ77` magic is present.
+2. **Parse** — locates named chunks (`Cell`, `Palette`, `Texture`, `CellMap`) within the decompressed data and decodes each one.
+3. **Render** — builds a `SKBitmap` (via SkiaSharp) by blitting each tile from the atlas onto the correct grid position according to the cell-map values.
+
+The atlas is built by applying the selected palette to the indexed-colour tile data.
+
+### Practical Example: Examining a Field Map
+
+1. In Map Explorer, load `GameData/app/Field/Map/MAP_01.mpd`.
+2. Switch to the **Map** tab. The assembled field map renders — all tiles placed in their correct positions.
+3. Move the palette slider to preview how the map looks under different colour palettes.
+4. Click **Export Map** and save as `MAP_01_map.png` for use in mapping tools or documentation.
+5. Click **Export Report** to save a text summary for reference.
+
+---
+
+## Animation Viewer
+{: #animation-viewer }
+
+Frame-by-frame preview and export for `.spranm` sprite animations.
+{: .fs-5 .fw-300 }
+
+### Overview
+
+The Animation Viewer browses all `.spranm` animation files, renders their frames using the SpranmRenderer, and plays them back at an adjustable frame rate. A search box filters the file list in real time. Animations can be exported as animated GIFs or PNG frame sequences. Individual frames can be copied to the clipboard.
+
+### Getting Started
+
+1. Navigate to **Animations** in the left panel.
+2. Set the game directory. The viewer scans for all `.spranm` files recursively.
+3. Click any file in the left list to load it.
+
+### The Interface
+
+**File List with Search**
+
+The left column shows all `.spranm` files. Type in the search box to filter by filename — the list updates as you type. Click any entry to load that animation.
+
+**Frame Display**
+
+The centre area shows the current frame rendered against a dark background. Rendering uses nearest-neighbour scaling to preserve pixel-art fidelity.
+
+**Playback Controls**
+
+| Control | Action |
+|---|---|
+| Prev | Step to the previous frame |
+| Play / Stop | Toggle animation playback |
+| Next | Step to the next frame |
+| FPS slider | Adjust playback speed (1–30 FPS) |
+
+The frame counter shows `Frame N / Total` in the centre of the control bar.
+
+**Keyboard Shortcuts**
+
+When the Animation Viewer panel is focused:
+
+| Key | Action |
+|---|---|
+| Space | Toggle Play / Stop |
+| Left arrow | Previous frame |
+| Right arrow | Next frame |
+
+**Animation Info Bar**
+
+Below the playback controls, a text bar shows parsed metadata for the loaded file:
+
 ```
-[LZ77 Header (optional)]
-[PNG Data]
-```
-
-### Map Data Files (.mpd)
-{: .d-inline-block }
-
-Cell Data
-{: .label .label-blue }
-
-For detailed format documentation, see [MPD Map Format](../technical/mpd-format).
-
-Header Structure:
-```c
-struct MPDHeader {
-    char magic[16];    // "Cell" (padded)
-    int data_size;     // Size of data section
-    int width;         // Image width
-    int height;        // Image height
-    int cell_width;    // Width of each cell
-    int cell_height;   // Height of each cell
-};
-```
-
-### Sprite Animation (.spranm)
-{: .d-inline-block }
-
-Animation Data
-{: .label .label-purple }
-
-For detailed format documentation, see [SPRANM Animation Format](../technical/spranm-format).
-
-Format (two variants):
-```
-Type A - Animation Control (LZ77 compressed):
-[LZ77 Header]
-[Compressed control data]
-
-Type B - Sprite Resource (uncompressed):
-"Sequence" marker
-[Sprite definitions]
-[PNG Data]
-[Animation Data]
-```
-
-### Font Files (.fnt)
-{: .d-inline-block }
-
-Font Data
-{: .label .label-yellow }
-
-Contains:
-- LZ77 compressed data (optional)
-- Raw font data
-
-## Technical Details
-
-### LZ77 Decompression
-
-The tool implements Nintendo-style LZ77 decompression. For detailed format documentation, see [LZ77 Compression Format](../technical/lz77-compression).
-
-```python
-def decompress_lz77(data: bytes) -> Optional[bytes]:
-    """
-    Format:
-    - 4 byte magic "LZ77"
-    - 4 byte decompressed size
-    - 4 byte flag1 (compression parameters)
-    - 4 byte flag2 (additional parameters)
-    - Compressed data stream
-    """
+[Self-contained] Seq: 8 | Spr: 12 | Grp: 3 | Parts: 48 | Tex: 256x256
 ```
 
-### Metadata Preservation
+| Field | Meaning |
+|---|---|
+| Type | `Self-contained` (has embedded texture) or `Runtime/Player asset` (no embedded texture) |
+| Seq | Number of sequence (frame group) entries |
+| Spr | Number of sprite definitions |
+| Grp | Number of animation groups |
+| Parts | Number of texture parts |
+| Tex | Embedded texture dimensions |
 
-Each extracted PNG includes a JSON metadata file:
-```json
-{
-    "original_file": "path/to/source.tex",
-    "original_extension": ".tex",
-    "offset": 1234,
-    "length": 5678,
-    "mpd_header": {
-        "width": 1024,
-        "height": 1024,
-        "cell_width": 32,
-        "cell_height": 32
-    }
-}
+If the file is a runtime-only asset with no embedded PNG, the info bar notes this and no frames are rendered.
+
+**Export Toolbar**
+
+| Button | Action |
+|---|---|
+| Export GIF | Save all frames as an animated GIF |
+| Export Atlas | Save the embedded texture atlas as a PNG |
+| Copy Frame | Copy the current frame to the Windows clipboard |
+
+### Exporting as GIF
+
+Click **Export GIF**. A save dialog appears with a default name based on the source file. Selecting a `.gif` extension writes an animated GIF:
+
+- Frame delays are derived from the sequence duration values in the `.spranm` data.
+- Each frame is colour-quantised to 256 colours (5-bit per channel) with index 0 reserved for transparency.
+- The GIF uses the NETSCAPE 2.0 extension for infinite looping.
+- Maximum canvas size is the largest frame size across all sequences.
+
+Selecting a `.png` extension exports a numbered PNG sequence:
+
+```
+animation_0000.png
+animation_0001.png
+animation_0002.png
+...
 ```
 
-### PNG Processing
+Each file in the sequence is a full-colour RGBA PNG, suitable for use in video editors or sprite sheet tools.
 
-The tool handles PNG data carefully:
-- Strips unnecessary metadata
-- Preserves core image data
-- Maintains original dimensions
-- Handles size differences during repacking
+### Exporting the Atlas
 
-## Best Practices
+Click **Export Atlas** to save the raw embedded texture sheet as a PNG. This is the source sprite sheet that the renderer samples to compose each frame. Useful for manual sprite editing.
 
-### Extracting Files
+### Self-Contained vs. Runtime Assets
 
-1. 📁 **Organize Your Files**
-   - Keep original files backed up
-   - Use meaningful directory names
-   - Maintain directory structure
+`.spranm` files come in two varieties:
 
-2. 🔍 **Use Verbose Mode**
-   ```bash
-   python dokapon_extract.py -i "input" -o "output" -v
-   ```
-   - Helps track processing
-   - Shows detailed information
-   - Identifies potential issues
+**Self-contained** — include an embedded PNG texture and all the data needed to render frames independently. These files show a preview in the viewer and can be exported.
 
-3. 📊 **Check Results**
-   - Verify extracted files
-   - Compare file counts
-   - Check metadata files
+**Runtime / Player asset** — contain animation control data (sequences, timing) but reference an external texture that is loaded separately at runtime. These files show metadata in the info bar but no visual preview, and cannot be exported as GIF.
 
-### Repacking Files
+### Practical Example: Exporting a Battle Effect
 
-1. 🔒 **Preserve Metadata**
-   - Keep .json files with PNGs
-   - Don't modify metadata manually
-   - Back up original files
+1. In the Animation Viewer, type `EFFECT` in the search box.
+2. Click `EFFECT00_00.spranm` to load it.
+3. Press **Play** to watch the animation loop.
+4. Adjust the FPS slider to preview at different speeds.
+5. Click **Export GIF** and save as `EFFECT00_00.gif`.
+6. Open the GIF in a browser or image viewer to confirm it looks correct.
 
-2. 📏 **Mind the Size**
-   - Keep modifications within original dimensions
-   - Check warnings about size differences
-   - Test repacked files
+---
 
-3. 🧪 **Test Thoroughly**
-   - Verify in-game appearance
-   - Check for visual artifacts
-   - Test different game scenarios
+## Game Scanner
+{: #game-scanner }
 
-## Troubleshooting
+Full inventory of the game directory with extension statistics and key-file check.
+{: .fs-5 .fw-300 }
 
-### Common Issues
+### Overview
 
-1. **LZ77 Decompression Errors**
-   ```
-   Decompression error: Invalid compressed data
-   ```
-   - Check file integrity
-   - Verify file is actually compressed
+The Game Scanner performs a complete recursive scan of the game directory and produces a structured report. It breaks down file counts and sizes by extension, lists top-level directories by file count, and checks whether critical game files are present. The report can be saved to disk.
 
-2. **PNG Extraction Failed**
-   ```
-   No PNG signature found
-   ```
-   - Verify file format
-   - Check file corruption
+### Getting Started
 
-3. **Repacking Size Mismatch**
-   ```
-   Warning: PNG larger than original
-   ```
-   - Reduce image size
-   - Check image dimensions
+1. Navigate to **Game Scanner** in the left panel.
+2. Set the game directory in the main toolbar. The scan runs automatically.
+3. Click **Scan** to re-run after making changes to game files.
+
+### The Interface
+
+**File Stats Grid**
+
+The upper data grid lists every file extension found in the game directory, sorted by total size descending:
+
+| Column | Description |
+|---|---|
+| Extension | File extension (e.g. `.spranm`, `.pck`) |
+| Count | Number of files with this extension |
+| Total Size | Combined size of all files with this extension |
+
+This gives a quick overview of where disk space is used and which asset types are most numerous.
+
+**Directories Grid**
+
+The lower data grid lists top-level directories inside the game folder, sorted by file count descending:
+
+| Column | Description |
+|---|---|
+| Name | Directory name |
+| Path | Full path |
+| File Count | Total files (recursive) |
+| Total Size | Combined size (recursive) |
+
+**Report Text Panel**
+
+A text area on the right shows the full formatted report:
+
+```
+Game Directory: C:\...\DOKAPON ~Sword of Fury~
+Total Files: 2,847
+Total Size: 1.24 GB
+
+By Extension:
+  .spranm         843 files      312.4 MB
+  .tex            142 files       68.1 MB
+  .mpd             78 files       45.2 MB
+  .pck              4 files      387.6 MB
+  ...
+
+Directories:
+  GameData            2,831 files      1.23 GB
+  GameData/app        2,821 files      1.22 GB
+  ...
+
+Key Files:
+  [OK] DOKAPON! Sword of Fury.exe
+  [OK] GameData/app/BGM.pck
+  [OK] GameData/app/SE.pck
+  [OK] GameData/app/Voice.pck
+  [OK] GameData/app/Voice-en.pck
+  [OK] GameData/app/Font/Quarter.fnt
+  [OK] GameData/Windows/Save
+  [OK] Setting.ini
+```
+
+The `[OK]` / `[--]` prefix in the Key Files section indicates whether each critical file or directory is present. A `[--]` entry means that file is missing — this may indicate an incomplete game installation or that a modded file was accidentally deleted.
+
+### Exporting the Report
+
+Click **Export Report** to save the text report as a `.txt` file. This is useful for sharing your game directory inventory with other modders or for keeping a record of the file state before applying mods.
+
+### Practical Uses
+
+**Verifying a Clean Installation**
+After installing the game, run the Game Scanner and confirm all Key Files show `[OK]`. If any are missing, verify the game files through Steam.
+
+**Before Modding**
+Run a scan and export the report. After applying mods, run again and compare — any new or changed files will be apparent from size differences.
+
+**Investigating Disk Usage**
+The extension breakdown shows which asset types consume the most space. PCK archives (`.pck`) typically dominate due to uncompressed audio. Knowing this helps prioritise which archives are worth working with.
+
+---
 
 ## Contributing
 
-We welcome contributions! 
-- Report issues on GitHub
-- Submit pull requests
-- Share improvements
-- Join our [Discord](https://discord.gg/HCrYwScDg5)
+Found a bug in any of these tools or want to suggest an improvement? Open an issue on [GitHub](https://github.com/DiNaSoR/dokaponsof) or join the [Discord](https://discord.gg/HCrYwScDg5).
+
+---
 
 ## License
 
-This tool is licensed under The Unlicense. You can:
-- ✅ Use freely for any purpose
-- ✅ Modify and distribute without restrictions
-- ✅ No attribution required
-- ✅ Dedicated to public domain
-- ✅ No warranty provided
-
-See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for details. 
+These tools are part of DokaponSoFTools, released under The Unlicense (public domain). See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.

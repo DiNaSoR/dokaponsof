@@ -1,14 +1,14 @@
 ---
 title: MPD Format
 layout: default
-nav_order: 4
+nav_order: 3
 parent: Technical Reference
 ---
 
-# MPD Map/Cell Format
+# MPD Cell Map Format
 {: .no_toc }
 
-Documentation of the map and cell data format used in DOKAPON! Sword of Fury.
+Documentation of the Cell container map format used for game environments in DOKAPON! Sword of Fury.
 {: .fs-6 .fw-300 }
 
 ## Table of contents
@@ -19,363 +19,274 @@ Documentation of the map and cell data format used in DOKAPON! Sword of Fury.
 
 ## Overview
 
-MPD files contain map data and cell-based graphics used for game environments, UI elements, and other grid-based content. The format features:
-- Cell-based organization
-- Index and data sections
-- Support for both compressed and uncompressed data
-- Dimension and alignment metadata
+MPD files store tile-based map data for the game's field environments and chizu (map overview) screens. Each file is a **Cell container** — a structured binary format that may optionally be wrapped in LZ77 Cell-variant compression.
 
-## File Types
+The C# implementation spans three classes:
+- `DokaponSoFTools.Core.Formats.CellContainer` — header/record/chunk parsing
+- `DokaponSoFTools.Core.Formats.TextureAtlas` — TextureParts and Palette chunk parsing
+- `DokaponSoFTools.Core.Imaging.MapRenderer` — full document loading and tile rendering
 
-MPD files serve different purposes:
-
-| Type | Description | Example |
-|------|-------------|---------|
-| Resource Index | Table of resource references | CREDIT.mpd |
-| Sprite Container | Cell-based sprite data | S_TIT00_00.mpd |
-| Map Data | Game map information | Various map files |
-
-## Header Structure
-
-### Cell Header Format
-
-```c
-struct MPDHeader {
-    char magic[16];      // "Cell" + padding
-    uint32_t data_size;  // Size of data section
-    uint32_t width;      // Image/grid width
-    uint32_t height;     // Image/grid height
-    uint32_t cell_width; // Width of each cell
-    uint32_t cell_height;// Height of each cell
-};
+Map files are located in:
+```
+GameData/app/Field/Map/      ← field tile maps
+GameData/app/Field/Chizu/    ← overview map screens
 ```
 
-### Example Header (CREDIT.mpd)
+---
 
-```hex
-00000000  43 65 6C 6C 20 20 20 20 20 20 20 20 20 20 20 20  Cell            
-00000010  20 20 20 20 A0 04 00 00 60 00 00 00 60 00 60 00      ...`...`.`.
+## LZ77 Compression Layer
+
+Most MPD files are wrapped in the **Cell** LZ77 variant. The raw file is detected and decompressed before the Cell container is parsed:
+
+```csharp
+byte[] raw = File.ReadAllBytes(path);
+var (data, lz77Info) = Lz77Cell.Decompress(raw);
+// If file is not LZ77, Decompress returns the buffer unchanged
 ```
 
-Interpretation:
-- Magic: `"Cell"` (padded to 16 bytes)
-- Data size: `0x04A0` (1184 bytes)
-- Width: `0x60` (96 pixels)
-- Height: `0x60` (96 pixels)
+See [LZ77 Compression — Cell Variant](lz77-compression#variant-3-cell) for the full decompression algorithm.
 
-## Index Section
+---
 
-Following the header, an index table defines entries:
+## Cell Container Header
 
-### Index Record Format
-
-```c
-struct IndexRecord {
-    uint16_t marker;     // 0xFFFF separator
-    uint16_t id;         // Entry ID
-    uint8_t type;        // Record type (usually 0x01)
-    uint8_t reserved[7]; // Padding
-};
-```
-
-### Example Index Data
-
-```hex
-00 00 FF FF 01 00 00 00 00 00 00 00
-00 00 FF FF 02 00 00 00 00 00 00 00
-00 00 FF FF 03 00 00 00 00 00 00 00
-```
-
-Pattern:
-- `FF FF` markers between entries
-- Sequential IDs
-- Fixed 12-byte record stride
-
-## Data Section
-
-### Cell Data Organization
-
-Cell data follows the index section:
+After decompression, the data begins with a Cell container header. Magic is `Cell` (ASCII, `0x43656C6C`) at offset `0x00`.
 
 ```
-[Index Section End]
-    ↓
-[Cell Data Block 0]
-[Cell Data Block 1]
-[Cell Data Block 2]
-    ...
-[Cell Data Block N]
+Offset  Size  Field
+------  ----  -----
+0x00     4    Magic "Cell" (ASCII)
+0x04    16    Name padding (spaces or nulls, to reach 0x14)
+0x14     4    TableOffset  — byte offset to the chunk area (LE int32)
+0x18     4    EntryCount   — number of records in the record table (LE int32)
+0x1C     2    GridWidth    — map width in tiles (LE uint16)
+0x1E     2    GridHeight   — map height in tiles (LE uint16)
+0x20    var   Record table (EntryCount × 12 bytes each)
 ```
 
-### Data Characteristics
+### C# Record
 
-- High entropy (compressed/encoded content)
-- No `FF FF` markers in data section
-- Binary data (possibly texture or tilemap)
-
-## S_TIT Format Variant
-
-Sprite title files (S_TIT*) use a different structure:
-
-### S_TIT Header
-
-```hex
-00000000  00 00 00 00 00 00 00 00 00 00 35 55 55 55 55 55  ..........5UUUUU
-00000010  55 00 00 00 00 03 00 00 00 00 00 00 00 44 00 00  U............D..
+```csharp
+public sealed record CellHeader(
+    int TableOffset,
+    int EntryCount,
+    int GridWidth,
+    int GridHeight
+);
 ```
 
-| Offset | Size | Description |
-|--------|------|-------------|
-| 0x00 | 10 | Zero padding |
-| 0x0A | 7 | Magic: `35 55 55 55 55 55 55` |
-| 0x12 | 4 | Version/type (e.g., `03 00 00 00`) |
-| 0x1D | 4 | Data offset (e.g., `44 00 00`) |
+---
 
-### S_TIT Field Layout
+## Record Table
 
-```c
-struct STITHeader {
-    uint8_t padding[10];      // Zero padding
-    uint8_t magic[7];         // 35 55 55... magic
-    uint32_t version;         // Format version
-    uint32_t data_offset;     // Offset to data section
-    uint32_t width;           // Width or block size
-    uint16_t height;          // Height or count
-    uint16_t stride;          // Stride or alignment
-    uint32_t palette_offset;  // Palette data offset
-};
+Immediately after the header (at `0x20`), the record table contains `EntryCount` entries of 12 bytes each.
+
+**Record entry** (12 bytes = 3 × uint32):
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00    4    ValueA  (LE uint32)
++0x04    4    ValueB  (LE uint32)
++0x08    4    ValueC  (LE uint32)
 ```
 
-### Palette Information
+Records are decoded by splitting each 32-bit value into low and high 16-bit halves:
 
-16-color palette example:
-```
-Color 0:  Black (0,0,0) - Background
-Color 2:  Dark Blue (0,0,136)
-Color 5:  Red (128,0,0)
-Color 8:  Very Dark Blue (0,0,16)
-Color 9:  Blue (0,0,56)
-Color 12: Bright Red (192,0,0)
-Color 13: Brown (32,8,0)
+```csharp
+ValueALow16  = (int)(ValueA & 0xFFFF)  // → parts index used by renderer
+ValueAHigh16 = (int)(ValueA >> 16)
+// ValueB, ValueC decoded similarly
 ```
 
-## Data Alignment
+During map rendering, `ValueALow16` is used as the **index into the TextureParts `Parts` array** to select the tile crop.
 
-MPD files use specific alignment patterns:
+---
 
-| Alignment | Purpose |
-|-----------|---------|
-| 4 bytes | Standard integer data |
-| 16 bytes | Block boundaries |
-| Power of 2 | Memory/cache optimization |
+## Chunk System
 
-## Extraction Strategy
+Starting at (approximately) `TableOffset` in the decompressed data, the file contains a sequence of named chunks. The parser searches for the `TextureParts` marker near that offset to find the true chunk start.
 
-### Header Parsing
+### Chunk Header (24 bytes = `0x18`)
 
-```python
-class MPDHeader:
-    def __init__(self, data: bytes):
-        self.magic = data[0:16].rstrip(b' \x00')
-        self.data_size = struct.unpack('<I', data[16:20])[0]
-        self.width = struct.unpack('<I', data[20:24])[0]
-        self.height = struct.unpack('<I', data[24:28])[0]
-        
-        if len(data) >= 32:
-            self.cell_width = struct.unpack('<I', data[28:32])[0]
-            self.cell_height = struct.unpack('<I', data[32:36])[0]
+```
+Offset  Size  Field
+------  ----  -----
++0x00   20    Name (ASCII, null-padded to 20 bytes)
++0x14    4    SizeTotal — total chunk size in bytes, including this header (LE int32)
++0x18   var   Chunk payload (SizeTotal - 0x18 bytes)
 ```
 
-### Index Parsing
-
-```python
-def parse_index_records(data: bytes, start: int) -> list:
-    """Parse index records from MPD file."""
-    records = []
-    pos = start
-    
-    while pos + 12 <= len(data):
-        marker = struct.unpack('<H', data[pos:pos+2])[0]
-        if marker == 0:
-            # Check for FF FF marker
-            if data[pos+2:pos+4] == b'\xFF\xFF':
-                record_id = struct.unpack('<H', data[pos+4:pos+6])[0]
-                record_type = data[pos+6]
-                records.append({
-                    'id': record_id,
-                    'type': record_type,
-                    'offset': pos
-                })
-        pos += 12
-    
-    return records
+Chunks are 8-byte aligned:
+```
+nextChunkOffset = AlignUp(currentChunkOffset + sizeTotal, 8)
 ```
 
-### Data Extraction
+Parsing stops when a chunk name begins with a null byte.
 
-```python
-def extract_cell_data(data: bytes, header: MPDHeader, index: list) -> list:
-    """Extract individual cell data blocks."""
-    cells = []
-    data_start = header_size + (len(index) * 12)
-    
-    for i, record in enumerate(index):
-        # Calculate cell boundaries
-        cell_size = header.cell_width * header.cell_height
-        cell_start = data_start + (i * cell_size)
-        cell_end = cell_start + cell_size
-        
-        cells.append(data[cell_start:cell_end])
-    
-    return cells
+### Known Chunk Types
+
+| Name | Purpose |
+|---|---|
+| `TextureParts` | Texture atlas and UV part definitions |
+| `Map` | Cell grid — width, height, and one uint32 per tile |
+| `Palette` | Indexed color palettes (for non-PNG textures) |
+
+---
+
+## Chunk: Map
+
+The Map chunk payload encodes the tile grid.
+
+**Payload layout:**
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00    2    Width  (LE uint16)  — tiles across
++0x02    2    Height (LE uint16)  — tiles down
++0x04    N    Values: Width × Height × uint32 (LE), row-major order
 ```
 
-## Image Processing
+Total payload size = `4 + Width × Height × 4` bytes.
 
-### Planar vs Linear Format
+Each 32-bit value encodes tile information:
+- Bits 0–15 (low word): **record index** into the record table
+- Bits 16–31 (high word): additional flags (flip, variant, etc.)
 
-Some MPD files use different pixel organizations:
+The renderer looks up `RecordTable[recordIndex].ValueALow16` to get the parts index for the tile.
 
-#### Planar Format
-```python
-def decode_planar(data: bytes, width: int, height: int) -> bytes:
-    """Decode planar pixel data."""
-    output = bytearray(width * height)
-    plane_size = (width * height) // 8
-    
-    for plane in range(8):
-        for i in range(plane_size):
-            byte = data[plane * plane_size + i]
-            for bit in range(8):
-                if byte & (1 << (7 - bit)):
-                    pixel_idx = i * 8 + bit
-                    output[pixel_idx] |= (1 << plane)
-    
-    return bytes(output)
+### C# Record
+
+```csharp
+public sealed record CellMap(int Width, int Height, uint[] Values);
 ```
 
-#### Linear Format
-```python
-def decode_linear(data: bytes, width: int, height: int) -> bytes:
-    """Decode linear pixel data."""
-    return data[:width * height]
+---
+
+## Chunk: TextureParts
+
+The TextureParts chunk payload is a `Texture` sub-section followed by `Parts` and optionally `Anime` sub-sections — the **same sub-section format used in SPRANM files**.
+
+The chunk payload begins immediately after the 24-byte chunk header. The `TextureAtlas.ParseChunkPayload` method handles the full parse.
+
+### Texture Sub-section Header (at payload start, 40 bytes)
+
+```
+Offset  Size  Field
+------  ----  -----
++0x00   20    "Texture" (null-padded)
++0x14    4    TotalSize (LE uint32)
++0x18    4    TextureFlags (LE uint32)
+               0x4000 = PNG embedded
+               0x0080 = LZ77-compressed indexed pixels
++0x1C    4    TextureKind (LE uint32)
++0x20    4    NestedSize (LE uint32) — size of embedded data
++0x24    2    Width  (LE uint16)
++0x26    2    Height (LE uint16)
++0x28   var   Atlas data: PNG bytes OR LZ77 Cell-compressed indexed pixel data
 ```
 
-### Color Conversion
+Storage kinds (determined by `TextureFlags`):
 
-```python
-def apply_palette(pixel_data: bytes, palette: list) -> bytes:
-    """Convert indexed pixels to RGB."""
-    rgb_data = bytearray()
-    
-    for pixel in pixel_data:
-        if pixel < len(palette):
-            r, g, b = palette[pixel]
-        else:
-            r, g, b = 0, 0, 0
-        rgb_data.extend([r, g, b])
-    
-    return bytes(rgb_data)
+| Flag | StorageKind | Atlas data |
+|---|---|---|
+| `0x4000` | `"png"` | Raw PNG starting at `+0x28` |
+| `0x0080` | `"indexed_lz77"` | LZ77 Cell-compressed indexed pixels at `+0x28` |
+
+### Parts Sub-section
+
+Immediately after the Texture sub-section (8-byte aligned), the `Parts` sub-section defines UV-mapped crops. Format is identical to [SPRANM Parts entries](spranm-format#sub-section-parts): 28-byte header followed by `EntryCount` × 32-byte float entries.
+
+Each entry (32 bytes = 8 × float32):
+
+```
+OffsetX, OffsetY   — placement adjustment
+Width, Height      — tile dimensions in pixels
+U0, V0             — top-left UV [0.0–1.0]
+U1, V1             — bottom-right UV [0.0–1.0]
 ```
 
-## File Format Comparison
+---
 
-### CREDIT.mpd vs S_TIT Files
+## Chunk: Palette
 
-| Feature | CREDIT.mpd | S_TIT Files |
-|---------|------------|-------------|
-| Magic | "Cell" | "5UUUUU" |
-| Purpose | Resource index | Sprite data |
-| Structure | Records + markers | Header + data |
-| Data | References | Actual pixels |
-| Organization | Table format | Container format |
+Provides indexed-color palettes for non-PNG textures (`StorageKind = "indexed_lz77"`).
 
-## Practical Examples
+**Payload layout:**
 
-### Extracting CREDIT.mpd
-
-```python
-def extract_credit_mpd(filepath: str) -> dict:
-    """Extract CREDIT.mpd resource index."""
-    with open(filepath, 'rb') as f:
-        data = f.read()
-    
-    header = MPDHeader(data)
-    records = parse_index_records(data, 32)
-    
-    return {
-        'header': {
-            'magic': header.magic.decode('ascii'),
-            'dimensions': f'{header.width}x{header.height}',
-            'data_size': header.data_size
-        },
-        'records': records
-    }
+```
+Offset  Size  Field
+------  ----  -----
++0x00    4    PaletteCount (LE int32)
++0x04    N    PaletteCount × 256 × 4 bytes
+               Each color: [R, G, B, A] (1 byte each)
 ```
 
-### Extracting S_TIT Sprite
+Total payload size = `4 + PaletteCount × 1024` bytes.
 
-```python
-def extract_stit_sprite(filepath: str, output_dir: str):
-    """Extract sprite from S_TIT file."""
-    with open(filepath, 'rb') as f:
-        data = f.read()
-    
-    header = parse_stit_header(data)
-    
-    # Extract palette
-    palette = extract_palette(data, header.palette_offset)
-    
-    # Extract pixel data
-    pixels = decode_planar(
-        data[header.data_offset:],
-        header.width,
-        header.height
-    )
-    
-    # Apply palette and save
-    rgb_data = apply_palette(pixels, palette)
-    save_as_png(rgb_data, header.width, header.height, output_dir)
+The renderer selects a palette by index (default `0`) and maps each indexed pixel to an RGBA color.
+
+---
+
+## Rendering Pipeline
+
+```
+MPD file
+  │
+  ▼  Lz77Cell.Decompress
+decompressed Cell container bytes
+  │
+  ▼  CellContainer.ParseHeader
+CellHeader { TableOffset, EntryCount, GridWidth, GridHeight }
+  │
+  ├──▶  CellContainer.ParseRecords       →  RecordTable[]
+  ├──▶  CellContainer.ParseChunks        →  Chunk list
+  │         ├──▶  "Map" chunk            →  CellMap { Width, Height, Values[] }
+  │         ├──▶  "TextureParts" chunk   →  TexturePartsContainer
+  │         │         ├── TextureHeader (dimensions, flags)
+  │         │         ├── AtlasBytes (PNG or indexed pixels)
+  │         │         └── Parts[] (UV crops)
+  │         └──▶  "Palette" chunk        →  List<(R,G,B,A)[]>
+  │
+  ▼  MapRenderer.RenderMapImage
+For each tile (index, value) in CellMap.Values:
+  recordIndex = value & 0xFFFF
+  partIndex   = RecordTable[recordIndex].ValueALow16
+  crop        = Parts[partIndex].PixelRect(atlas.Width, atlas.Height)
+  destX       = (index % Width)  * tileWidth
+  destY       = (index / Width)  * tileHeight
+  canvas.DrawBitmap(atlas, crop, destRect)
+  │
+  ▼
+SKBitmap (final rendered map)
 ```
 
-## Known Issues
+---
 
-### Sparse Data
+## C# Usage
 
-S_TIT files contain significant sparse data:
-- ~88% of pixels may be value 0 (background)
-- Remaining pixels distributed across few values
-- Suggests indexed color with transparency
+```csharp
+// Load and render a map file
+var doc = MapRenderer.LoadCellDocument("field01.mpd");
 
-### Format Variations
+// Render with default palette
+SKBitmap? image = MapRenderer.RenderMapImage(doc, paletteIndex: 0);
 
-Different MPD files may have:
-- Different header sizes
-- Varying alignment requirements
-- Optional sections
+// Access individual components
+CellHeader     header  = doc.Header;      // GridWidth, GridHeight, EntryCount
+List<CellChunk> chunks = doc.Chunks;      // Named chunk list
+CellMap?        map    = doc.CellMap;     // Width × Height grid
+TexturePartsContainer? tex = doc.Texture; // Atlas + parts
+List<(byte,byte,byte,byte)[]> pals = doc.Palettes; // Indexed palettes
 
-## Tool Support
+// List all map files in the game directory
+List<string> files = MapRenderer.ListCellFiles(gamePath);
+```
 
-The following tools work with MPD files:
-
-| Tool | Purpose |
-|------|---------|
-| [Dokapon Extract](../tools/dokapon-extract) | Extract MPD cell data |
-| sprite_extractor.py | Extract sprites from MPD |
-| stit_extract.py | Extract S_TIT format files |
-
-## Research Status
-
-{: .note }
-> MPD format documentation is based on analysis of limited sample files. Additional research needed:
-> - Complete format specification for all variants
-> - Compression detection for newer files
-> - Animation/sequence data if present
-> - Relationship with other asset formats
+---
 
 ## See Also
 
-- [SPRANM Format](spranm-format) - Related sprite animation format
-- [Dokapon Extract](../tools/dokapon-extract) - Asset extraction tool
-- [Image Extractor](../tools/image-extractor) - Image extraction utilities
-
+- [LZ77 Compression](lz77-compression) — Cell variant used for MPD decompression
+- [SPRANM Format](spranm-format) — shares the TextureParts / Parts sub-section structure

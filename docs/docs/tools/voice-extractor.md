@@ -1,190 +1,214 @@
 ---
-title: Voice Pack Extractor
+title: Voice Tools
 layout: default
 nav_order: 2
 parent: Tools
 ---
 
-# Voice Pack Extractor
+# Voice Tools
 {: .no_toc }
 
-A tool for extracting voice files from DOKAPON! Sword of Fury's `.pck` format to Opus audio format.
+Browse, play, replace, and repack audio from all four PCK sound archives.
 {: .fs-6 .fw-300 }
 
-## Table of contents
+## Table of Contents
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
+---
+
 ## Overview
 
-The Voice Pack Extractor is a Python script that allows you to:
-- Extract voice files from the game's proprietary `.pck` format
-- Extract the original Opus audio streams
-- Analyze the voice data structure for modding purposes
+Voice Tools gives you full read/write access to the game's PCK audio archives. All four archives are loaded automatically when a game path is set:
 
-## Requirements
+| Archive | File | Contents |
+|---|---|---|
+| BGM | `GameData/app/BGM.pck` | Background music tracks |
+| Sound Effects | `GameData/app/SE.pck` | In-game sound effects |
+| Voice (JP) | `GameData/app/Voice.pck` | Japanese voice acting |
+| Voice (EN) | `GameData/app/Voice-en.pck` | English voice acting |
 
-- Python 3.6 or higher
-- DOKAPON! Sword of Fury (PC Version) installed
-- Basic knowledge of using command line tools
-- VLC, Firefox, or FFmpeg for playing/converting Opus files
+The tool supports both extraction (saving sounds to disk) and replacement (swapping individual entries with new audio), followed by saving the modified archive back as a valid `.pck` file.
 
-## Installation
+---
 
-1. Download the `voice_pck_extractor.py` script
-2. Place it in the same directory as your `Voice-en.pck` file (usually in the game's installation directory)
+## Getting Started
 
-## Usage
+1. Open `DokaponSoFTools.App.exe`.
+2. Set your game directory in the main toolbar.
+3. Navigate to **Voice Tools** in the left panel.
+4. All four PCK archives load automatically into their respective tabs.
 
-1. Open a terminal/command prompt
-2. Navigate to the directory containing both files
-3. Run the script:
-   ```bash
-   python voice_pck_extractor.py
-   ```
+If the game path has not been set, or if you want to work with a PCK file from a different location, click **Browse PCK...** in the toolbar and select a file manually.
 
-The script will:
-1. Analyze the PCK file structure
-2. Create an `extracted_voices` directory
-3. Extract all voice files in their original Opus format
+---
 
-## Output Format
+## The Interface
 
-The extracted files will be saved with the following specifications:
-- Format: Opus audio (.opus)
-- Container: Ogg
-- Original quality preserved
-- Original audio parameters maintained
+### Category Tabs
+
+The main area is a tab control with one tab per PCK archive:
+
+- **BGM** — music tracks, typically larger files
+- **Sound Effects** — short sound effects
+- **Voice (JP)** — Japanese voice lines (file names like `V_0001.voice`)
+- **Voice (EN)** — English voice lines (same naming convention)
+
+Switching tabs switches the active archive. All toolbar actions (Extract All, Replace Selected, Save PCK) operate on whichever tab is currently selected.
+
+### Sound List Columns
+
+Each tab contains a data grid with the following columns:
+
+| Column | Description |
+|---|---|
+| # | Index of the entry within the archive (zero-based) |
+| Name | Internal filename stored in the PCK header |
+| Format | `Opus` if the data begins with `OggS`, otherwise `Raw` |
+| Size | File size of the individual sound entry |
+
+All entries in the base game archives use Opus audio in an Ogg container.
+
+### Audio Playback Bar
+
+A compact playback bar sits at the bottom of the view:
+
+- **Play** — start playback of the selected entry
+- **Stop** — stop playback immediately
+- **Now playing** label — shows the name of the currently playing sound
+
+In-app playback uses the [Concentus](https://github.com/lostromb/concentus) pure C# Opus decoder. No system codec or external player is required.
+
+---
+
+## Playing Sounds
+
+### Double-Click to Play
+
+Double-click any row in the sound list to play that entry immediately. This is the fastest way to audition sounds while scrolling through a large archive.
+
+### Single-Click then Play
+
+Select a row by clicking it once to set it as the active selection, then click **Play** in the bottom bar. Use **Stop** to halt playback at any time.
+
+---
+
+## Extracting Sounds
+
+### Extract All
+
+1. Select the tab for the archive you want to extract.
+2. Click **Extract All** in the toolbar.
+3. Choose an output directory in the folder browser dialog.
+4. All sounds in the current archive are saved to that directory using their internal names (e.g. `V_0001.voice`, `BGM_00.voice`).
+
+Extracted files are written with their original names and raw Ogg/Opus data intact — no transcoding occurs. These files can be played directly in VLC, Firefox, or converted with FFmpeg:
+
+```
+ffmpeg -i V_0001.voice output.mp3
+```
+
+### Extracting Individual Sounds
+
+There is no dedicated single-file extract button. To extract one sound, use Extract All to a temporary directory, then take only the file you need.
+
+---
+
+## Replacing Sounds
+
+1. In the sound list, click the entry you want to replace to select it.
+2. Click **Replace Selected** in the toolbar.
+3. Choose a replacement audio file. Supported input formats:
+   - `.opus` — Ogg Opus (native game format, no conversion needed)
+   - `.ogg` — Ogg Vorbis or Ogg Opus container
+   - `.wav` — PCM WAV (will be stored as raw bytes; best to use Opus)
 
 {: .note }
-The extracted .opus files can be played with VLC media player, Firefox browser, or converted to other formats using FFmpeg.
+For the best result, encode your replacement audio as Ogg Opus before importing. This matches the format already used by the game and keeps file sizes small. The tool accepts other formats as raw bytes, but they may not play correctly in-game if the decoder expects Opus.
+
+The replacement is held in memory. The original `.pck` file on disk is not changed until you click **Save PCK**.
+
+---
+
+## Saving a Modified Archive
+
+After making replacements, click **Save PCK** to write the modified archive to disk:
+
+1. A save dialog appears with the original archive name pre-filled (e.g. `Voice-en.pck`).
+2. Choose an output path — save to a new file name during testing, then replace the original once confirmed.
+3. The tool writes a fully valid PCK file with the updated sound entries and correct internal offsets.
+
+The saved PCK can be dropped directly into the game's `GameData/app/` directory to replace the original.
+
+---
+
+## PCK File Format Reference
+
+The `.pck` format is a simple archive with three sections:
+
+### Filename Section
+
+Begins with the 20-byte ASCII header `"Filename            "`. Contains:
+
+- A 4-byte total section size
+- A table of 4-byte filename offsets (one per entry)
+- Null-terminated ASCII filenames
+
+### Pack Section
+
+Begins with the 20-byte ASCII header `"Pack                "`. Contains:
+
+- A 4-byte section length
+- A 4-byte entry count
+- An info array: one `(offset, size)` pair (8 bytes each) per entry
+- The raw sound data, each entry aligned to 16 bytes
+
+### Alignment
+
+The Filename section is padded to 8-byte alignment before the Pack section begins. Sound data entries within the Pack section are padded to 16-byte alignment.
+
+---
+
+## Practical Example: Replacing an English Voice Line
+
+Suppose you want to replace the English voice line `V_0044.voice` with a custom recording:
+
+1. Record or obtain your replacement audio as `my_recording.opus`.
+2. In Voice Tools, switch to the **Voice (EN)** tab.
+3. Locate `V_0044.voice` in the list (use the scroll bar or sort by name).
+4. Click the row to select it.
+5. Click **Replace Selected** and choose `my_recording.opus`.
+6. Click **Save PCK**, name the output `Voice-en.pck`.
+7. Back up the original `Voice-en.pck` in `GameData/app/`.
+8. Copy your new `Voice-en.pck` to `GameData/app/`.
+9. Launch the game and trigger the relevant dialogue to hear your replacement.
+
+---
 
 ## Troubleshooting
 
-### Common Issues
+**PCK archives do not load automatically**
+Confirm that your game directory contains the folder structure `GameData/app/` and that the PCK files are present. Run the Game Scanner tool to check which key files exist.
 
-1. **File Not Found Error**
-   ```
-   Error: Could not find file at [path]/Voice-en.pck
-   ```
-   - Make sure the script is in the same directory as `Voice-en.pck`
-   - Verify the PCK file name matches exactly
+**Playback produces no sound**
+Check your system's default audio output device. The Concentus decoder writes to the Windows audio session. If the sound entry shows format `Raw` instead of `Opus`, the file may not be standard Ogg Opus and in-app playback may not work.
 
-2. **Invalid Format Error**
-   ```
-   Invalid file format - missing 'Filename' header
-   ```
-   - Ensure you're using the correct PCK file from the game
-   - Verify the file isn't corrupted
+**Save PCK produces a file that crashes the game**
+Ensure replacement audio uses the same Ogg Opus format as the original. Replacing an Opus entry with a WAV or MP3 file stored as raw bytes will result in a PCK that fails to parse at runtime.
 
-### Playing Opus Files
+**"Sound not found" error when replacing**
+The replacement lookup matches by filename stem (without extension). Verify that the selected entry in the list matches the name shown in the toolbar status log.
 
-If you need to convert the Opus files to another format:
-1. Using FFmpeg:
-   ```bash
-   ffmpeg -i input.opus output.mp3
-   ```
-2. Using VLC:
-   - Open VLC
-   - Media -> Convert/Save
-   - Select Opus file and desired output format
-
-## Technical Details
-
-### PCK File Structure
-The `.pck` file format is a proprietary container format used by DOKAPON! Sword of Fury to store voice audio data. Here's the detailed breakdown:
-
-#### Header Section (0x000 - 0x013)
-```
-Filename            X
-```
-- First 8 bytes: ASCII string "Filename"
-- Next 12 bytes: Padding (spaces)
-- Byte 20: ASCII character 'X' (marker)
-
-#### Offset Table (0x014 - varies)
-- Series of 4-byte little-endian integers
-- Each integer represents the absolute offset to a voice file
-- First offset typically starts at 0x5B0
-
-#### Filename Table (varies - 0x5AF)
-- Null-terminated ASCII strings
-- Format: "V_XXXX.voice\0" where XXXX is a zero-padded number
-- Special cases include split files like "V_0044_1.voice"
-
-#### Pack Marker
-- ASCII string "Pack"
-- Located just before voice data starts
-- Used as a separator between headers and data
-
-#### Voice Data Section (0x5B0 - EOF)
-- Opus audio streams in Ogg containers
-- Each stream starts with "OggS" marker
-- Each block starts at its corresponding offset
-- Size determined by next file's offset or EOF
-
-### Extraction Process
-
-1. **Header Validation**
-   ```python
-   header = file.read(16)
-   if not header.startswith(b'Filename'):
-       raise ValueError("Invalid file format")
-   ```
-
-2. **Filename Reading**
-   ```python
-   filenames = []
-   while True:
-       char = file.read(1).decode('ascii', errors='ignore')
-       # Process filename characters
-   ```
-
-3. **Opus Stream Extraction**
-   ```python
-   opus_start = find_opus_header(voice_data)
-   if opus_start >= 0:
-       # Extract Opus stream until next "OggS" marker
-   ```
-
-### Opus Audio Format
-
-The voice data is stored as Opus audio with these characteristics:
-- Container: Ogg
-- Codec: Opus
-- Headers: Standard Opus headers present
-- Quality: Original game quality preserved
-
-### Memory Considerations
-
-- Files are processed in chunks (32KB for initial read, 4KB for streaming)
-- Opus streams are extracted directly without transcoding
-- Efficient handling of large files through streaming
-
-### Error Handling
-
-The tool includes comprehensive error checking for:
-- Invalid file formats
-- Missing Opus streams
-- File access issues
-- Memory constraints
+---
 
 ## Contributing
 
-Found a bug or want to improve the tool? 
-- Report issues on our GitHub repository
-- Submit pull requests with improvements
-- Share your findings on our [Discord](https://discord.gg/HCrYwScDg5)
+Found a bug or want to suggest an improvement? Open an issue on [GitHub](https://github.com/DiNaSoR/dokaponsof) or join the [Discord](https://discord.gg/HCrYwScDg5).
+
+---
 
 ## License
 
-This tool is licensed under The Unlicense. You can:
-- ✅ Use freely for any purpose
-- ✅ Modify and distribute without restrictions
-- ✅ No attribution required
-- ✅ Dedicated to public domain
-- ✅ No warranty provided
-
-See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.
+This tool is part of DokaponSoFTools, released under The Unlicense (public domain). See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.

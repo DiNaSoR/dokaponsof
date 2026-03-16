@@ -1,191 +1,218 @@
 ---
-title: Image Extractor
+title: Asset Extractor
 layout: default
-nav_order: 5
+nav_order: 3
 parent: Tools
 ---
 
-# Image Extractor
+# Asset Extractor
 {: .no_toc }
 
-A tool for extracting and repacking PNG files from .fnt and .spranm formats in DOKAPON! Sword of Fury.
+Browse, preview, and batch-extract all game assets by file type.
 {: .fs-6 .fw-300 }
 
-## Table of contents
+## Table of Contents
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
 
+---
+
 ## Overview
 
-The Image Extractor (all2image.py) is a Python script that allows you to:
-- Extract PNG files from the game's .fnt and .spranm formats
-- Repack modified PNG files back into their original formats
-- Preserve file structure and metadata for accurate repacking
+The Asset Extractor scans a game directory (or any directory you choose) for all supported asset file types and presents them in a tabbed browser. Selecting any file immediately renders a live preview in the right panel — including full map assembly for `.mpd` files and PNG extraction from compressed textures. When you are ready to export, a single click batch-extracts an entire category.
 
-## Requirements
+---
 
-- Python 3.6 or higher
-- DOKAPON! Sword of Fury (PC Version) installed
-- Basic knowledge of using command line tools
+## Supported File Types
 
-## Installation
+| Extension | Type | Preview Method |
+|---|---|---|
+| `.tex` | Texture | PNG extraction; LZ77 decompression if required |
+| `.spranm` | Sprite animation | PNG extraction from embedded texture, or Cell-document rendering |
+| `.fnt` | Font bitmap | PNG extraction |
+| `.mpd` | Map / cell data | MapRenderer: full map assembly + atlas |
 
-1. Download the `all2image.py` script
-2. Place it in the directory containing your .fnt or .spranm files
+---
 
-## Usage
+## Getting Started
 
-The tool provides an interactive menu-driven interface with the following options:
+1. Open `DokaponSoFTools.App.exe`.
+2. Set your game directory in the main toolbar. The Asset Extractor automatically scans the entire game directory tree.
+3. Navigate to **Asset Extractor** in the left panel.
+4. The tab headers update to show file counts and combined sizes (e.g. `Textures (142, 8.3 MB)`).
 
-1. Extract PNG from .fnt files only
-2. Extract PNG from .spranm files only
-3. Extract PNG from both .fnt and .spranm
-4. Reinsert (import) PNG using a JSON metadata file
-5. Exit the program
+To scan a different directory — for example, a folder containing only the files you are working on — click **Browse Input** in the toolbar and select that folder.
 
-### Extracting Images
+---
 
-1. Run the script:
-   ```bash
-   python all2image.py
-   ```
-2. Choose the appropriate extraction option (1-3)
-3. Either:
-   - Press Enter to process all matching files in the current directory
-   - Type specific filenames separated by spaces
+## The Interface
 
-The script will:
-1. Create an output directory (extracted_fnt or extracted_spranm)
-2. Extract PNG files
-3. Generate JSON metadata files for each extraction
+### Category Tabs
 
-### Reimporting Images
+| Tab | Contents |
+|---|---|
+| All (N, size) | Every supported file across all types |
+| Textures (N, size) | `.tex` files |
+| Sprites (N, size) | `.spranm` files |
+| Fonts (N, size) | `.fnt` files |
+| Maps (N, size) | `.mpd` files |
 
-1. Choose option 4 from the main menu
-2. Provide:
-   - Path to the JSON metadata file
-   - Path to your modified PNG file
-   - Output filename (or press Enter for default name)
+The tab header format is `Category (count, total size)`. Switching tabs narrows the file list to that category and updates the active selection for batch extraction.
 
-## Output Structure
+### File List
 
-### Extracted Files
+The left side of the view shows a scrollable list of files in the current tab. Each entry shows the filename. The list is populated recursively, so files from all subdirectories appear together.
+
+### Preview Panel
+
+Selecting any file in the list triggers an automatic preview on the right side:
+
+**For `.mpd` files:**
+The MapRenderer loads the cell document, decompresses it if LZ77-compressed, assembles the texture atlas from all palette entries, and renders the assembled map grid into a single image. If map rendering fails (e.g. the file is a cell-only document with no grid data), the raw atlas is shown instead.
+
+**For `.spranm` files:**
+The extractor looks for an embedded PNG texture. If found, the PNG is displayed directly. If not found, it attempts to load the file as a Cell document and renders it the same way as an `.mpd`. Some `.spranm` files are runtime-only (no embedded texture) and show "No embedded image" in the info panel.
+
+**For `.tex` files:**
+The extractor scans for a PNG signature (`89 50 4E 47`). If found, the PNG is decoded and displayed. If the file begins with `LZ77`, it is decompressed first and then searched for a PNG.
+
+**For `.fnt` files:**
+Same PNG-signature search as `.tex`.
+
+The preview info panel below the image shows:
+
 ```
-extracted_fnt/
-  ├── font1.png
-  ├── font1.png.json
-  ├── font2.png
-  └── font2.png.json
-```
-
-### JSON Metadata Format
-```json
-{
-    "original_file": "/absolute/path/to/original.fnt",
-    "offset": 1234,
-    "length": 5678
-}
+Name: BoxWin.tex
+Size: 14.2 KB
+Path: C:\...\GameData\app\Field\TXD\BoxWin.tex
 ```
 
-## Technical Details
+For cell documents it also shows the record count.
 
-### File Format Analysis
+### Output Directory
 
-#### FNT/SPRANM Structure
-Both file formats embed PNG data with:
-- Standard PNG signature (`89 50 4E 47 0D 0A 1A 0A`)
-- Complete PNG data including IEND chunk
-- Additional game-specific metadata
+Before extracting, set the output directory using the **Browse Output** button in the toolbar. Extracted files are written there, mirroring the subdirectory structure of the source.
 
-### Extraction Process
+---
 
-1. **PNG Signature Detection**
-   ```python
-   PNG_SIGNATURE = b'\x89PNG\r\n\x1a\n'
-   start_index = data.find(PNG_SIGNATURE)
-   ```
+## Extracting Assets
 
-2. **End Marker Location**
-   ```python
-   PNG_IEND = b'IEND\xaeB`\x82'
-   end_index = data.find(PNG_IEND, start_index) + len(PNG_IEND)
-   ```
+### Batch Extract Current Tab
 
-3. **Data Extraction**
-   ```python
-   png_data = data[start_index:end_index]
-   ```
+1. Make sure an output directory is set.
+2. Switch to the tab you want to extract (Textures, Sprites, Fonts, Maps, or All).
+3. Click **Extract All** in the toolbar.
+4. A progress log updates in the main status log panel at the bottom of the application window.
 
-### Import Process
+The extraction result reports: `Extraction complete: N succeeded, M failed`.
 
-The tool handles size differences between original and modified PNGs:
+### What Gets Written
 
-1. **Smaller Files**
-   - Adds null byte padding to match original size
-   - Preserves file structure integrity
+Each supported file is processed as follows:
 
-2. **Larger Files**
-   - Issues warning about size difference
-   - Truncates data to fit original space
-   - Prevents buffer overflows
+- **`.tex`** — the embedded PNG is extracted and saved as `filename.png`. LZ77-compressed files are decompressed transparently.
+- **`.spranm`** — the embedded PNG texture is extracted and saved as `filename.png`.
+- **`.mpd`** — the assembled map image is rendered and saved as `filename.png`.
+- **`.fnt`** — the embedded PNG is extracted and saved as `filename.png`.
 
-### Memory Management
+Files that contain no extractable image (e.g. runtime-only `.spranm` without an embedded texture) are counted in the failed total and skipped.
 
-- Streams large files in chunks
-- Efficient byte manipulation
-- Minimal memory footprint
+---
 
-## Best Practices
+## Game Directory Structure
 
-1. **Before Extraction**
-   - Back up original files
-   - Ensure sufficient disk space
-   - Verify file permissions
+Understanding where assets live helps when targeting specific categories:
 
-2. **Image Modification**
-   - Maintain original PNG dimensions
-   - Keep file size similar to original
-   - Test modifications thoroughly
+```
+GameData/app/
+  Battle/
+    Effect/        # Battle spell and effect animations (.spranm)
+    Ability/       # Character ability assets
+    Magic/         # Magic animations (.spranm)
+  Field/
+    Face/          # Character face animations (.spranm)
+    Map/           # Map cell data (.mpd)
+    TXD/           # UI textures (.tex)
+    TXD/en/        # English UI texture variants
+    Guidebook/     # In-game guide page images (.tex)
+  Font/            # Game fonts (.fnt)
+  Title/           # Title screen assets (.tex, .spranm)
+BGM.pck            # Background music
+SE.pck             # Sound effects
+Voice.pck          # Japanese voice
+Voice-en.pck       # English voice
+```
 
-3. **Reimporting**
-   - Always work with copies
-   - Keep original JSON metadata
-   - Verify successful imports
+---
+
+## Preview Limitations
+
+Not all files produce a visible preview:
+
+| Situation | Displayed |
+|---|---|
+| `.spranm` with embedded PNG | PNG texture shown |
+| `.spranm` as Cell document | Assembled atlas shown |
+| `.spranm` runtime-only | "No embedded image (raw sprite data)" |
+| `.mpd` with full map data | Assembled map shown |
+| `.mpd` atlas-only | Raw texture atlas shown |
+| `.mpd` with no texture | No preview |
+| `.tex` with PNG | PNG shown |
+| `.tex` compressed only | PNG after decompression |
+| `.fnt` with PNG | PNG shown |
+
+A missing preview does not mean the file is corrupt — it may simply be a data container without an embedded image (e.g. a `.spranm` that references an external atlas at runtime).
+
+---
+
+## Practical Example: Extracting All UI Textures
+
+1. In the main toolbar, set your game directory.
+2. Navigate to Asset Extractor and click **Textures** tab.
+3. Confirm the tab header shows a reasonable count (the base game has over 100 `.tex` files).
+4. Click **Browse Output** and choose a destination folder such as `C:\DokaponMods\textures`.
+5. Click **Extract All**.
+6. Open your destination folder. You will find PNG files corresponding to every texture, ready for editing in any image editor.
+
+To reimport a modified texture, you must patch the `.tex` file directly (replacing the embedded PNG bytes), which is a manual operation described in the [technical documentation](../technical/).
+
+---
+
+## Practical Example: Previewing a Map
+
+1. Switch to the **Maps** tab.
+2. Scroll to a file such as `MAP_01.mpd` and click it.
+3. The preview panel renders the assembled map — all tiles laid out on the grid using the first available palette.
+4. The info panel shows grid dimensions, record count, palette count, and texture size.
+
+To export the rendered map as a high-resolution PNG, use the **Map Explorer** tool (see [Additional Tools](dokapon-extract#map-explorer)), which supports up to 4096-pixel export resolution and palette switching.
+
+---
 
 ## Troubleshooting
 
-### Common Issues
+**Tab headers show 0 files**
+Confirm the game path or input directory is set correctly and that `DOKAPON! Sword of Fury` files are present. The Asset Extractor only counts `.tex`, `.spranm`, `.fnt`, and `.mpd` files. Other extensions are ignored.
 
-1. **PNG Not Found**
-   ```
-   [file.fnt] PNG signature not found.
-   ```
-   - Verify file is correct format
-   - Check file isn't corrupted
+**Preview shows nothing for a .tex file**
+The texture may be a raw data block without an embedded PNG, or the LZ77 decompression may have failed due to file corruption. Check the status log for error messages.
 
-2. **Import Size Mismatch**
-   ```
-   Warning: New PNG data is larger than the original space
-   ```
-   - Reduce modified PNG file size
-   - Optimize PNG compression
+**Extraction reports many failures**
+Runtime-only `.spranm` files (those without embedded PNG textures) always fail extraction since there is no image to write. This is expected — the failure count includes these files.
+
+**Output files are missing subdirectory structure**
+All extracted files are written flat into the output directory. Subdirectory mirroring is not currently implemented.
+
+---
 
 ## Contributing
 
-Found a bug or want to improve the tool?
-- Report issues on GitHub
-- Submit pull requests with improvements
-- Share your findings on our [Discord](https://discord.gg/HCrYwScDg5)
+Found a bug or want to suggest an improvement? Open an issue on [GitHub](https://github.com/DiNaSoR/dokaponsof) or join the [Discord](https://discord.gg/HCrYwScDg5).
+
+---
 
 ## License
 
-This tool is licensed under The Unlicense. You can:
-- ✅ Use freely for any purpose
-- ✅ Modify and distribute without restrictions
-- ✅ No attribution required
-- ✅ Dedicated to public domain
-- ✅ No warranty provided
-
-See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details. 
+This tool is part of DokaponSoFTools, released under The Unlicense (public domain). See the [LICENSE](https://github.com/DiNaSoR/dokaponsof/blob/main/LICENSE) file for full details.
