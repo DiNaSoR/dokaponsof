@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             xmlns:adc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+             x:Class="DokaponSoFTools.App.Views.GameScannerView"
+             x:DataType="vm:GameScannerViewModel">
+
+    <Grid RowDefinitions="Auto,*" Margin="0">
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,8">
+            <Button Content="🔍 Scan" Command="{Binding ScanGameCommand}" />
+            <Button Content="💾 Export Report" Command="{Binding ExportReportCommand}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="320,*">
+            <ctrl:MenuWindow Grid.Column="0" Header="FILE TYPES" Margin="0,0,8,0">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding FileStats}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:FileStat">
+                                <Grid ColumnDefinitions="*,Auto,Auto" Margin="2,3">
+                                    <TextBlock Grid.Column="0" Text="{Binding Extension}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Count}" Margin="10,0"
+                                               Foreground="{DynamicResource ForegroundMutedBrush}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding SizeStr}"
+                                               Foreground="{DynamicResource AccentGoldBrush}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </ctrl:MenuWindow>
+
+            <ctrl:MenuWindow Grid.Column="1" Header="SCAN REPORT">
+                <Panel>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <SelectableTextBlock Text="{Binding ScanReport}"
+                                             FontFamily="Cascadia Code,Consolas,monospace"
+                                             FontSize="12" />
+                    </ScrollViewer>
+                    <!-- Empty state -->
+                    <TextBlock Text="Set a game directory to scan."
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="{DynamicResource ForegroundMutedBrush}"
+                               IsVisible="{Binding ScanReport, Converter={x:Static adc:StringConverters.IsNullOrEmpty}}" />
+                </Panel>
+            </ctrl:MenuWindow>
+        </Grid>
+    </Grid>
+
+</UserControl>

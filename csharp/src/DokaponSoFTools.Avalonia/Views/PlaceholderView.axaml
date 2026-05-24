@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.PlaceholderView"
+             x:DataType="vm:PlaceholderViewModel">
+
+    <ctrl:MenuWindow Header="{Binding ToolName}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="14">
+            <TextBlock Text="🚧" FontSize="52" HorizontalAlignment="Center" />
+            <TextBlock Text="{Binding ToolName}" FontSize="22" FontWeight="Bold"
+                       HorizontalAlignment="Center" Foreground="{DynamicResource AccentGoldBrush}" />
+            <TextBlock Text="This tool is being rebuilt in the new interface."
+                       Foreground="{DynamicResource ForegroundMutedBrush}" HorizontalAlignment="Center" />
+        </StackPanel>
+    </ctrl:MenuWindow>
+
+</UserControl>

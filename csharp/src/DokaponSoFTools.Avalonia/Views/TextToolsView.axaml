@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.TextToolsView"
+             x:DataType="vm:TextToolsViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,6">
+            <Button Content="📥 Extract" Command="{Binding ExtractTextsCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="📤 Export" Command="{Binding ExportTextsCommand}" />
+            <Button Content="🔁 Import" Command="{Binding ImportTextsCommand}" IsEnabled="{Binding !IsBusy}" />
+        </StackPanel>
+
+        <!-- Search + stats -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="2,0,2,6">
+            <TextBox Grid.Column="0" Text="{Binding SearchFilter}" Watermark="Search decoded or raw text…" />
+            <TextBlock Grid.Column="1" Text="{Binding StatsText}" VerticalAlignment="Center" Margin="10,0,0,0"
+                       Foreground="{DynamicResource ForegroundMutedBrush}" />
+        </Grid>
+
+        <!-- Entries + preview -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,6,360">
+            <ctrl:MenuWindow Grid.Column="0" Header="TEXT ENTRIES" Padding="6">
+                <DockPanel LastChildFill="True">
+                    <TabStrip DockPanel.Dock="Top" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Margin="0,0,0,6">
+                        <TabStripItem Content="{Binding AllTabHeader}" />
+                        <TabStripItem Content="{Binding DialogTabHeader}" />
+                        <TabStripItem Content="{Binding LabelsTabHeader}" />
+                        <TabStripItem Content="{Binding HudTabHeader}" />
+                        <TabStripItem Content="{Binding SystemTabHeader}" />
+                    </TabStrip>
+                    <DataGrid x:CompileBindings="False" ItemsSource="{Binding CurrentEntries}"
+                              SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
+                              AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Offset" Binding="{Binding Raw.Offset}" Width="80" />
+                            <DataGridTextColumn Header="Cat" Binding="{Binding Category}" Width="70" />
+                            <DataGridTextColumn Header="Text" Binding="{Binding CleanText}" Width="*" />
+                            <DataGridTextColumn Header="Bytes" Binding="{Binding ByteLength}" Width="60" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+            <ctrl:MenuWindow Grid.Column="2" Header="PREVIEW">
+                <Grid RowDefinitions="*,*">
+                    <ScrollViewer Grid.Row="0">
+                        <SelectableTextBlock Text="{Binding DecodedPreview}" FontFamily="Cascadia Code,Consolas,monospace"
+                                             FontSize="12" TextWrapping="Wrap" />
+                    </ScrollViewer>
+                    <ScrollViewer Grid.Row="1" Margin="0,8,0,0">
+                        <SelectableTextBlock Text="{Binding RawPreview}" FontFamily="Cascadia Code,Consolas,monospace"
+                                             FontSize="12" TextWrapping="Wrap"
+                                             Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    </ScrollViewer>
+                </Grid>
+            </ctrl:MenuWindow>
+        </Grid>
+    </Grid>
+
+</UserControl>

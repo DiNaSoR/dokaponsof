@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Assembly/folder is *.Avalonia for clarity, but the namespace is
+         DokaponSoFTools.App to avoid clashing with the framework Avalonia.*
+         namespaces and to keep ported ViewModel namespaces unchanged. -->
+    <RootNamespace>DokaponSoFTools.App</RootNamespace>
+    <AssemblyName>DokaponSoFTools.Avalonia</AssemblyName>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyTitle>DOKAPON! Sword of Fury Tools</AssemblyTitle>
+    <Version>0.5.0</Version>
+    <Authors>DiNaSoR</Authors>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <!-- Cross-platform publish: dotnet publish -c Release -r <win-x64|osx-x64|osx-arm64|linux-x64>
+       produces a self-contained single-file bundle. Kept RID-conditioned so plain
+       dev builds stay framework-dependent and fast. -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != ''">
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <!-- Extract bundled content (incl. native libs like OpenAL Soft / SkiaSharp)
+         so third-party native loaders such as Silk.NET resolve them at runtime. -->
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.*" />
+    <PackageReference Include="Avalonia.Skia" Version="11.2.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.*" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.*" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+    <!-- Live AXAML hot reload (dev only — no-op / excluded in Release) -->
+    <PackageReference Include="HotAvalonia" Version="3.*" PrivateAssets="All" />
+    <!-- Audio: Opus (Concentus) + Vorbis (NVorbis) decode -> OpenAL Soft output -->
+    <PackageReference Include="Concentus" Version="2.2.2" />
+    <PackageReference Include="Concentus.Oggfile" Version="1.0.6" />
+    <PackageReference Include="NVorbis" Version="0.10.*" />
+    <PackageReference Include="Silk.NET.OpenAL" Version="2.*" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.*" />
+    <!-- DevTools (F12) only in Debug builds -->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.*" Condition="'$(Configuration)' == 'Debug'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DokaponSoFTools.Core\DokaponSoFTools.Core.csproj" />
+  </ItemGroup>
+
+</Project>

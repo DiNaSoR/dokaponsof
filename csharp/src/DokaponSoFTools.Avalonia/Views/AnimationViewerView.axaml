@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.AnimationViewerView"
+             x:DataType="vm:AnimationViewerViewModel"
+             Focusable="True">
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Space" Command="{Binding TogglePlayStopCommand}" />
+        <KeyBinding Gesture="Left" Command="{Binding PreviousFrameCommand}" />
+        <KeyBinding Gesture="Right" Command="{Binding NextFrameCommand}" />
+        <KeyBinding Gesture="Ctrl+C" Command="{Binding SaveFrameCommand}" />
+    </UserControl.KeyBindings>
+
+    <Grid ColumnDefinitions="260,6,*">
+
+        <!-- File list -->
+        <ctrl:MenuWindow Grid.Column="0" Header="ANIMATIONS" Padding="6">
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Top" Content="🔍 Scan" Command="{Binding ScanFilesCommand}"
+                        HorizontalAlignment="Stretch" Margin="0,0,0,6" />
+                <TextBox DockPanel.Dock="Top" Text="{Binding SearchFilter}"
+                         Watermark="Search animations…" Margin="0,0,0,6" />
+                <ListBox ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}"
+                         Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:SpranmFileItem">
+                            <TextBlock Text="{Binding Name}" FontSize="12" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </ctrl:MenuWindow>
+
+        <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+        <!-- Player -->
+        <ctrl:MenuWindow Grid.Column="2" Header="PLAYER" Padding="0">
+            <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+
+                <!-- Export toolbar -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="6" Margin="8,8,8,0">
+                    <Button Content="Export GIF" Command="{Binding ExportGifCommand}" Padding="10,4" />
+                    <Button Content="Export Atlas" Command="{Binding ExportAtlasCommand}" Padding="10,4" />
+                    <Button Content="Save Frame" Command="{Binding SaveFrameCommand}" Padding="10,4" />
+                </StackPanel>
+
+                <!-- Frame display -->
+                <Border Grid.Row="1" Margin="8" CornerRadius="4" ClipToBounds="True"
+                        Background="{DynamicResource PreviewBackdropBrush}">
+                    <ctrl:SkiaImage Source="{Binding CurrentFrame}" ResetViewOnSourceChange="False" />
+                </Border>
+
+                <!-- Timeline scrubber -->
+                <Slider Grid.Row="2" Margin="12,0,12,0"
+                        Minimum="0" Maximum="{Binding MaxFrameIndex}"
+                        Value="{Binding CurrentSequenceIndex, Mode=TwoWay}"
+                        IsSnapToTickEnabled="True" TickFrequency="1" />
+
+                <!-- Playback controls -->
+                <Grid Grid.Row="3" ColumnDefinitions="Auto,*,Auto" Margin="12,4,12,4">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
+                        <Button Content="⏮ Prev" Command="{Binding PreviousFrameCommand}" Padding="10,4"
+                                ToolTip.Tip="Previous frame (Left)" />
+                        <Button Content="▶ Play" Command="{Binding TogglePlayStopCommand}" Padding="14,4"
+                                IsVisible="{Binding !IsPlaying}" ToolTip.Tip="Play (Space)" />
+                        <Button Content="⏸ Stop" Command="{Binding TogglePlayStopCommand}" Padding="14,4"
+                                IsVisible="{Binding IsPlaying}" ToolTip.Tip="Stop (Space)" />
+                        <Button Content="⏭ Next" Command="{Binding NextFrameCommand}" Padding="10,4"
+                                ToolTip.Tip="Next frame (Right)" />
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="1" Text="{Binding FrameLabel}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMutedBrush}" />
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Text="FPS:" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource ForegroundMutedBrush}" />
+                        <Slider Minimum="1" Maximum="30" Value="{Binding Fps, Mode=TwoWay}" Width="90"
+                                VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" />
+                        <TextBlock Text="{Binding Fps}" Width="22" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Info -->
+                <TextBlock Grid.Row="4" Text="{Binding AnimInfo}" Margin="12,2,12,8"
+                           FontSize="11" TextWrapping="Wrap"
+                           Foreground="{DynamicResource ForegroundMutedBrush}" />
+            </Grid>
+        </ctrl:MenuWindow>
+    </Grid>
+
+</UserControl>

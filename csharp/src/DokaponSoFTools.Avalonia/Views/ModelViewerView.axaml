@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.ModelViewerView"
+             x:DataType="vm:ModelViewerViewModel">
+
+    <Grid ColumnDefinitions="260,6,*">
+
+        <!-- File list -->
+        <ctrl:MenuWindow Grid.Column="0" Header="3D MODELS" Padding="6">
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Top" Content="🔍 Scan" Command="{Binding ScanFilesCommand}"
+                        HorizontalAlignment="Stretch" Margin="0,0,0,6" />
+                <TextBox DockPanel.Dock="Top" Text="{Binding SearchFilter}" Watermark="Search models…" Margin="0,0,0,6" />
+                <ListBox ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ModelFileItem">
+                            <TextBlock Text="{Binding Name}" FontSize="12" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </ctrl:MenuWindow>
+
+        <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+        <!-- Viewer -->
+        <ctrl:MenuWindow Grid.Column="2" Header="MODEL VIEWER" Padding="6">
+            <Grid RowDefinitions="*,Auto,Auto">
+                <Border Grid.Row="0" Background="{DynamicResource PreviewBackdropBrush}" CornerRadius="4" ClipToBounds="True">
+                    <ctrl:SkiaImage Source="{Binding CurrentImage}" AllowZoom="False"
+                                    ResetViewOnSourceChange="False" ShowCheckerboard="False" />
+                </Border>
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,8,0,4" VerticalAlignment="Center">
+                    <TextBlock Grid.Column="0" Text="Yaw" VerticalAlignment="Center" Margin="0,0,6,0"
+                               Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    <Slider Grid.Column="1" Minimum="0" Maximum="360" Value="{Binding Yaw, Mode=TwoWay}" />
+                    <TextBlock Grid.Column="2" Text="Pitch" VerticalAlignment="Center" Margin="10,0,6,0"
+                               Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    <Slider Grid.Column="3" Minimum="-90" Maximum="90" Value="{Binding Pitch, Mode=TwoWay}" />
+                    <TextBlock Grid.Column="4" Text="Zoom" VerticalAlignment="Center" Margin="10,0,6,0"
+                               Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    <Slider Grid.Column="5" Minimum="0.2" Maximum="4" Value="{Binding Zoom, Mode=TwoWay}" />
+                </Grid>
+
+                <TextBlock Grid.Row="2" Text="{Binding Info}" FontSize="11"
+                           Foreground="{DynamicResource ForegroundMutedBrush}" />
+            </Grid>
+        </ctrl:MenuWindow>
+    </Grid>
+
+</UserControl>

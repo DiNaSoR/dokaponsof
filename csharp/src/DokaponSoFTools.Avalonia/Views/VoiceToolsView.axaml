@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.VoiceToolsView"
+             x:DataType="vm:VoiceToolsViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,8">
+            <Button Content="🔍 Scan" Command="{Binding ScanPckFilesCommand}" />
+            <Button Content="📤 Extract All" Command="{Binding ExtractAllCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="🔁 Replace Selected" Command="{Binding ReplaceSelectedCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="💾 Save PCK" Command="{Binding SavePckCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="📂 Browse PCK…" Command="{Binding BrowsePckCommand}" IsEnabled="{Binding !IsBusy}" />
+        </StackPanel>
+
+        <!-- Category tabs -->
+        <ctrl:MenuWindow Grid.Row="1" Header="SOUNDS" Padding="0">
+            <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Padding="4">
+                <TabItem Header="BGM">
+                    <DataGrid x:CompileBindings="False" ItemsSource="{Binding BgmSounds}"
+                              SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              DoubleTapped="OnSoundDoubleTapped">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="50" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Format" Binding="{Binding Format}" Width="80" />
+                            <DataGridTextColumn Header="Size" Binding="{Binding SizeStr}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Sound Effects">
+                    <DataGrid x:CompileBindings="False" ItemsSource="{Binding SeSounds}"
+                              SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              DoubleTapped="OnSoundDoubleTapped">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="50" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Format" Binding="{Binding Format}" Width="80" />
+                            <DataGridTextColumn Header="Size" Binding="{Binding SizeStr}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Voice (JP)">
+                    <DataGrid x:CompileBindings="False" ItemsSource="{Binding VoiceSounds}"
+                              SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              DoubleTapped="OnSoundDoubleTapped">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="50" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Format" Binding="{Binding Format}" Width="80" />
+                            <DataGridTextColumn Header="Size" Binding="{Binding SizeStr}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Voice (EN)">
+                    <DataGrid x:CompileBindings="False" ItemsSource="{Binding VoiceEnSounds}"
+                              SelectedItem="{Binding SelectedSound, Mode=TwoWay}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              DoubleTapped="OnSoundDoubleTapped">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="50" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Format" Binding="{Binding Format}" Width="80" />
+                            <DataGridTextColumn Header="Size" Binding="{Binding SizeStr}" Width="90" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+        </ctrl:MenuWindow>
+
+        <!-- Audio transport -->
+        <Border Grid.Row="2" Margin="2,8,2,2" Padding="10,8" CornerRadius="6"
+                Background="{DynamicResource WindowBorderOuterBrush}">
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button Content="▶ Play" Command="{Binding PlaySelectedCommand}" Padding="14,4" />
+                <Button Content="⏹ Stop" Command="{Binding StopPlaybackCommand}" Padding="14,4" />
+                <TextBlock Text="{Binding NowPlaying}" VerticalAlignment="Center" Margin="8,0,0,0"
+                           Foreground="{DynamicResource AccentGoldBrush}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>

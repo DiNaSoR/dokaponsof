@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.HexEditorView"
+             x:DataType="vm:HexEditorViewModel">
+
+    <Grid RowDefinitions="Auto,*,140">
+
+        <!-- Toolbar (target exe derives from the top-bar game path) -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,6">
+            <Button Content="➕ Add Files" Command="{Binding AddHexFilesCommand}" />
+            <Button Content="📁 Add Folder" Command="{Binding AddHexFolderCommand}" />
+            <Button Content="🗑 Remove Unchecked" Command="{Binding RemoveSelectedCommand}" />
+            <Button Content="⚙ Apply Patches" Command="{Binding ApplyPatchesCommand}" IsEnabled="{Binding !IsBusy}" />
+            <CheckBox Content="Backup" IsChecked="{Binding CreateBackup}" VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center" Margin="10,0,0,0">
+                <TextBlock Text="Patches:" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                <TextBlock Text="{Binding TotalPatches}" Foreground="{DynamicResource AccentGoldBrush}" />
+                <TextBlock Text="Bytes:" Margin="8,0,0,0" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                <TextBlock Text="{Binding TotalBytes}" Foreground="{DynamicResource AccentGoldBrush}" />
+                <TextBlock Text="Files:" Margin="8,0,0,0" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                <TextBlock Text="{Binding SourceFileCount}" Foreground="{DynamicResource AccentGoldBrush}" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Files + patches -->
+        <Grid Grid.Row="1" ColumnDefinitions="260,6,*">
+            <ctrl:MenuWindow Grid.Column="0" Header="HEX FILES" Padding="6">
+                <ListBox ItemsSource="{Binding HexFiles}" Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:HexFileItem">
+                            <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+            <ctrl:MenuWindow Grid.Column="2" Header="PATCHES" Padding="0">
+                <DataGrid x:CompileBindings="False" ItemsSource="{Binding Patches}"
+                          AutoGenerateColumns="False" IsReadOnly="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="File" Binding="{Binding File}" Width="180" />
+                        <DataGridTextColumn Header="Offset" Binding="{Binding Offset}" Width="110" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="80" />
+                        <DataGridTextColumn Header="Preview" Binding="{Binding Preview}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ctrl:MenuWindow>
+        </Grid>
+
+        <!-- Conflicts -->
+        <ctrl:MenuWindow Grid.Row="2" Header="CONFLICTS" Padding="0" Margin="0,8,0,0">
+            <DataGrid x:CompileBindings="False" ItemsSource="{Binding Conflicts}"
+                      AutoGenerateColumns="False" IsReadOnly="True" Margin="4">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="120" />
+                    <DataGridTextColumn Header="File 1" Binding="{Binding File1}" Width="*" />
+                    <DataGridTextColumn Header="File 2" Binding="{Binding File2}" Width="*" />
+                    <DataGridTextColumn Header="Offset" Binding="{Binding Offset}" Width="110" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ctrl:MenuWindow>
+    </Grid>
+
+</UserControl>

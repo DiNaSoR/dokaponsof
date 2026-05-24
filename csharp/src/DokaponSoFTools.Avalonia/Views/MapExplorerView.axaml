@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.MapExplorerView"
+             x:DataType="vm:MapExplorerViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,6">
+            <Button Content="🔍 Scan" Command="{Binding ScanMapFilesCommand}" />
+            <Button Content="🖼 Export Map" Command="{Binding ExportMapImageCommand}" />
+            <Button Content="🧩 Export Atlas" Command="{Binding ExportAtlasImageCommand}" />
+            <Button Content="📄 Export Report" Command="{Binding ExportReportCommand}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="240,6,*,6,300">
+            <!-- File list -->
+            <ctrl:MenuWindow Grid.Column="0" Header="MAPS" Padding="6">
+                <ListBox ItemsSource="{Binding MapFiles}" SelectedItem="{Binding SelectedMapFile}"
+                         Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MapFileItem">
+                            <TextBlock Text="{Binding Name}" FontSize="12" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+            <!-- Render -->
+            <ctrl:MenuWindow Grid.Column="2" Header="RENDER" Padding="6">
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
+                        <TextBlock Text="Palette:" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource ForegroundMutedBrush}" />
+                        <Slider Width="180" Minimum="0" Maximum="{Binding PaletteCount}"
+                                Value="{Binding SelectedPalette, Mode=TwoWay}"
+                                IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding SelectedPalette}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AccentGoldBrush}" />
+                    </StackPanel>
+                    <TabControl Padding="2">
+                        <TabItem Header="Map">
+                            <Border Background="{DynamicResource PreviewBackdropBrush}" CornerRadius="4" ClipToBounds="True">
+                                <ctrl:SkiaImage Source="{Binding MapImage}" />
+                            </Border>
+                        </TabItem>
+                        <TabItem Header="Atlas">
+                            <Border Background="{DynamicResource PreviewBackdropBrush}" CornerRadius="4" ClipToBounds="True">
+                                <ctrl:SkiaImage Source="{Binding AtlasImage}" />
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </DockPanel>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="3" Width="6" Background="Transparent" />
+
+            <!-- Info -->
+            <ctrl:MenuWindow Grid.Column="4" Header="INFO">
+                <ScrollViewer>
+                    <SelectableTextBlock Text="{Binding ReportText}" FontFamily="Cascadia Code,Consolas,monospace"
+                                         FontSize="12" />
+                </ScrollViewer>
+            </ctrl:MenuWindow>
+        </Grid>
+    </Grid>
+
+</UserControl>

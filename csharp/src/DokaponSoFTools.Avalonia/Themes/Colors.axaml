@@ -1,0 +1,77 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =====================================================================
+         Modern dark "workshop" palette
+         Flat charcoal surfaces, subtle hairline borders, bright blue accent.
+         Brush KEYS are kept stable so views need no changes.
+         ===================================================================== -->
+
+    <!-- Base / surfaces -->
+    <Color x:Key="AppBackgroundColor">#FF15171C</Color>   <!-- window backdrop -->
+    <Color x:Key="SurfaceColor">#FF1E222A</Color>          <!-- cards / panels -->
+    <Color x:Key="ChromeColor">#FF101318</Color>           <!-- top bar / toolbars / recessed -->
+    <Color x:Key="BorderColor">#FF2D333D</Color>           <!-- hairline borders -->
+
+    <!-- Foreground -->
+    <Color x:Key="ForegroundColor">#FFE6E8EC</Color>
+    <Color x:Key="ForegroundMutedColor">#FF8B92A0</Color>
+
+    <!-- Accent (bright modern blue) -->
+    <Color x:Key="AccentColor">#FF3B9EFF</Color>
+    <Color x:Key="AccentDimColor">#FF2E86E0</Color>
+
+    <!-- Interaction -->
+    <Color x:Key="SelectionFillColor">#FF22303F</Color>    <!-- blue-tinted selected row -->
+    <Color x:Key="HoverFillColor">#14FFFFFF</Color>        <!-- ~8% white -->
+    <Color x:Key="ButtonBaseColor">#FF272D37</Color>       <!-- raised button -->
+    <Color x:Key="ButtonHoverColor">#FF313A47</Color>
+    <Color x:Key="ButtonPressedColor">#FF1A1F27</Color>
+    <Color x:Key="InputFillColor">#FF14171C</Color>
+
+    <!-- Preview backdrop (near-black, for pixel-art clarity) -->
+    <Color x:Key="PreviewBackdropColor">#FF0E0F13</Color>
+
+    <!-- Status -->
+    <Color x:Key="InfoColor">#FFB8C0CC</Color>
+    <Color x:Key="SuccessColor">#FF46C46A</Color>
+    <Color x:Key="WarningColor">#FFE0B341</Color>
+    <Color x:Key="ErrorColor">#FFE5534B</Color>
+
+    <Color x:Key="RowAltColor">#0AFFFFFF</Color>
+
+    <!-- Override Fluent's accent so DataGrid/Tabs/Slider/CheckBox/ScrollBar match -->
+    <Color x:Key="SystemAccentColor">#FF3B9EFF</Color>
+    <Color x:Key="SystemAccentColorLight1">#FF5DB0FF</Color>
+    <Color x:Key="SystemAccentColorLight2">#FF7EC2FF</Color>
+    <Color x:Key="SystemAccentColorLight3">#FF9FD3FF</Color>
+    <Color x:Key="SystemAccentColorDark1">#FF2E86E0</Color>
+    <Color x:Key="SystemAccentColorDark2">#FF236FBF</Color>
+    <Color x:Key="SystemAccentColorDark3">#FF18589E</Color>
+
+    <!-- =====================================================================
+         Brushes (stable keys)
+         ===================================================================== -->
+    <SolidColorBrush x:Key="AppBackgroundBrush"     Color="{StaticResource AppBackgroundColor}" />
+    <SolidColorBrush x:Key="WindowFillBrush"        Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="WindowBorderOuterBrush" Color="{StaticResource ChromeColor}" />
+    <SolidColorBrush x:Key="WindowBorderInnerBrush" Color="{StaticResource BorderColor}" />
+    <SolidColorBrush x:Key="ForegroundBrush"        Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="ForegroundMutedBrush"   Color="{StaticResource ForegroundMutedColor}" />
+    <SolidColorBrush x:Key="AccentGoldBrush"        Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentGoldDimBrush"     Color="{StaticResource AccentDimColor}" />
+    <SolidColorBrush x:Key="SelectionFillBrush"     Color="{StaticResource SelectionFillColor}" />
+    <SolidColorBrush x:Key="HoverFillBrush"         Color="{StaticResource HoverFillColor}" />
+    <SolidColorBrush x:Key="ButtonBaseBrush"        Color="{StaticResource ButtonBaseColor}" />
+    <SolidColorBrush x:Key="ButtonHoverBrush"       Color="{StaticResource ButtonHoverColor}" />
+    <SolidColorBrush x:Key="ButtonPressedBrush"     Color="{StaticResource ButtonPressedColor}" />
+    <SolidColorBrush x:Key="InputFillBrush"         Color="{StaticResource InputFillColor}" />
+    <SolidColorBrush x:Key="PreviewBackdropBrush"   Color="{StaticResource PreviewBackdropColor}" />
+    <SolidColorBrush x:Key="InfoBrush"              Color="{StaticResource InfoColor}" />
+    <SolidColorBrush x:Key="SuccessBrush"           Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="WarningBrush"           Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="ErrorBrush"             Color="{StaticResource ErrorColor}" />
+    <SolidColorBrush x:Key="RowAltBrush"            Color="{StaticResource RowAltColor}" />
+    <SolidColorBrush x:Key="AccentBrush"            Color="{StaticResource AccentColor}" />
+
+</ResourceDictionary>

@@ -1,0 +1,73 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.AssetExtractorView"
+             x:DataType="vm:AssetExtractorViewModel">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="FileItemTemplate" x:DataType="vm:FileItem">
+            <Grid ColumnDefinitions="*,Auto,Auto" Margin="2,2">
+                <TextBlock Grid.Column="0" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="1" Text="{Binding Extension}" Margin="8,0"
+                           Foreground="{DynamicResource ForegroundMutedBrush}" />
+                <TextBlock Grid.Column="2" Text="{Binding SizeStr}"
+                           Foreground="{DynamicResource AccentGoldBrush}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Toolbar (game path is the single source in the top bar; Extract All prompts for a destination) -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,8">
+            <Button Content="🔍 Scan" Command="{Binding ScanFilesCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="📤 Extract All" Command="{Binding ExtractAllCommand}" IsEnabled="{Binding !IsBusy}" />
+            <TextBlock Text="Working…" VerticalAlignment="Center" Margin="6,0,0,0"
+                       Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsBusy}" />
+        </StackPanel>
+
+        <!-- Files + preview -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,6,340">
+            <ctrl:MenuWindow Grid.Column="0" Header="FILES" Padding="0">
+                <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Padding="4">
+                    <TabItem Header="{Binding AllTabHeader}">
+                        <ListBox ItemsSource="{Binding AllFiles}" SelectedItem="{Binding SelectedFile}"
+                                 ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
+                    </TabItem>
+                    <TabItem Header="{Binding TexTabHeader}">
+                        <ListBox ItemsSource="{Binding TexFiles}" SelectedItem="{Binding SelectedFile}"
+                                 ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
+                    </TabItem>
+                    <TabItem Header="{Binding SpranmTabHeader}">
+                        <ListBox ItemsSource="{Binding SpranmFiles}" SelectedItem="{Binding SelectedFile}"
+                                 ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
+                    </TabItem>
+                    <TabItem Header="{Binding FntTabHeader}">
+                        <ListBox ItemsSource="{Binding FntFiles}" SelectedItem="{Binding SelectedFile}"
+                                 ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
+                    </TabItem>
+                    <TabItem Header="{Binding MpdTabHeader}">
+                        <ListBox ItemsSource="{Binding MpdFiles}" SelectedItem="{Binding SelectedFile}"
+                                 ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
+                    </TabItem>
+                </TabControl>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+            <ctrl:MenuWindow Grid.Column="2" Header="PREVIEW">
+                <Grid RowDefinitions="*,Auto">
+                    <Border Grid.Row="0" CornerRadius="4" ClipToBounds="True"
+                            Background="{DynamicResource PreviewBackdropBrush}">
+                        <ctrl:SkiaImage Source="{Binding PreviewImage}" />
+                    </Border>
+                    <SelectableTextBlock Grid.Row="1" Text="{Binding PreviewInfo}" Margin="0,8,0,0"
+                                         FontSize="11" TextWrapping="Wrap"
+                                         Foreground="{DynamicResource ForegroundMutedBrush}" />
+                </Grid>
+            </ctrl:MenuWindow>
+        </Grid>
+    </Grid>
+
+</UserControl>

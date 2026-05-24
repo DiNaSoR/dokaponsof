@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+        xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+        xmlns:adc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+        x:Class="DokaponSoFTools.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Width="1200" Height="800" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Title="DOKAPON! Sword of Fury Tools"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Top bar (title only — the game path now lives in Settings) -->
+        <Border Grid.Row="0" Padding="16,12" Background="{DynamicResource WindowBorderOuterBrush}"
+                BorderBrush="{DynamicResource WindowBorderInnerBrush}" BorderThickness="0,0,0,1">
+            <TextBlock Text="⚔ DOKAPON! Sword of Fury Tools"
+                       FontSize="17" FontWeight="Bold" VerticalAlignment="Center"
+                       Foreground="{DynamicResource AccentGoldBrush}" />
+        </Border>
+
+        <!-- Main: sidebar + content -->
+        <Grid Grid.Row="1" ColumnDefinitions="220,*" Margin="8">
+            <ctrl:MenuWindow Grid.Column="0" Header="MENU" Padding="4" Margin="0,0,8,0">
+                <ListBox ItemsSource="{Binding NavItems}"
+                         SelectedItem="{Binding SelectedNavItem, Mode=TwoWay}"
+                         ItemContainerTheme="{StaticResource NavItemTheme}"
+                         Background="Transparent" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NavItem">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="{Binding Icon}" FontSize="15" Width="22"
+                                           TextAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Name}" FontSize="13" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ctrl:MenuWindow>
+
+            <TransitioningContentControl Grid.Column="1" Content="{Binding CurrentView}">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade Duration="0:0:0.14" />
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
+
+            <!-- First-run onboarding: shown until a game folder is set -->
+            <Border Grid.Column="1" Background="#E60A1024"
+                    IsVisible="{Binding GamePath, Converter={x:Static adc:StringConverters.IsNullOrEmpty}}">
+                <ctrl:MenuWindow Header="WELCOME" Width="480" Height="240"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Spacing="14" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="⚔ Set your game folder to begin" FontSize="17" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentGoldBrush}" HorizontalAlignment="Center" />
+                        <TextBlock Text="Point the tools at your DOKAPON! Sword of Fury install folder."
+                                   Foreground="{DynamicResource ForegroundMutedBrush}"
+                                   TextWrapping="Wrap" TextAlignment="Center" MaxWidth="360" />
+                        <Button Content="📂 Select Game Folder" Command="{Binding BrowseGamePathCommand}"
+                                HorizontalAlignment="Center" />
+                    </StackPanel>
+                </ctrl:MenuWindow>
+            </Border>
+        </Grid>
+
+        <!-- Status log -->
+        <ctrl:StatusLogControl Grid.Row="2" Height="170" Margin="8,0,8,8" />
+
+    </Grid>
+
+</Window>

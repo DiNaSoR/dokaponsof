@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.VideoToolsView"
+             x:DataType="vm:VideoToolsViewModel">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,6">
+            <Button Content="🔍 Scan" Command="{Binding ScanGameVideosCommand}" />
+            <Button Content="➕ Add Replacement" Command="{Binding AddReplacementCommand}" />
+            <Button Content="⚙ Process Queue" Command="{Binding ProcessReplacementsCommand}" IsEnabled="{Binding !IsBusy}" />
+            <TextBlock Text="{Binding FfmpegStatus}" VerticalAlignment="Center" Margin="10,0,0,0"
+                       Foreground="{DynamicResource ForegroundMutedBrush}" />
+        </StackPanel>
+
+        <!-- Conversion settings -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="2,0,2,6" VerticalAlignment="Center">
+            <TextBlock Text="W:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMutedBrush}" />
+            <TextBox Text="{Binding Width}" Width="70" />
+            <TextBlock Text="H:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMutedBrush}" />
+            <TextBox Text="{Binding Height}" Width="70" />
+            <TextBlock Text="Video Q:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMutedBrush}" />
+            <TextBox Text="{Binding VideoQuality}" Width="50" />
+            <TextBlock Text="Audio Q:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundMutedBrush}" />
+            <TextBox Text="{Binding AudioQuality}" Width="50" />
+        </StackPanel>
+
+        <!-- Videos + queue -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,6,320">
+            <ctrl:MenuWindow Grid.Column="0" Header="GAME VIDEOS" Padding="0">
+                <DataGrid x:CompileBindings="False" ItemsSource="{Binding GameVideos}"
+                          SelectedItem="{Binding SelectedVideo, Mode=TwoWay}"
+                          AutoGenerateColumns="False" IsReadOnly="True" Margin="4"
+                          DoubleTapped="OnVideoDoubleTapped">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                        <DataGridTextColumn Header="Resolution" Binding="{Binding Resolution}" Width="110" />
+                        <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="90" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="90" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ctrl:MenuWindow>
+
+            <GridSplitter Grid.Column="1" Width="6" Background="Transparent" />
+
+            <ctrl:MenuWindow Grid.Column="2" Header="REPLACEMENT QUEUE" Padding="0">
+                <DataGrid x:CompileBindings="False" ItemsSource="{Binding Replacements}"
+                          AutoGenerateColumns="False" IsReadOnly="True" Margin="4">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Target" Binding="{Binding TargetName}" Width="*" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ctrl:MenuWindow>
+        </Grid>
+    </Grid>
+
+</UserControl>

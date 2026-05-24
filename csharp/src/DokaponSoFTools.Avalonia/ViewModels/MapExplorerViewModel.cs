@@ -1,0 +1,177 @@
+using System.Collections.ObjectModel;
+using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DokaponSoFTools.App.Services;
+using DokaponSoFTools.Core.Formats;
+using DokaponSoFTools.Core.Imaging;
+using SkiaSharp;
+
+namespace DokaponSoFTools.App.ViewModels;
+
+public sealed record MapFileItem(string Name, string Path);
+
+public sealed partial class MapExplorerViewModel : ObservableObject, IGamePathAware
+{
+    [ObservableProperty] private string _gamePath = "";
+    [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private MapFileItem? _selectedMapFile;
+    [ObservableProperty] private SKBitmap? _atlasImage;
+    [ObservableProperty] private SKBitmap? _mapImage;
+    [ObservableProperty] private int _selectedPalette;
+    [ObservableProperty] private int _paletteCount;
+    [ObservableProperty] private string _reportText = "";
+    [ObservableProperty] private int _selectedTabIndex;
+
+    public ObservableCollection<MapFileItem> MapFiles { get; } = [];
+    public ObservableCollection<DecodedCellRecord> Records { get; } = [];
+    public ObservableCollection<TexturePart> Parts { get; } = [];
+
+    private LoadedCellDocument? _document;
+    private StatusLogService Log => StatusLogService.Instance;
+
+    [RelayCommand]
+    private void ScanMapFiles()
+    {
+        if (string.IsNullOrEmpty(GamePath)) return;
+
+        MapFiles.Clear();
+        var files = MapRenderer.ListCellFiles(GamePath);
+        foreach (string f in files)
+            MapFiles.Add(new MapFileItem(System.IO.Path.GetFileName(f), f));
+
+        Log.Info($"Found {MapFiles.Count} map files");
+    }
+
+    partial void OnSelectedMapFileChanged(MapFileItem? value)
+    {
+        if (value is not null) _ = LoadMapAsync(value.Path);
+    }
+
+    partial void OnSelectedPaletteChanged(int value)
+    {
+        if (_document is not null) RefreshImages();
+    }
+
+    [RelayCommand]
+    private async Task LoadMapAsync(string path)
+    {
+        IsBusy = true;
+        try
+        {
+            _document = await Task.Run(() => MapRenderer.LoadCellDocument(path));
+
+            Records.Clear();
+            foreach (var r in _document.DecodedRecords) Records.Add(r);
+
+            Parts.Clear();
+            if (_document.Texture is not null)
+                foreach (var p in _document.Texture.Parts) Parts.Add(p);
+
+            PaletteCount = _document.Palettes.Count;
+            SelectedPalette = 0;
+
+            RefreshImages();
+            GenerateReport();
+
+            Log.Success($"Loaded: {System.IO.Path.GetFileName(path)} ({_document.Records.Count} records)");
+        }
+        catch (Exception ex) { Log.Error($"Failed to load map: {ex.Message}"); }
+        finally { IsBusy = false; }
+    }
+
+    private void RefreshImages()
+    {
+        if (_document is null) return;
+
+        try
+        {
+            // Assign SKBitmaps directly; do not dispose — the render thread may
+            // still hold the previous one. The GC reclaims unreferenced bitmaps.
+            AtlasImage = MapRenderer.BuildAtlasForDocument(_document, SelectedPalette);
+            MapImage = MapRenderer.RenderMapImage(_document, SelectedPalette, 2048);
+        }
+        catch (Exception ex) { Log.Warning($"Render error: {ex.Message}"); }
+    }
+
+    private void GenerateReport()
+    {
+        if (_document is null) return;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"File: {System.IO.Path.GetFileName(_document.SourcePath)}");
+        sb.AppendLine($"Raw Size: {_document.RawData.Length:N0} bytes");
+        sb.AppendLine($"Decompressed: {_document.DecompressedData.Length:N0} bytes");
+        sb.AppendLine($"LZ77: {(_document.Lz77 is not null ? "Yes" : "No")}");
+        sb.AppendLine($"Grid: {_document.Header.GridWidth}x{_document.Header.GridHeight}");
+        sb.AppendLine($"Records: {_document.Records.Count}");
+        sb.AppendLine($"Chunks: {string.Join(", ", _document.Chunks.Select(c => c.Name))}");
+        sb.AppendLine($"Palettes: {_document.Palettes.Count}");
+
+        if (_document.Texture is not null)
+        {
+            sb.AppendLine($"Texture: {_document.Texture.Header.Width}x{_document.Texture.Header.Height} ({_document.Texture.StorageKind})");
+            sb.AppendLine($"Parts: {_document.Texture.Parts.Count}");
+        }
+
+        if (_document.CellMap is not null)
+        {
+            sb.AppendLine($"Map: {_document.CellMap.Width}x{_document.CellMap.Height}");
+            sb.AppendLine($"Unique values: {_document.CellMap.Values.Distinct().Count()}");
+        }
+
+        ReportText = sb.ToString();
+    }
+
+    [RelayCommand]
+    private async Task ExportReportAsync()
+    {
+        if (string.IsNullOrEmpty(ReportText)) return;
+        string? path = await StorageService.SaveFileAsync("Save Report", "Text files|*.txt;*.md", "map_report.txt");
+        if (path is not null) await File.WriteAllTextAsync(path, ReportText);
+    }
+
+    [RelayCommand]
+    private async Task ExportMapImageAsync()
+    {
+        if (_document is null) return;
+        string? path = await StorageService.SaveFileAsync("Export Map Image", "PNG|*.png",
+            System.IO.Path.GetFileNameWithoutExtension(_document.SourcePath) + "_map.png");
+        if (path is null) return;
+
+        try
+        {
+            using var map = MapRenderer.RenderMapImage(_document, SelectedPalette, 4096);
+            if (map is null) { Log.Warning("No map image to export"); return; }
+
+            using var img = SKImage.FromBitmap(map);
+            using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+            using var fs = File.Create(path);
+            data.SaveTo(fs);
+            Log.Success($"Map exported: {System.IO.Path.GetFileName(path)}");
+        }
+        catch (Exception ex) { Log.Error($"Export failed: {ex.Message}"); }
+    }
+
+    [RelayCommand]
+    private async Task ExportAtlasImageAsync()
+    {
+        if (_document is null) return;
+        string? path = await StorageService.SaveFileAsync("Export Atlas Image", "PNG|*.png",
+            System.IO.Path.GetFileNameWithoutExtension(_document.SourcePath) + "_atlas.png");
+        if (path is null) return;
+
+        try
+        {
+            using var atlas = MapRenderer.BuildAtlasForDocument(_document, SelectedPalette);
+            if (atlas is null) { Log.Warning("No atlas image to export"); return; }
+
+            using var img = SKImage.FromBitmap(atlas);
+            using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+            using var fs = File.Create(path);
+            data.SaveTo(fs);
+            Log.Success($"Atlas exported: {System.IO.Path.GetFileName(path)}");
+        }
+        catch (Exception ex) { Log.Error($"Export failed: {ex.Message}"); }
+    }
+}

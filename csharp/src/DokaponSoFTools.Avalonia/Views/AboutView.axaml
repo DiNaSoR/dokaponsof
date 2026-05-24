@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+
+    <ctrl:MenuWindow Header="ABOUT" Padding="0">
+        <ScrollViewer Padding="20">
+            <StackPanel Spacing="14" MaxWidth="760" HorizontalAlignment="Center">
+                <TextBlock Text="⚔ DOKAPON! Sword of Fury Tools" FontSize="26" FontWeight="Bold"
+                           Foreground="{DynamicResource AccentGoldBrush}" HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding Version}" Foreground="{DynamicResource AccentGoldBrush}" />
+                    <TextBlock Text="•" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    <TextBlock Text="by" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                    <TextBlock Text="{Binding Author}" />
+                </StackPanel>
+
+                <Border Background="{DynamicResource WindowBorderOuterBrush}" CornerRadius="6" Padding="14">
+                    <SelectableTextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+                </Border>
+
+                <Border Background="{DynamicResource WindowBorderOuterBrush}" CornerRadius="6" Padding="14">
+                    <SelectableTextBlock Text="{Binding Credits}" TextWrapping="Wrap"
+                                         FontFamily="Cascadia Code,Consolas,monospace" FontSize="12" />
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                    <Button Content="🌐 Repository" Click="OnOpenRepo" />
+                    <Button Content="🙏 Press F" Command="{Binding PressFCommand}" />
+                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Text="Respects paid:" Foreground="{DynamicResource ForegroundMutedBrush}" />
+                        <TextBlock Text="{Binding FPressCount}" Foreground="{DynamicResource AccentGoldBrush}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Text="{Binding License}" HorizontalAlignment="Center" FontSize="11"
+                           Foreground="{DynamicResource ForegroundMutedBrush}" />
+            </StackPanel>
+        </ScrollViewer>
+    </ctrl:MenuWindow>
+
+</UserControl>

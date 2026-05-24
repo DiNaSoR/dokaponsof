@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DokaponSoFTools.App.ViewModels"
+             xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             x:Class="DokaponSoFTools.App.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Padding="0,0,4,0">
+        <StackPanel MaxWidth="920" HorizontalAlignment="Center" Margin="14,14,14,24" Spacing="14">
+
+            <!-- Hero header -->
+            <StackPanel Spacing="3" Margin="2,0,2,2">
+                <TextBlock Text="⚙  Settings" FontSize="26" FontWeight="Bold"
+                           Foreground="{DynamicResource AccentGoldBrush}" />
+                <TextBlock Text="Configure paths, appearance and behaviour. Everything saves automatically."
+                           Foreground="{DynamicResource ForegroundMutedBrush}" />
+            </StackPanel>
+
+            <!-- Game Path — primary, full width -->
+            <ctrl:MenuWindow Header="📁  GAME PATH">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="The one directory every tool reads from — the single source of truth."
+                               Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="12" TextWrapping="Wrap" />
+                    <TextBox Text="{Binding Main.GamePath}" IsReadOnly="True"
+                             FontSize="13" Watermark="No game directory selected" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="📂  Browse" Command="{Binding BrowseGamePathCommand}" />
+                        <Button Content="🔎  Auto-detect (Steam)" Command="{Binding AutoDetectGamePathCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </ctrl:MenuWindow>
+
+            <!-- Responsive card grid: 2 columns on wide windows, 1 when narrow -->
+            <WrapPanel>
+
+                <!-- Default output -->
+                <ctrl:MenuWindow Header="📤  DEFAULT OUTPUT" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Where Extract All saves files. When set, it skips the folder prompt."
+                                   Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="12" TextWrapping="Wrap" />
+                        <TextBox Text="{Binding DefaultOutputPath}" IsReadOnly="True"
+                                 Watermark="Not set — prompts on extract" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="📂  Browse" Command="{Binding BrowseOutputCommand}" />
+                            <Button Content="✖  Clear" Command="{Binding ClearOutputCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </ctrl:MenuWindow>
+
+                <!-- Accent colour -->
+                <ctrl:MenuWindow Header="🎨  ACCENT COLOR" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Width="42" Height="42" CornerRadius="21"
+                                    Background="{DynamicResource AccentBrush}"
+                                    BorderBrush="{DynamicResource WindowBorderInnerBrush}" BorderThickness="1" />
+                            <StackPanel VerticalAlignment="Center" Spacing="1">
+                                <TextBlock Text="Current accent" Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="11" />
+                                <TextBlock Text="{Binding AccentColor}" FontFamily="Cascadia Code,Consolas,monospace" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding AccentOptions}" x:CompileBindings="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Margin="0,0,8,8" Padding="8,6"
+                                            Command="{Binding $parent[ItemsControl].DataContext.SetAccentCommand}"
+                                            CommandParameter="{Binding Hex}"
+                                            ToolTip.Tip="{Binding Name}">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <Border Width="18" Height="18" CornerRadius="9" Background="{Binding Swatch}" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ctrl:MenuWindow>
+
+                <!-- Patching -->
+                <ctrl:MenuWindow Header="🛡  PATCHING" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                    <StackPanel Spacing="8">
+                        <CheckBox Content="Create a backup before applying hex patches"
+                                  IsChecked="{Binding CreateBackup}" />
+                        <TextBlock Text="A timestamped copy of the executable is saved before patches are written."
+                                   Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="12" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ctrl:MenuWindow>
+
+                <!-- Recent paths -->
+                <ctrl:MenuWindow Header="🕘  RECENT GAME PATHS" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                    <Panel>
+                        <ItemsControl ItemsSource="{Binding RecentPaths}" x:CompileBindings="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto" Margin="0,2">
+                                        <TextBlock Grid.Column="0" Text="{Binding}" TextTrimming="CharacterEllipsis"
+                                                   VerticalAlignment="Center" FontSize="12" />
+                                        <Button Grid.Column="1" Content="Use" Padding="10,3" FontSize="12"
+                                                Command="{Binding $parent[ItemsControl].DataContext.UseRecentPathCommand}"
+                                                CommandParameter="{Binding}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="No recent paths yet."
+                                   Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="12"
+                                   IsVisible="{Binding !HasRecentPaths}" />
+                    </Panel>
+                </ctrl:MenuWindow>
+
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

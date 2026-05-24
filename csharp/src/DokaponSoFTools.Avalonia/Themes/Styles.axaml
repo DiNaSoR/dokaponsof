@@ -1,0 +1,46 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Modern dark tuning for controls we lean on Fluent for. The accent
+         (tab underline, slider, checkbox, scrollbar, DataGrid selection) comes
+         from the overridden SystemAccentColor in Colors.axaml. -->
+
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="{DynamicResource InputFillBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderInnerBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+    <Style Selector="TextBox:focus">
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="SelectableTextBlock">
+        <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundMutedBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+    <Style Selector="TabItem:selected">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+    </Style>
+
+    <Style Selector="TabStripItem">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundMutedBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="10,6" />
+    </Style>
+    <Style Selector="TabStripItem:selected">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+    </Style>
+
+</Styles>
