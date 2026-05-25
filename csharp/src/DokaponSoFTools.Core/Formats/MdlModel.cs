@@ -1,6 +1,5 @@
 using System.Buffers.Binary;
-using System.Runtime.InteropServices;
-using DokaponSoFTools.Core.Compression;
+using System.Text;
 
 namespace DokaponSoFTools.Core.Formats;
 
@@ -14,35 +13,34 @@ public sealed class MdlGeometry
     public int FaceCount => Indices?.Length ?? 0;
 }
 
+/// <summary>
+/// Structured MDL parser. Reverse-engineered layout learned from the DokaEngine
+/// clean-room project: flag-byte LZ77 wrapper, then labelled sections
+/// (20-byte ASCII label + length@0x14 + count@0x18 + data@0x1C). A "Vertex"
+/// section (stride 36: position, normal, materialId, uv) plus a "Primitive"
+/// section (stride 20: kind, …, vertexCount@0x0C, vertexStart@0x10) define the
+/// mesh. Faces are implicit and sequential — indices are [start..start+count]
+/// (count is 3 or 4), with quads triangulated as a fan. Falls back to a
+/// float3 point cloud when the structured sections are absent.
+/// </summary>
 public static class MdlModel
 {
+    private static readonly HashSet<string> KnownLabels = new(StringComparer.Ordinal)
+    {
+        "Object", "Primitive", "Vertex", "Anime", "AnimeFrame", "AnimePacket", "AnimeAttr", "AnimeCoord",
+    };
+
     public static MdlGeometry? Parse(byte[] data)
     {
         try
         {
-            // Strategy 1: structured vertex table
-            var (vertices, indices, normals) = ExtractStructuredGeometry(data);
+            byte[] payload = MaybeDecompress(data);
 
-            // Strategy 2: heuristic float32
-            vertices ??= ExtractVerticesHeuristic(data);
+            var sections = FindSections(payload, 0);
+            if (sections.Count == 0)
+                sections = FindRecoveredMeshSections(payload);
 
-            // Strategy 3: uint16 fixed-point
-            vertices ??= ExtractVerticesUint16(data);
-
-            if (vertices is null || vertices.Length < 3) return null;
-
-            normals ??= ExtractNormalsHeuristic(data, vertices.Length);
-            indices ??= ExtractIndicesHeuristic(data, vertices.Length);
-
-            var bounds = ComputeBounds(vertices);
-
-            return new MdlGeometry
-            {
-                Vertices = vertices,
-                Normals = normals,
-                Indices = indices,
-                Bounds = bounds
-            };
+            return ReadStructuredGeometry(payload, sections) ?? ScanFloat3PointCloud(payload);
         }
         catch
         {
@@ -50,325 +48,287 @@ public static class MdlModel
         }
     }
 
-    public static byte[]? DecompressMdl(byte[] data)
+    /// <summary>Diagnostic dump of the decompressed payload's section layout and parse result.</summary>
+    public static string Describe(byte[] fileBytes)
     {
-        return Lz77TokenStream.Decompress(data);
+        var sb = new StringBuilder();
+        try
+        {
+            byte[] payload = MaybeDecompress(fileBytes);
+            sb.Append($"raw={fileBytes.Length} payload={payload.Length} lz77={HasLz77Magic(fileBytes)} ");
+            var sections = FindSections(payload, 0);
+            bool recovered = false;
+            if (sections.Count == 0) { sections = FindRecoveredMeshSections(payload); recovered = true; }
+            sb.Append(recovered ? "(recovered) " : "");
+            sb.Append("sections=[" + string.Join(", ", sections.Select(s => $"{s.Label} c={s.Count} st={s.Stride}")) + "] ");
+            var geo = ReadStructuredGeometry(payload, sections);
+            sb.Append(geo is null ? "structured=NULL" : $"verts={geo.VertexCount} faces={geo.FaceCount}");
+        }
+        catch (Exception ex) { sb.Append("ERR: " + ex.Message); }
+        return sb.ToString();
     }
 
-    private static (float[][]? Verts, int[][]? Idx, float[][]? Norms) ExtractStructuredGeometry(byte[] data)
+    /// <summary>Returns the LZ77-decompressed payload, or null if not compressed.</summary>
+    public static byte[]? DecompressMdl(byte[] data) =>
+        HasLz77Magic(data) ? DecompressLz77(data) : null;
+
+    private static byte[] MaybeDecompress(byte[] data) =>
+        HasLz77Magic(data) ? DecompressLz77(data) ?? data : data;
+
+    private static bool HasLz77Magic(byte[] data) =>
+        data.Length >= 4 && data[0] == 'L' && data[1] == 'Z' && data[2] == '7' && data[3] == '7';
+
+    /// <summary>
+    /// LZ77 decompressor ported byte-for-byte from DokaEngine's Lz77Codec
+    /// (validated across the game's assets). The flag stream (8 MSB-first bits
+    /// per byte, from 0x10) and the token stream (from the header's data-offset)
+    /// are SEPARATE: a set bit = a 2-byte back-reference (distance, length-3),
+    /// a clear bit = a literal byte.
+    /// </summary>
+    private static byte[]? DecompressLz77(byte[] buffer)
     {
-        int labelPos = FindSequence(data, "Vertex"u8);
-        if (labelPos < 0) return (null, null, null);
+        if (buffer.Length < 0x10) return null;
+        int rawSize = ReadI(buffer, 0x04);
+        int tokenCount = ReadI(buffer, 0x08);
+        int dataOffset = ReadI(buffer, 0x0C);
+        if (rawSize < 0 || tokenCount < 0 || dataOffset < 0x10 || dataOffset > buffer.Length) return null;
 
-        int pos = labelPos + 6;
-        while (pos < data.Length && data[pos] == 0x20) pos++;
-        int baseOffset = pos;
+        int flagsPointer = 0x10;
+        int dataPointer = dataOffset;
+        var output = new List<byte>(Math.Max(rawSize, 16));
+        int bitCount = 0;
+        byte flags = 0;
 
-        var table = new List<uint>();
-        for (int i = 0; i < 32 && pos + 4 <= data.Length; i++)
+        for (int token = 0; token < tokenCount; token++)
         {
-            table.Add(BinaryPrimitives.ReadUInt32LittleEndian(data.AsSpan(pos)));
-            pos += 4;
-        }
-
-        if (table.Count < 2) return (null, null, null);
-
-        var pairs = table.Skip(1).Where(v => v != 0)
-            .Select(v => (Offset: (int)(v >> 16), Size: (int)(v & 0xFFFF)))
-            .ToList();
-
-        if (pairs.Count == 0) return (null, null, null);
-
-        // Find vertex candidates
-        float[][]? bestVertices = null;
-        foreach (var (offRaw, size) in pairs)
-        {
-            foreach (int off in new[] { offRaw, baseOffset + offRaw })
+            if (bitCount == 0)
             {
-                if (size == 0 || size % 6 != 0 || off + size > data.Length) continue;
-                int count = size / 6;
-                if (count < 10 || count > 20000) continue;
-
-                var verts = new float[count][];
-                for (int i = 0; i < count; i++)
-                {
-                    short x = BinaryPrimitives.ReadInt16LittleEndian(data.AsSpan(off + i * 6));
-                    short y = BinaryPrimitives.ReadInt16LittleEndian(data.AsSpan(off + i * 6 + 2));
-                    short z = BinaryPrimitives.ReadInt16LittleEndian(data.AsSpan(off + i * 6 + 4));
-                    verts[i] = [(x - 0x4000) / 128f, (y - 0x4000) / 128f, (z - 0x4000) / 128f];
-                }
-
-                var bounds = ComputeBounds(verts);
-                float span = Enumerable.Range(0, 3).Sum(i => MathF.Abs(bounds.Max[i] - bounds.Min[i]));
-                if (span > 1f && span < 2000f)
-                {
-                    bestVertices = verts;
-                    break;
-                }
+                if (flagsPointer >= buffer.Length) break;
+                flags = buffer[flagsPointer++];
+                bitCount = 8;
             }
-            if (bestVertices is not null) break;
-        }
 
-        if (bestVertices is null) return (null, null, null);
-
-        // Try to find index buffer
-        int vcount = bestVertices.Length;
-        int[][]? bestIndices = null;
-        float bestQuality = 0f;
-
-        foreach (var (offRaw, size) in pairs)
-        {
-            if (size == 0 || size % 2 != 0) continue;
-            foreach (int off in new[] { offRaw, baseOffset + offRaw })
+            if ((flags & 0x80) != 0)
             {
-                if (off + size > data.Length) continue;
-                int rawCount = size / 2;
-                var raw = new ushort[rawCount];
-                for (int i = 0; i < rawCount; i++)
-                    raw[i] = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(off + i * 2));
-
-                foreach (int mask in new[] { 0x1FF, 0x3FF, 0x7FF, 0xFFF })
-                {
-                    foreach (int shift in new[] { 0, 4, 8, 12 })
-                    {
-                        var decoded = raw.Select(r => ((r >> shift) & mask)).ToArray();
-                        var triList = new List<int[]>();
-                        int good = 0, total = 0;
-
-                        for (int i = 0; i + 2 < decoded.Length; i += 3)
-                        {
-                            int a = decoded[i], b = decoded[i + 1], c = decoded[i + 2];
-                            total++;
-                            if (a == b || b == c || a == c) continue;
-                            if (a >= vcount || b >= vcount || c >= vcount) continue;
-                            good++;
-                            triList.Add([a, b, c]);
-                        }
-
-                        if (total == 0) continue;
-                        float quality = (float)good / total;
-                        if (triList.Count > 0 && quality > bestQuality)
-                        {
-                            bestQuality = quality;
-                            bestIndices = triList.ToArray();
-                        }
-                    }
-                    if (bestQuality >= 0.6f) break;
-                }
-                if (bestQuality >= 0.6f) break;
-            }
-            if (bestQuality >= 0.6f) break;
-        }
-
-        return (bestVertices, bestIndices, null);
-    }
-
-    private static float[][]? ExtractVerticesHeuristic(byte[] data)
-    {
-        var allVertices = new List<float[]>();
-        byte[] marker = [0x00, 0xC0, 0x00, 0x00];
-        int pos = 0;
-
-        while (true)
-        {
-            int markerPos = FindSequence(data.AsSpan(pos), marker);
-            if (markerPos < 0) break;
-            markerPos += pos;
-
-            var blockVerts = ExtractBlockVertices(data, markerPos + 4);
-            if (blockVerts is not null) allVertices.AddRange(blockVerts);
-            pos = markerPos + 4;
-            if (allVertices.Count > 10000) break;
-        }
-
-        if (allVertices.Count == 0)
-        {
-            byte[] floatMarker = [0x00, 0x00, 0x80, 0x3F];
-            pos = FindSequence(data, floatMarker);
-            if (pos >= 0)
-            {
-                var blockVerts = ExtractBlockVertices(data, pos + 4);
-                if (blockVerts is not null) allVertices.AddRange(blockVerts);
-            }
-        }
-
-        return allVertices.Count >= 3 ? allVertices.ToArray() : null;
-    }
-
-    private static float[][]? ExtractVerticesUint16(byte[] data, float scale = 1024f)
-    {
-        float[][]? bestRun = null;
-        int pos = 0;
-
-        while (pos + 6 <= data.Length)
-        {
-            ushort x = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos));
-            ushort y = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 2));
-            ushort z = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 4));
-
-            if (x < 40000 && y < 40000 && z < 40000)
-            {
-                int runStart = pos;
-                var run = new List<float[]>();
-                int bad = 0;
-
-                while (pos + 6 <= data.Length)
-                {
-                    x = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos));
-                    y = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 2));
-                    z = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 4));
-
-                    if (x < 40000 && y < 40000 && z < 40000)
-                    {
-                        run.Add([x / scale, y / scale, z / scale]);
-                        pos += 6;
-                        if (run.Count >= 5000) break;
-                    }
-                    else
-                    {
-                        bad++;
-                        pos += 2;
-                        if (bad > 5) break;
-                    }
-                }
-
-                if (runStart >= 0x1000 && run.Count >= 20 && run.Count <= 5000
-                    && (bestRun is null || run.Count > bestRun.Length))
-                {
-                    bestRun = run.ToArray();
-                }
+                if (dataPointer + 2 > buffer.Length) break;
+                int distance = buffer[dataPointer];
+                int length = buffer[dataPointer + 1] + 3;
+                dataPointer += 2;
+                if (distance == 0) break;
+                int start = output.Count - distance;
+                if (start < 0) break;
+                for (int c = 0; c < length; c++) { output.Add(output[start]); start++; }
             }
             else
             {
-                pos += 2;
+                if (dataPointer >= buffer.Length) break;
+                output.Add(buffer[dataPointer++]);
             }
+
+            flags = (byte)((flags << 1) & 0xFF);
+            bitCount--;
+            if (output.Count > rawSize + 0x1000) break;
         }
 
-        if (bestRun is null || bestRun.Length < 20) return null;
-
-        var bounds = ComputeBounds(bestRun);
-        if (Enumerable.Range(0, 3).All(i => MathF.Abs(bounds.Max[i] - bounds.Min[i]) < 0.001f))
-            return null;
-
-        return bestRun;
+        if (output.Count > rawSize) output.RemoveRange(rawSize, output.Count - rawSize);
+        return output.ToArray();
     }
 
-    private static List<float[]>? ExtractBlockVertices(byte[] data, int startPos, int maxVertices = 2000)
-    {
-        var vertices = new List<float[]>();
-        int pos = startPos;
-        int consecutive = 0;
+    // ===================== Structured geometry =====================
 
-        while (pos + 12 <= data.Length && vertices.Count < maxVertices)
+    private static MdlGeometry? ReadStructuredGeometry(byte[] payload, List<Section> sections)
+    {
+        var vertex = sections.FirstOrDefault(s => s.Label == "Vertex" && s.Count >= 3 && s.Stride >= 36);
+        var primitive = sections.FirstOrDefault(s => s.Label == "Primitive" && s.Stride == 20 && s.Count > 0);
+        if (vertex is null || primitive is null) return null;
+
+        int vertexCount = vertex.Count;
+        var vertices = new float[vertexCount][];
+        var normals = new float[vertexCount][];
+        for (int i = 0; i < vertexCount; i++)
         {
-            float x = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos));
-            float y = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos + 4));
-            float z = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos + 8));
-
-            if (IsValidVertex(x, y, z))
-            {
-                vertices.Add([x, y, z]);
-                pos += 12;
-                consecutive = 0;
-            }
-            else
-            {
-                consecutive++;
-                pos += 4;
-                if (consecutive > 10) break;
-            }
+            int o = vertex.DataOffset + i * vertex.Stride;
+            if (o + 36 > payload.Length) return null;
+            vertices[i] = [ReadF(payload, o), ReadF(payload, o + 4), ReadF(payload, o + 8)];
+            normals[i] = [ReadF(payload, o + 12), ReadF(payload, o + 16), ReadF(payload, o + 20)];
         }
 
-        return vertices.Count >= 3 ? vertices : null;
-    }
-
-    private static float[][]? ExtractNormalsHeuristic(byte[] data, int vertexCount)
-    {
-        byte[] marker = [0x00, 0x00, 0x40, 0xC1];
-        int markerPos = FindSequence(data, marker);
-        if (markerPos < 0) return null;
-
-        var normals = new List<float[]>();
-        int pos = markerPos + 4;
-
-        while (pos + 12 <= data.Length && normals.Count < vertexCount)
+        // Faces are implicit: each primitive references a sequential run of
+        // 3 (triangle) or 4 (quad → fan) vertices.
+        var triangles = new List<int[]>(primitive.Count * 2);
+        int previousEnd = 0;
+        for (int i = 0; i < primitive.Count; i++)
         {
-            float nx = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos));
-            float ny = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos + 4));
-            float nz = BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(pos + 8));
+            int o = primitive.DataOffset + i * primitive.Stride;
+            if (o + 20 > payload.Length) return null;
 
-            float length = MathF.Sqrt(nx * nx + ny * ny + nz * nz);
-            if (length is > 0.9f and < 1.1f)
-            {
-                normals.Add([nx, ny, nz]);
-                pos += 12;
-            }
-            else
-            {
-                pos += 4;
-            }
+            int count = ReadI(payload, o + 12);
+            int start = ReadI(payload, o + 16);
+            if (count is < 3 or > 4) return null;
+            if (start < 0 || start + count > vertexCount) return null;
+            if (i > 0 && start != previousEnd) return null; // must be a clean sequential run
+            previousEnd = start + count;
+
+            triangles.Add([start, start + 1, start + 2]);
+            if (count == 4)
+                triangles.Add([start, start + 2, start + 3]);
         }
 
-        return normals.Count >= 3 ? normals.ToArray() : null;
-    }
+        if (triangles.Count == 0) return null;
 
-    private static int[][]? ExtractIndicesHeuristic(byte[] data, int vertexCount)
-    {
-        byte[] marker = [0x00, 0x00, 0x40, 0x00];
-        int pos = FindSequence(data, marker);
-        if (pos >= 0) pos += 4;
-        else pos = 0;
-
-        var indices = new List<int[]>();
-
-        while (pos + 6 <= data.Length)
+        return new MdlGeometry
         {
-            ushort i0 = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos));
-            ushort i1 = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 2));
-            ushort i2 = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(pos + 4));
-
-            if (i0 < vertexCount && i1 < vertexCount && i2 < vertexCount
-                && i0 != i1 && i1 != i2 && i0 != i2)
-            {
-                indices.Add([i0, i1, i2]);
-                pos += 6;
-                if (indices.Count > 100000) break;
-            }
-            else
-            {
-                pos += 2;
-            }
-        }
-
-        return indices.Count >= 1 ? indices.ToArray() : null;
+            Vertices = vertices,
+            Normals = normals,
+            Indices = triangles.ToArray(),
+            Bounds = ComputeBounds(vertices),
+        };
     }
 
-    private static bool IsValidVertex(float x, float y, float z)
+    // ===================== Section scanning (ported from DokaEngine MdlScanner) =====================
+
+    private sealed record Section(string Label, int Offset, int Length, int Count, int DataOffset, int DataLength, int Stride);
+
+    private static List<Section> FindSections(byte[] payload, int startOffset)
     {
-        if (float.IsNaN(x) || float.IsNaN(y) || float.IsNaN(z)) return false;
-        if (float.IsInfinity(x) || float.IsInfinity(y) || float.IsInfinity(z)) return false;
-        if (MathF.Abs(x) > 10000 || MathF.Abs(y) > 10000 || MathF.Abs(z) > 10000) return false;
+        var sections = new List<Section>();
+        int offset = startOffset;
+        while (offset + 28 <= payload.Length)
+        {
+            if (!TryReadSection(payload, offset, out var section)) break;
+            sections.Add(section);
 
-        foreach (float v in new[] { x, y, z })
-            if (v != 0 && MathF.Abs(v) < 0.0001f) return false;
+            int next = Align4(offset + section.Length);
+            int recovered = FindNextSectionOffset(payload, next, maxLookaheadBytes: 16);
+            if (recovered < 0 || recovered <= offset) break;
+            offset = recovered;
+        }
+        return sections;
+    }
 
+    private static List<Section> FindRecoveredMeshSections(byte[] payload)
+    {
+        for (int offset = 0; offset + 28 <= payload.Length; offset += 4)
+        {
+            if (!TryReadSection(payload, offset, out var section) || section.Label != "Object")
+                continue;
+
+            var sections = FindSections(payload, offset);
+            if (sections.Any(s => s.Label == "Primitive") && sections.Any(s => s.Label == "Vertex"))
+                return sections;
+        }
+        return [];
+    }
+
+    private static int FindNextSectionOffset(byte[] payload, int offset, int maxLookaheadBytes)
+    {
+        int limit = Math.Min(payload.Length - 28, offset + maxLookaheadBytes);
+        for (int candidate = offset; candidate <= limit; candidate += 4)
+            if (TryReadSection(payload, candidate, out _))
+                return candidate;
+        return -1;
+    }
+
+    private static bool TryReadSection(byte[] payload, int offset, out Section section)
+    {
+        section = default!;
+        if (offset < 0 || offset + 28 > payload.Length) return false;
+
+        string label = ReadPaddedAsciiLabel(payload.AsSpan(offset, 20));
+        if (!KnownLabels.Contains(label)) return false;
+
+        int length = ReadI(payload, offset + 20);
+        int count = ReadI(payload, offset + 24);
+        if (length < 28 || count < 0 || offset + length > payload.Length) return false;
+
+        int dataOffset = offset + 28;
+        int dataLength = length - 28;
+        int stride = count > 0 && dataLength % count == 0 ? dataLength / count : 0;
+        section = new Section(label, offset, length, count, dataOffset, dataLength, stride);
         return true;
     }
 
+    private static string ReadPaddedAsciiLabel(ReadOnlySpan<byte> bytes)
+    {
+        int length = 0;
+        while (length < bytes.Length)
+        {
+            byte value = bytes[length];
+            if (value == 0 || value == 0x20) break;
+            if (value < 0x20 || value > 0x7E) return string.Empty;
+            length++;
+        }
+        return Encoding.ASCII.GetString(bytes[..length]);
+    }
+
+    private static int Align4(int value) => (value + 3) & ~3;
+
+    // ===================== Float3 point-cloud fallback =====================
+
+    private static MdlGeometry? ScanFloat3PointCloud(byte[] payload)
+    {
+        int[] strides = [12, 16, 20, 24, 28, 32, 36];
+        float[][]? best = null;
+
+        foreach (int stride in strides)
+        {
+            int offset = 0;
+            while (offset + 12 <= payload.Length)
+            {
+                int run = CountFloat3Run(payload, offset, stride);
+                if (run >= 16)
+                {
+                    if (best is null || run > best.Length)
+                    {
+                        var arr = new float[run][];
+                        for (int i = 0; i < run; i++)
+                        {
+                            int p = offset + i * stride;
+                            arr[i] = [ReadF(payload, p), ReadF(payload, p + 4), ReadF(payload, p + 8)];
+                        }
+                        best = arr;
+                    }
+                    offset += run * stride;
+                }
+                else
+                {
+                    offset += 4;
+                }
+            }
+        }
+
+        if (best is null || best.Length < 3) return null;
+        return new MdlGeometry { Vertices = best, Normals = null, Indices = null, Bounds = ComputeBounds(best) };
+    }
+
+    private static int CountFloat3Run(byte[] payload, int offset, int stride)
+    {
+        int count = 0;
+        for (int p = offset; p + 12 <= payload.Length; p += stride)
+        {
+            float x = ReadF(payload, p), y = ReadF(payload, p + 4), z = ReadF(payload, p + 8);
+            if (!IsPlausible(x) || !IsPlausible(y) || !IsPlausible(z)) break;
+            if (MathF.Abs(x) < 1e-6f && MathF.Abs(y) < 1e-6f && MathF.Abs(z) < 1e-6f) break;
+            count++;
+        }
+        return count;
+    }
+
+    private static bool IsPlausible(float v) => float.IsFinite(v) && MathF.Abs(v) <= 100000f;
+
     private static (float[] Min, float[] Max) ComputeBounds(float[][] vertices)
     {
-        if (vertices.Length == 0) return ([], []);
-
-        float[] min = [(float)vertices.Min(v => v[0]), (float)vertices.Min(v => v[1]), (float)vertices.Min(v => v[2])];
-        float[] max = [(float)vertices.Max(v => v[0]), (float)vertices.Max(v => v[1]), (float)vertices.Max(v => v[2])];
+        float[] min = [vertices[0][0], vertices[0][1], vertices[0][2]];
+        float[] max = [vertices[0][0], vertices[0][1], vertices[0][2]];
+        foreach (var v in vertices)
+            for (int i = 0; i < 3; i++)
+            {
+                if (v[i] < min[i]) min[i] = v[i];
+                if (v[i] > max[i]) max[i] = v[i];
+            }
         return (min, max);
     }
 
-    private static int FindSequence(ReadOnlySpan<byte> data, ReadOnlySpan<byte> sequence)
-    {
-        for (int i = 0; i <= data.Length - sequence.Length; i++)
-            if (data.Slice(i, sequence.Length).SequenceEqual(sequence))
-                return i;
-        return -1;
-    }
+    private static float ReadF(byte[] data, int offset) => BinaryPrimitives.ReadSingleLittleEndian(data.AsSpan(offset, 4));
+    private static int ReadI(byte[] data, int offset) => BinaryPrimitives.ReadInt32LittleEndian(data.AsSpan(offset, 4));
 }

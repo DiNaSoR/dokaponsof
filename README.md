@@ -20,8 +20,10 @@ A comprehensive modding toolkit for **DOKAPON! Sword of Fury** (Sting Entertainm
 - [Supported Formats](#-supported-formats)
 - [Building from Source](#-building-from-source)
 - [Usage Guidelines](#-usage-guidelines)
-- [Community](#-community)
+- [Links](#-links)
+- [Contributors](#-contributors)
 - [Contributing](#-contributing)
+- [Acknowledgments](#-acknowledgments)
 - [License](#-license)
 
 ## ✨ Features
@@ -140,7 +142,7 @@ dotnet publish src/DokaponSoFTools.App/DokaponSoFTools.App.csproj \
 ## 📋 Usage Guidelines
 
 ### ✅ Do
-- Create and share mods with the community
+- Create and share mods
 - Report bugs and suggest improvements
 - Credit original authors when sharing modifications
 - Back up your files before modding
@@ -151,29 +153,26 @@ dotnet publish src/DokaponSoFTools.App/DokaponSoFTools.App.csproj \
 - Distribute modified executables
 - Create harmful or malicious mods
 
-## 🌟 Community
+## 🔗 Links
 
-- 💬 [Discord Server](https://discord.gg/wXhAEvhTuR) — Get help and share creations
-- 📱 [Reddit](https://reddit.com/r/dokaponofficial/) — Discuss mods and share feedback
-- 📖 [Documentation](https://dinasor.github.io/dokaponsof/) — Guides and tutorials
+- 💬 [Discord Server](https://discord.gg/wXhAEvhTuR) — Share mods and discuss the game
+- 📱 [Reddit](https://reddit.com/r/dokaponofficial/) — Fan discussion
+- 📖 [Documentation](https://dinasor.github.io/dokaponsof/) — Guides and format reference
+
+## Contributors
+
+| | |
+|---|---|
+| **DiNaSoR** | Project author — tools, format research, and application |
+| **Q8fft2** | Text extraction research |
 
 ## 🤝 Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+See [CONTRIBUTING.md](CONTRIBUTING.md) if you want to open an issue or pull request.
 
 ## 💖 Acknowledgments
 
 - 🎮 **Sting Entertainment** — For creating DOKAPON! Sword of Fury
-- ⭐ **q8fft2** — Original text extraction research
-- ⭐ **NewDoc** — PCK/Hex format documentation
-- ⭐ **Dokapon Discord** — Community support and testing
-- 🤖 **Claude** — AI-assisted development
 
 ## 📄 License
 
@@ -186,5 +185,5 @@ This project is licensed under the **GNU General Public License v3.0** — see [
 ---
 
 <p align="center">
-  Made with ❤️ by <strong>DiNaSoR</strong> and the Dokapon Modding Community
+  Made with ❤️ by <strong>DiNaSoR</strong>
 </p>

@@ -1,6 +1,6 @@
 # Contributing to DOKAPON! Sword of Fury Tools
 
-Thank you for your interest in contributing! Here's how you can help.
+If you find a bug or have an idea, you can open an issue or pull request.
 
 ## 🐛 Reporting Bugs
 
@@ -11,6 +11,7 @@ Thank you for your interest in contributing! Here's how you can help.
 ## 💡 Suggesting Features
 
 Open an issue with the `enhancement` label describing:
+
 - What problem it solves
 - How you envision it working
 - Any format/RE research that supports it
@@ -23,6 +24,8 @@ Open an issue with the `enhancement` label describing:
 4. Keep PRs focused — one feature per PR
 5. Update documentation if needed
 
+By submitting a pull request, you agree that your contribution will be licensed under the GNU GPL v3.0 (see [LICENSE](LICENSE)).
+
 ## 🏗️ Development Setup
 
 ```bash
@@ -31,32 +34,52 @@ cd dokaponsof/csharp
 dotnet build
 ```
 
+Run the Avalonia UI (cross-platform):
+
+```bash
+dotnet run --project src/DokaponSoFTools.Avalonia/DokaponSoFTools.Avalonia.csproj
+```
+
+Run the WPF UI (Windows):
+
+```bash
+dotnet run --project src/DokaponSoFTools.App/DokaponSoFTools.App.csproj
+```
+
 ### Project Structure
 
 ```
 csharp/
 ├── src/
-│   ├── DokaponSoFTools.Core/     # Format parsers, renderers, tools
-│   │   ├── Formats/              # GameText, PckArchive, SpranmDocument, etc.
-│   │   ├── Imaging/              # MapRenderer, SpranmRenderer, AtlasRenderer
-│   │   ├── Compression/          # LZ77 variants
-│   │   └── Tools/                # AssetExtractor, VideoConverter
-│   ├── DokaponSoFTools.App/      # WPF application
-│   │   ├── ViewModels/           # MVVM ViewModels
-│   │   ├── Views/                # XAML views
-│   │   ├── Services/             # Settings, dialogs, status log
-│   │   └── Themes/               # Dark theme resources
-│   └── DokaponSoFTools.Tests/    # Unit tests
-└── tools/                        # RE analysis scripts (Python)
+│   ├── DokaponSoFTools.Core/       # Format parsers, renderers, tools
+│   │   ├── Formats/                # GameText, PckArchive, SpranmDocument, etc.
+│   │   ├── Imaging/                # MapRenderer, SpranmRenderer, MdlRenderer
+│   │   ├── Compression/            # LZ77 variants (FlagByte, TokenStream, Cell)
+│   │   ├── Scanning/               # GameScanner, ReportGenerator
+│   │   └── Tools/                  # AssetExtractor, VideoConverter
+│   ├── DokaponSoFTools.App/        # WPF application (Windows)
+│   │   ├── ViewModels/
+│   │   ├── Views/
+│   │   ├── Services/
+│   │   └── Themes/
+│   ├── DokaponSoFTools.Avalonia/   # Avalonia application (cross-platform)
+│   │   ├── ViewModels/
+│   │   ├── Views/
+│   │   └── Services/
+│   └── DokaponSoFTools.Tests/      # Unit tests (Core only)
+├── tools/                          # RE analysis scripts (Python, Frida)
+research/                           # Format RE notes and sample outputs
+docs/                               # Jekyll documentation site
+app/                                # Legacy PyQt6 GUI (pre–C# rewrite)
 ```
 
 ## 📋 Code Guidelines
 
 - Use `CommunityToolkit.Mvvm` for ViewModels (`[ObservableProperty]`, `[RelayCommand]`)
-- Keep Core library free of WPF dependencies
-- Binary-safe: never modify raw game data formats in display code
-- Handle errors gracefully — log to StatusLogService, don't crash
+- Keep **Core** free of WPF/Avalonia dependencies
+- Binary-safe: never alter raw game data layouts in display-only code
+- Handle errors gracefully — log to `StatusLogService`, avoid crashing the UI
 
-## 📄 License
+## 💖 Acknowledgments
 
-By contributing, you agree that your contributions will be licensed under the GNU GPL v3.0.
+- **Sting Entertainment** — For creating DOKAPON! Sword of Fury

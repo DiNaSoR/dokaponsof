@@ -22,6 +22,7 @@ public sealed partial class ModelViewerViewModel : ObservableObject, IGamePathAw
     [ObservableProperty] private double _yaw = 30;
     [ObservableProperty] private double _pitch = 20;
     [ObservableProperty] private double _zoom = 1.0;
+    [ObservableProperty] private bool _wireframe;
 
     public ObservableCollection<ModelFileItem> Files { get; } = [];
 
@@ -61,6 +62,7 @@ public sealed partial class ModelViewerViewModel : ObservableObject, IGamePathAw
     partial void OnYawChanged(double value) => RenderModel();
     partial void OnPitchChanged(double value) => RenderModel();
     partial void OnZoomChanged(double value) => RenderModel();
+    partial void OnWireframeChanged(bool value) => RenderModel();
 
     private async Task LoadModelAsync(string path)
     {
@@ -97,6 +99,27 @@ public sealed partial class ModelViewerViewModel : ObservableObject, IGamePathAw
     private void RenderModel()
     {
         if (_geo is null) return;
-        CurrentImage = MdlRenderer.Render(_geo, 640, 640, (float)Yaw, (float)Pitch, (float)Zoom);
+        CurrentImage = MdlRenderer.Render(_geo, 640, 640, (float)Yaw, (float)Pitch, (float)Zoom, Wireframe);
+    }
+
+    [RelayCommand]
+    private async Task ExportObjAsync()
+    {
+        if (_geo is null || _geo.FaceCount == 0)
+        {
+            Log.Warning("Load a model with geometry first");
+            return;
+        }
+
+        string suggested = System.IO.Path.GetFileNameWithoutExtension(SelectedFile?.Name ?? "model") + ".obj";
+        string? path = await StorageService.SaveFileAsync("Export Model (OBJ)", "Wavefront OBJ|*.obj", suggested);
+        if (path is null) return;
+
+        try
+        {
+            MdlObjExporter.Export(_geo, path);
+            Log.Success($"Exported OBJ: {System.IO.Path.GetFileName(path)} ({_geo.VertexCount} verts, {_geo.FaceCount} faces)");
+        }
+        catch (Exception ex) { Log.Error($"OBJ export failed: {ex.Message}"); }
     }
 }

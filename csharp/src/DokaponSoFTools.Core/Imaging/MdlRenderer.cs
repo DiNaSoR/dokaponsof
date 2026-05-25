@@ -12,7 +12,7 @@ namespace DokaponSoFTools.Core.Imaging;
 public static class MdlRenderer
 {
     public static SKBitmap Render(Formats.MdlGeometry geo, int width, int height,
-        float yawDegrees, float pitchDegrees, float zoom)
+        float yawDegrees, float pitchDegrees, float zoom, bool wireframe = false)
     {
         var bmp = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
         using var canvas = new SKCanvas(bmp);
@@ -75,6 +75,7 @@ public static class MdlRenderer
             float lx = 0.35f, ly = 0.45f, lz = 0.82f;
 
             using var fill = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+            using var stroke = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Stroke, StrokeWidth = 1f, Color = new SKColor(0x5D, 0xB0, 0xFF) };
             using var path = new SKPath();
 
             foreach (int f in order)
@@ -82,7 +83,19 @@ public static class MdlRenderer
                 var t = idx[f];
                 if (t[0] >= n || t[1] >= n || t[2] >= n) continue;
 
-                // View-space face normal.
+                path.Reset();
+                path.MoveTo(px[t[0]], py[t[0]]);
+                path.LineTo(px[t[1]], py[t[1]]);
+                path.LineTo(px[t[2]], py[t[2]]);
+                path.Close();
+
+                if (wireframe)
+                {
+                    canvas.DrawPath(path, stroke);
+                    continue;
+                }
+
+                // View-space face normal, two-sided so flat/inverted faces still shade.
                 float e1x = vx[t[1]] - vx[t[0]], e1y = vy[t[1]] - vy[t[0]], e1z = vz[t[1]] - vz[t[0]];
                 float e2x = vx[t[2]] - vx[t[0]], e2y = vy[t[2]] - vy[t[0]], e2z = vz[t[2]] - vz[t[0]];
                 float nx = e1y * e2z - e1z * e2y;
@@ -91,21 +104,11 @@ public static class MdlRenderer
                 float len = MathF.Sqrt(nx * nx + ny * ny + nz * nz);
                 if (len < 1e-6f) continue;
                 nx /= len; ny /= len; nz /= len;
-
-                if (nz < 0f) continue; // back-face cull (toward viewer = +z)
+                if (nz < 0f) { nx = -nx; ny = -ny; nz = -nz; }
 
                 float lambert = Math.Clamp(nx * lx + ny * ly + nz * lz, 0f, 1f);
                 float shade = 0.30f + 0.70f * lambert;
-                byte r = (byte)(120 * shade);
-                byte g = (byte)(150 * shade);
-                byte b = (byte)(210 * shade);
-                fill.Color = new SKColor(r, g, b);
-
-                path.Reset();
-                path.MoveTo(px[t[0]], py[t[0]]);
-                path.LineTo(px[t[1]], py[t[1]]);
-                path.LineTo(px[t[2]], py[t[2]]);
-                path.Close();
+                fill.Color = new SKColor((byte)(120 * shade), (byte)(150 * shade), (byte)(210 * shade));
                 canvas.DrawPath(path, fill);
             }
         }

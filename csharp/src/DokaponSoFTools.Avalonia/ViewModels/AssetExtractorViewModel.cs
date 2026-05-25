@@ -24,10 +24,10 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
     [ObservableProperty] private int _selectedTabIndex;
 
     [ObservableProperty] private string _allTabHeader = "All";
-    [ObservableProperty] private string _texTabHeader = "Textures (.tex)";
-    [ObservableProperty] private string _spranmTabHeader = "Sprites (.spranm)";
-    [ObservableProperty] private string _fntTabHeader = "Fonts (.fnt)";
-    [ObservableProperty] private string _mpdTabHeader = "Maps (.mpd)";
+    [ObservableProperty] private string _texTabHeader = "Textures";
+    [ObservableProperty] private string _spranmTabHeader = "Sprites";
+    [ObservableProperty] private string _fntTabHeader = "Fonts";
+    [ObservableProperty] private string _mpdTabHeader = "Maps";
 
     public ObservableCollection<FileItem> AllFiles { get; } = [];
     public ObservableCollection<FileItem> TexFiles { get; } = [];
@@ -86,11 +86,11 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
             }
         }
 
-        AllTabHeader = $"All ({AllFiles.Count}, {FormatSize(AllFiles.Sum(f => f.Size))})";
-        TexTabHeader = $"Textures ({TexFiles.Count}, {FormatSize(TexFiles.Sum(f => f.Size))})";
-        SpranmTabHeader = $"Sprites ({SpranmFiles.Count}, {FormatSize(SpranmFiles.Sum(f => f.Size))})";
-        FntTabHeader = $"Fonts ({FntFiles.Count}, {FormatSize(FntFiles.Sum(f => f.Size))})";
-        MpdTabHeader = $"Maps ({MpdFiles.Count}, {FormatSize(MpdFiles.Sum(f => f.Size))})";
+        AllTabHeader = $"All ({AllFiles.Count})";
+        TexTabHeader = $"Textures ({TexFiles.Count})";
+        SpranmTabHeader = $"Sprites ({SpranmFiles.Count})";
+        FntTabHeader = $"Fonts ({FntFiles.Count})";
+        MpdTabHeader = $"Maps ({MpdFiles.Count})";
 
         Log.Info($"Found {AllFiles.Count} files ({TexFiles.Count} tex, {SpranmFiles.Count} spranm, {FntFiles.Count} fnt, {MpdFiles.Count} mpd)");
     }
@@ -215,6 +215,51 @@ public sealed partial class AssetExtractorViewModel : ObservableObject, IGamePat
         {
             IsBusy = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task ExtractSelectedAsync()
+    {
+        if (SelectedFile is null) { Log.Warning("Select a file first"); return; }
+        if (PreviewImage is null) { Log.Warning($"No extractable image for {SelectedFile.Name}"); return; }
+
+        string suggested = System.IO.Path.GetFileNameWithoutExtension(SelectedFile.Name) + ".png";
+        string? path = await StorageService.SaveFileAsync("Extract Selected", "PNG|*.png", suggested);
+        if (path is null) return;
+
+        try
+        {
+            using var img = SKImage.FromBitmap(PreviewImage);
+            using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+            using var fs = File.Create(path);
+            data.SaveTo(fs);
+            Log.Success($"Extracted: {System.IO.Path.GetFileName(path)}");
+        }
+        catch (Exception ex) { Log.Error($"Extract failed: {ex.Message}"); }
+    }
+
+    [RelayCommand]
+    private async Task ReplaceSelectedAsync()
+    {
+        if (SelectedFile is null) { Log.Warning("Select a file first"); return; }
+
+        string ext = SelectedFile.Extension;
+        string? src = await StorageService.OpenFileAsync($"Select replacement ({ext})", $"{ext} files|*{ext}|All files|*.*");
+        if (src is null) return;
+
+        try
+        {
+            // Honour the single-source backup setting before overwriting.
+            if (SettingsService.Instance.CreateBackup)
+            {
+                string bak = SelectedFile.Path + ".bak";
+                if (!File.Exists(bak)) File.Copy(SelectedFile.Path, bak);
+            }
+            File.Copy(src, SelectedFile.Path, overwrite: true);
+            Log.Success($"Replaced {SelectedFile.Name} ← {System.IO.Path.GetFileName(src)}");
+            OnSelectedFileChanged(SelectedFile); // refresh preview
+        }
+        catch (Exception ex) { Log.Error($"Replace failed: {ex.Message}"); }
     }
 
     private static int FindPng(byte[] data)

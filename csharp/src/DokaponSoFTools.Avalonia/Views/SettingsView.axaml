@@ -6,7 +6,7 @@
              x:DataType="vm:SettingsViewModel">
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Padding="0,0,4,0">
-        <StackPanel MaxWidth="920" HorizontalAlignment="Center" Margin="14,14,14,24" Spacing="14">
+        <StackPanel MaxWidth="980" HorizontalAlignment="Stretch" Margin="14,14,14,24" Spacing="14">
 
             <!-- Hero header -->
             <StackPanel Spacing="3" Margin="2,0,2,2">
@@ -30,11 +30,12 @@
                 </StackPanel>
             </ctrl:MenuWindow>
 
-            <!-- Responsive card grid: 2 columns on wide windows, 1 when narrow -->
-            <WrapPanel>
+            <!-- Two-column grid. Auto rows + stretched cards = both cards in a
+                 row take the height of the taller one (no ragged bottoms). -->
+            <Grid ColumnDefinitions="*,14,*" RowDefinitions="Auto,Auto">
 
                 <!-- Default output -->
-                <ctrl:MenuWindow Header="📤  DEFAULT OUTPUT" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                <ctrl:MenuWindow Grid.Row="0" Grid.Column="0" Header="📤  DEFAULT OUTPUT" Margin="0,0,0,14">
                     <StackPanel Spacing="10">
                         <TextBlock Text="Where Extract All saves files. When set, it skips the folder prompt."
                                    Foreground="{DynamicResource ForegroundMutedBrush}" FontSize="12" TextWrapping="Wrap" />
@@ -48,7 +49,7 @@
                 </ctrl:MenuWindow>
 
                 <!-- Accent colour -->
-                <ctrl:MenuWindow Header="🎨  ACCENT COLOR" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                <ctrl:MenuWindow Grid.Row="0" Grid.Column="2" Header="🎨  ACCENT COLOR" Margin="0,0,0,14">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="12">
                             <Border Width="42" Height="42" CornerRadius="21"
@@ -84,7 +85,7 @@
                 </ctrl:MenuWindow>
 
                 <!-- Patching -->
-                <ctrl:MenuWindow Header="🛡  PATCHING" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                <ctrl:MenuWindow Grid.Row="1" Grid.Column="0" Header="🛡  PATCHING">
                     <StackPanel Spacing="8">
                         <CheckBox Content="Create a backup before applying hex patches"
                                   IsChecked="{Binding CreateBackup}" />
@@ -94,7 +95,7 @@
                 </ctrl:MenuWindow>
 
                 <!-- Recent paths -->
-                <ctrl:MenuWindow Header="🕘  RECENT GAME PATHS" Width="430" Margin="0,0,14,14" VerticalAlignment="Top">
+                <ctrl:MenuWindow Grid.Row="1" Grid.Column="2" Header="🕘  RECENT GAME PATHS">
                     <Panel>
                         <ItemsControl ItemsSource="{Binding RecentPaths}" x:CompileBindings="False">
                             <ItemsControl.ItemTemplate>
@@ -115,7 +116,7 @@
                     </Panel>
                 </ctrl:MenuWindow>
 
-            </WrapPanel>
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 

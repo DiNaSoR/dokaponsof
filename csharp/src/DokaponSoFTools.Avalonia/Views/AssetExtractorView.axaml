@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:DokaponSoFTools.App.ViewModels"
              xmlns:ctrl="using:DokaponSoFTools.App.Controls"
+             xmlns:adc="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
              x:Class="DokaponSoFTools.App.Views.AssetExtractorView"
              x:DataType="vm:AssetExtractorViewModel">
 
@@ -19,35 +20,69 @@
 
     <Grid RowDefinitions="Auto,*">
 
-        <!-- Toolbar (game path is the single source in the top bar; Extract All prompts for a destination) -->
+        <!-- Toolbar: icon actions. Game path is the single source (Settings). -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="2,2,2,8">
-            <Button Content="🔍 Scan" Command="{Binding ScanFilesCommand}" IsEnabled="{Binding !IsBusy}" />
-            <Button Content="📤 Extract All" Command="{Binding ExtractAllCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="🔍  Scan" Command="{Binding ScanFilesCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="📦  Extract All" Command="{Binding ExtractAllCommand}" IsEnabled="{Binding !IsBusy}" />
+            <Button Content="💾  Extract Selected" Command="{Binding ExtractSelectedCommand}"
+                    IsEnabled="{Binding SelectedFile, Converter={x:Static adc:ObjectConverters.IsNotNull}}" />
+            <Button Content="🔁  Replace" Command="{Binding ReplaceSelectedCommand}"
+                    IsEnabled="{Binding SelectedFile, Converter={x:Static adc:ObjectConverters.IsNotNull}}" />
             <TextBlock Text="Working…" VerticalAlignment="Center" Margin="6,0,0,0"
                        Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsBusy}" />
         </StackPanel>
 
-        <!-- Files + preview -->
+        <!-- Files (tabbed by category, with icons) + preview -->
         <Grid Grid.Row="1" ColumnDefinitions="*,6,340">
             <ctrl:MenuWindow Grid.Column="0" Header="FILES" Padding="0">
                 <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Padding="4">
-                    <TabItem Header="{Binding AllTabHeader}">
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="📦" FontSize="14" />
+                                <TextBlock Text="{Binding AllTabHeader}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
                         <ListBox ItemsSource="{Binding AllFiles}" SelectedItem="{Binding SelectedFile}"
                                  ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
                     </TabItem>
-                    <TabItem Header="{Binding TexTabHeader}">
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="🖼" FontSize="14" />
+                                <TextBlock Text="{Binding TexTabHeader}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
                         <ListBox ItemsSource="{Binding TexFiles}" SelectedItem="{Binding SelectedFile}"
                                  ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
                     </TabItem>
-                    <TabItem Header="{Binding SpranmTabHeader}">
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="🎞" FontSize="14" />
+                                <TextBlock Text="{Binding SpranmTabHeader}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
                         <ListBox ItemsSource="{Binding SpranmFiles}" SelectedItem="{Binding SelectedFile}"
                                  ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
                     </TabItem>
-                    <TabItem Header="{Binding FntTabHeader}">
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="🔤" FontSize="14" />
+                                <TextBlock Text="{Binding FntTabHeader}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
                         <ListBox ItemsSource="{Binding FntFiles}" SelectedItem="{Binding SelectedFile}"
                                  ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
                     </TabItem>
-                    <TabItem Header="{Binding MpdTabHeader}">
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="🗺" FontSize="14" />
+                                <TextBlock Text="{Binding MpdTabHeader}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </TabItem.Header>
                         <ListBox ItemsSource="{Binding MpdFiles}" SelectedItem="{Binding SelectedFile}"
                                  ItemTemplate="{StaticResource FileItemTemplate}" Background="Transparent" />
                     </TabItem>
